@@ -18,7 +18,7 @@ import java.io.IOException;
 @Service
 public class UploadService {
 
-    @Value("${upload.path}")
+    @Value("upload.path")
     private String path;
 
 
