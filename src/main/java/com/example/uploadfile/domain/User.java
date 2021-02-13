@@ -25,8 +25,8 @@ public class User {
     @Column(name = "login")
     private String login;
 
-    @Column(name = "adding")
-    private Date adding;
+    @Column(name = "createDate")
+    private Date createDate;
 
     @Column(name = "trigger")
     private Date trigger;
