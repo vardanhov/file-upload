@@ -13,7 +13,6 @@ import java.util.Date;
 
 @Entity
 @Table(name="user")
-@ApiModel(description = "item")
 @Data
 @NoArgsConstructor
 @ToString

@@ -16,4 +16,14 @@ public interface UserRepository extends JpaRepository<User,Long> {
     @Transactional
     @Query(value = "update user  SET upload=0 where trigger>NOW() AND upload=1", nativeQuery = true)
     int changePremissions();
+
+//    @Modifying
+//    @Query("update User u set u.active = false where u.lastLoginDate < :date")
+//    void deactivateUsersNotLoggedInSince(@Param("date") LocalDate date);
+
+//    @Transactional
+//    @Modifying
+//    @Query(value = "UPDATE Users u set EMAIL_VERIFICATION_STATUS =:emailVerificationStatus where u.USER_ID = :userId",
+//            nativeQuery = true)
+//    void updateUser(@Param("emailVerificationStatus") boolean emailVerificationStatus, @Param("userId") String userId);
 }
