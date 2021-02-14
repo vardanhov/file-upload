@@ -4,6 +4,7 @@ import com.example.uploadfile.domain.User;
 import com.example.uploadfile.dto.UserDto;
 import com.example.uploadfile.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -22,5 +23,10 @@ public class UserService {
 
     public void createUser(User user){
          userRepository.save(user);
+    }
+
+  //  @Scheduled(cron = "0 0 0/1 * * ?")
+    public void checkPermissions(){
+        userRepository.changePremissions();
     }
 }
