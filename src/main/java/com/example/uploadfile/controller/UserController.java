@@ -1,7 +1,6 @@
 package com.example.uploadfile.controller;
 
 import com.example.uploadfile.domain.User;
-import com.example.uploadfile.dto.UserDto;
 import com.example.uploadfile.service.UserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;

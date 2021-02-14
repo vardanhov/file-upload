@@ -1,10 +1,8 @@
 package com.example.uploadfile.service;
 
 import com.example.uploadfile.domain.User;
-import com.example.uploadfile.dto.UserDto;
 import com.example.uploadfile.repo.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

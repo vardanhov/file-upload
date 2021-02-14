@@ -1,7 +1,6 @@
 package com.example.uploadfile.domain;
 
 
-import io.swagger.annotations.ApiModel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
