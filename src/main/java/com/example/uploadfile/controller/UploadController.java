@@ -33,8 +33,6 @@ public class UploadController {
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
 
-        UploadFileResponse uploadFileResponse = uploadService.storeFile(file);
-
-        return uploadFileResponse;
+        return uploadService.storeFile(file);
     }
 }
