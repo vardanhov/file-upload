@@ -1,8 +1,9 @@
 package com.example.uploadfile.config;
 
 
-import com.example.uploadfile.data.authorities.AuthoritiesRepository;
-import com.example.uploadfile.data.user.MyUserRepository;
+
+import com.example.uploadfile.repo.AuthoritiesRepository;
+import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.service.ConfigAdminUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,11 @@ import java.util.Collection;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final AuthoritiesRepository authoritiesRepository;
-    private final MyUserRepository myUserRepository;
+    private final UserRepository userRepository;
 
-    public WebSecurityConfig(AuthoritiesRepository authoritiesRepository, MyUserRepository myUserRepository) {
+    public WebSecurityConfig(AuthoritiesRepository authoritiesRepository, UserRepository userRepository) {
         this.authoritiesRepository = authoritiesRepository;
-        this.myUserRepository = myUserRepository;
+        this.userRepository = userRepository;
     }
 
     @Autowired
@@ -106,7 +107,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .ldapAuthentication()
-                .ldapAuthoritiesPopulator(new CustomAuthoritiesPopulator(authoritiesRepository, myUserRepository))
+                .ldapAuthoritiesPopulator(new CustomAuthoritiesPopulator(authoritiesRepository, userRepository))
                 .userDetailsContextMapper(new CustomUserDetailsMapper())
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")

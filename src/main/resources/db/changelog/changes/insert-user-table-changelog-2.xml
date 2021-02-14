@@ -8,7 +8,8 @@
     <changeSet author="user" id="2">
         <insert tableName="user">
             <column name="id" valueNumeric="1"/>
-            <column name="login" value="anton"/>
+            <column name="username" value="ben"/>
+            <column name="password" value="$2a$10$fG1Exub7ZNNiNJm10LBJ3eKDh.OLMMmZliYWpohaY.uNTy.cnDi.a"/>
 <!--            <column name="createDate" defaultValueDate="CURRENT_TIMESTAMP" type="TIMESTAMP"/>-->
 <!--            <column name="trigger" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
             <column name="admin" value="1"/>

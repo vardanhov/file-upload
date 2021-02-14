@@ -1,6 +1,8 @@
 package com.example.uploadfile.domain;
 
 
+import com.example.uploadfile.domain.enums.UserProfile;
+import com.example.uploadfile.domain.enums.convert.UserProfileConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -21,21 +23,25 @@ public class User {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "login")
-    private String login;
+    @Column(name = "username", unique = true)
+    private String username;
 
-    @Column(name = "createDate")
-    @CreationTimestamp
-    private Date createDate;
+    @Column(name = "password")
+    private String password;
 
-    @Column(name = "trigger")
-    private Date trigger;
+    @Column(name = "is_enabled")
+    private boolean isEnabled = true;
 
-    @Column(name = "admin", columnDefinition = "BIT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean admin;
+    public User(String username) {
+        this.username = username;
+    }
 
-    @Column(name = "upload", columnDefinition = "BIT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean upload;
+    @Override
+    public String toString() {
+        return new org.apache.commons.lang3.builder.ToStringBuilder(this)
+                .append("id", id)
+                .append("username", username)
+                .append("isEnabled", isEnabled)
+                .toString();
+    }
 }

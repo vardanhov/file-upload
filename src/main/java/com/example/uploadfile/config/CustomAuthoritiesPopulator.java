@@ -3,10 +3,10 @@ package com.example.uploadfile.config;
 
 
 
-import com.example.uploadfile.data.authorities.Authorities;
-import com.example.uploadfile.data.authorities.AuthoritiesRepository;
-import com.example.uploadfile.data.user.MyUser;
-import com.example.uploadfile.data.user.MyUserRepository;
+import com.example.uploadfile.domain.Authorities;
+import com.example.uploadfile.domain.User;
+import com.example.uploadfile.repo.AuthoritiesRepository;
+import com.example.uploadfile.repo.UserRepository;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,18 +21,18 @@ import java.util.stream.Collectors;
 public class CustomAuthoritiesPopulator implements LdapAuthoritiesPopulator {
 
     private final AuthoritiesRepository authoritiesRepository;
-    private final MyUserRepository myUserRepository;
+    private final UserRepository userRepository;
 
-    public CustomAuthoritiesPopulator(AuthoritiesRepository authoritiesRepository, MyUserRepository myUserRepository) {
+    public CustomAuthoritiesPopulator(AuthoritiesRepository authoritiesRepository, UserRepository userRepository) {
         this.authoritiesRepository = authoritiesRepository;
-        this.myUserRepository = myUserRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getGrantedAuthorities(DirContextOperations dirContextOperations, String username) {
 
         Collection<GrantedAuthority> grantedAuthorities = new HashSet<>();
-        final Optional<MyUser> user = myUserRepository.findByUsername(username);
+        final Optional<User> user = userRepository.findByUsername(username);
         if(user.isPresent()) {
             final List<Authorities> authorities = authoritiesRepository.findAllByUser(user.get());
             grantedAuthorities = authorities.stream()

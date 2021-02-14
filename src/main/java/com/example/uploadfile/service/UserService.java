@@ -25,6 +25,6 @@ public class UserService {
 
   //  @Scheduled(cron = "0 0 0/1 * * ?")
     public void checkPermissions(){
-        userRepository.changePremissions();
+        userRepository.changePermissions();
     }
 }

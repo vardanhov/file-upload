@@ -7,13 +7,18 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 
     @Modifying
     @Transactional
     @Query(value = "update user  SET upload=0 where trigger>NOW() AND upload=1", nativeQuery = true)
-    int changePremissions();
+    void changePermissions();
+
+    Optional<User> findByUsername(String username);
+
 
 //    @Modifying
 //    @Query("update User u set u.active = false where u.lastLoginDate < :date")

@@ -2,37 +2,31 @@ package com.example.uploadfile.data;
 
 
 
-import com.example.uploadfile.data.authorities.Authorities;
-import com.example.uploadfile.data.authorities.AuthoritiesRepository;
-import com.example.uploadfile.data.user.MyUser;
-import com.example.uploadfile.data.user.MyUserRepository;
+import com.example.uploadfile.domain.Authorities;
+import com.example.uploadfile.domain.User;
+import com.example.uploadfile.repo.AuthoritiesRepository;
+import com.example.uploadfile.repo.UserRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 @Service
 public class PopulateDatabaseService {
 
     @Bean
-    public CommandLineRunner populate(final MyUserRepository myUserRepository,
+    public CommandLineRunner populate(final UserRepository userRepository,
                                       final AuthoritiesRepository authoritiesRepository) {
         return args -> {
 
-            List<MyUser> users = Arrays.asList(
-                    new MyUser("andy"),
-                    new MyUser("ben"));
+            List<User> users = userRepository.findAll();
 
-            myUserRepository.saveAll(users);
 
-            List<Authorities> authorities = Arrays.asList(
-                    new Authorities(users.get(0), "ROLE_USER"),
-                    new Authorities(users.get(1), "ROLE_USER"),
-                    new Authorities(users.get(1), "ROLE_ADMIN")
-            );
-            authoritiesRepository.saveAll(authorities);
+
+            List<Authorities> authorities = authoritiesRepository.findAll();
+
         };
     }
 }

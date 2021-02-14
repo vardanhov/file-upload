@@ -1,8 +1,7 @@
-package com.example.uploadfile.data.authorities;
+package com.example.uploadfile.domain;
 
 
 
-import com.example.uploadfile.data.user.MyUser;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,11 +20,11 @@ public class Authorities {
     private long id;
 
     @OneToOne
-    private MyUser user;
+    private User user;
 
     private String authority;
 
-    public Authorities(MyUser user, String authority) {
+    public Authorities(User user, String authority) {
         this.user = user;
         this.authority = authority;
     }
