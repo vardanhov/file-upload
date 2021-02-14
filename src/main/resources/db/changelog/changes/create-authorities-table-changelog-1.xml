@@ -5,16 +5,12 @@
         xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                       http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
     <changeSet author="user" id="1">
-        <createTable tableName="white_list_user">
-            <column autoIncrement="true" name="id" type="INT">
+        <createTable tableName="authorities">
+            <column autoIncrement="true" name="id" type="BIGINT">
                 <constraints primaryKey="true"/>
             </column>
+            <column name="authority" type="varchar(255)"/>
             <column name="user_id" type="INT"/>
-
-            <column name="createDate" defaultValueComputed="NOW()" type="TIMESTAMP"/>
-            <column name="trigger" type="TIMESTAMP"/>
-            <column name="admin" type="BIT"/>
-            <column name="upload" type="BIT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>
