@@ -25,7 +25,6 @@ public class CustomUserDetailsMapper extends LdapUserDetailsMapper {
         Attributes attributes = ctx.getAttributes();
         LdapUserDetails ldapUserDetails = (LdapUserDetails) super.mapUserFromContext(ctx, username, authorities);
         try {
-            // Firstname and Lastname as stored in LDAP
             commonName = attributes.get("cn").get().toString();
         } catch (NamingException e) {
             e.printStackTrace();

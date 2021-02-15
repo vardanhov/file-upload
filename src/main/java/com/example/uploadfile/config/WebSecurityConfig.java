@@ -1,7 +1,6 @@
 package com.example.uploadfile.config;
 
 
-
 import com.example.uploadfile.repo.AuthoritiesRepository;
 import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.service.ConfigAdminUserDetailsService;
@@ -18,7 +17,6 @@ import org.springframework.security.authentication.dao.DaoAuthenticationProvider
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
@@ -57,15 +55,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired(required = false)
     ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider;
-
-//    @Value("${application.ldap.domain}")
-//    private String domain;
-//
-//    @Value("${application.ldap.url}")
-//    private String url;
-//
-//    @Value("${application.ldap.rootDn}")
-//    private String rootDn;
 
 
     @Bean
@@ -133,19 +122,5 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/hello", true)
                 .and()
                 .logout().logoutSuccessUrl("/");
-    }
-
-//    @Override
-//    public void configure(WebSecurity webSecurity) throws Exception {
-//        webSecurity.ignoring().antMatchers("/static/**");
-//        super.configure(webSecurity);
-//    }
-
-    @Override
-    public void configure(WebSecurity web) {
-        web.ignoring().antMatchers(
-                "/h2-console/**"
-        );
-
     }
 }

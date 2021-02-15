@@ -44,4 +44,5 @@ public class WhiteListUser {
     @Convert(converter = UserProfileConverter.class)
     @Column(name = "profile_id")
     private UserProfile userProfile;
+
 }

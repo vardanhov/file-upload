@@ -1,5 +1,6 @@
 package com.example.uploadfile.security;//package com.example.uploadfile.security;
 
+import com.example.uploadfile.domain.enums.UserProfile;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 import org.springframework.security.core.GrantedAuthority;
@@ -29,7 +30,7 @@ public class AccountPrincipal implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Collections.singletonList(new SimpleGrantedAuthority(admin ? AuthorityRole.ROLE_ADMIN.name() : AuthorityRole.ROLE_USER.name()));
+        return Collections.singletonList(new SimpleGrantedAuthority(admin ? UserProfile.ROLE_ADMIN.name() : UserProfile.ROLE_USER.name()));
     }
 
     @Override

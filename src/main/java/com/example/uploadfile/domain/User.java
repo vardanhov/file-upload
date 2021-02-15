@@ -1,16 +1,11 @@
 package com.example.uploadfile.domain;
 
 
-import com.example.uploadfile.domain.enums.UserProfile;
-import com.example.uploadfile.domain.enums.convert.UserProfileConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name="user")

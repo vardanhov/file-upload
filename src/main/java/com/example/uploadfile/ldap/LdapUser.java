@@ -10,6 +10,8 @@ public class LdapUser implements LdapUserDetails {
     private final LdapUserDetails ldapUserDetails;
     private final String commonName;
 
+
+
     public LdapUser(LdapUserDetails ldapUserDetails, String commonName) {
         this.ldapUserDetails = ldapUserDetails;
         this.commonName = commonName;
