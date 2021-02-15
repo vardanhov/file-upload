@@ -26,7 +26,7 @@ public class WhiteListUser {
     @OneToOne
     private User user;
 
-    @Column(name = "createDate")
+    @Column(name = "create_date")
     @CreationTimestamp
     private Date createDate;
 
@@ -41,8 +41,8 @@ public class WhiteListUser {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean upload;
 
-    @Convert(converter = UserProfileConverter.class)
-    @Column(name = "profile_id")
-    private UserProfile userProfile;
+//    @Convert(converter = UserProfileConverter.class)
+//    @Column(name = "profile_id")
+//    private UserProfile userProfile;
 
 }

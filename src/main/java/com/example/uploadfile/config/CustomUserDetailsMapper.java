@@ -2,7 +2,7 @@ package com.example.uploadfile.config;
 
 
 
-import com.example.uploadfile.ldap.LdapUser;
+import com.example.uploadfile.security.LdapUser;
 import lombok.Getter;
 import org.springframework.ldap.core.DirContextOperations;
 import org.springframework.security.core.GrantedAuthority;

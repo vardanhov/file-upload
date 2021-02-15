@@ -1,4 +1,4 @@
-package com.example.uploadfile.ldap;
+package com.example.uploadfile.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;

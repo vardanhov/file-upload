@@ -11,7 +11,7 @@
             </column>
             <column name="user_id" type="INT"/>
 
-            <column name="createDate" defaultValueComputed="NOW()" type="TIMESTAMP"/>
+            <column name="create_date" defaultValueComputed="NOW()" type="TIMESTAMP"/>
             <column name="trigger" type="TIMESTAMP"/>
             <column name="admin" type="BIT"/>
             <column name="upload" type="BIT"/>
