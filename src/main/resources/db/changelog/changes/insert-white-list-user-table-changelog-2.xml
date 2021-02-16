@@ -10,8 +10,6 @@
             <column name="id" valueNumeric="1"/>
             <column name="user_id" valueNumeric="1"/>
 
-<!--            <column name="createDate" defaultValueDate="CURRENT_TIMESTAMP" type="TIMESTAMP"/>-->
-<!--            <column name="trigger" defaultValueComputed="CURRENT_TIMESTAMP"/>-->
             <column name="admin" value="1"/>
             <column name="upload" value="1"/>
 

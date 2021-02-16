@@ -10,14 +10,10 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="INT"/>
-
-            <column name="create_date" defaultValueComputed="NOW()" type="TIMESTAMP"/>
-
-            <column name="trigger" type="TIMESTAMP"/>
+            <column name="create_date" defaultValueNumeric="extract(epoch from now())" type="BIGINT"/>
+            <column name="trigger" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')" type="BIGINT"/>
             <column name="admin" type="BIT"/>
             <column name="upload" type="BIT"/>
-            <column name="create"  defaultValueNumeric="extract(epoch from now())" type="BIGINT"/>
-
         </createTable>
     </changeSet>
 </databaseChangeLog>

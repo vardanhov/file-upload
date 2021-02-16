@@ -1,8 +1,6 @@
 package com.example.uploadfile.domain;
 
 
-import com.example.uploadfile.domain.enums.UserProfile;
-import com.example.uploadfile.domain.enums.convert.UserProfileConverter;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
@@ -27,11 +25,10 @@ public class WhiteListUser {
     private User user;
 
     @Column(name = "create_date")
-    @CreationTimestamp
-    private Date createDate;
+    private Long createDate;
 
     @Column(name = "trigger")
-    private Date trigger;
+    private Long trigger;
 
     @Column(name = "admin", columnDefinition = "BIT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
@@ -41,8 +38,6 @@ public class WhiteListUser {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean upload;
 
-    @Column(name = "create")
-    private Long create =System.currentTimeMillis();
 
 //    @Convert(converter = UserProfileConverter.class)
 //    @Column(name = "profile_id")
