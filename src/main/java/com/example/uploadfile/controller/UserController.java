@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
@@ -46,44 +47,45 @@ public class UserController {
             model.addAttribute("user", principal.getName());
             return "hello";
         } else {
-        List<WhiteListUser> whiteListUsers=    whiteListUserService.getAllWhiteListUsers();
+            List<WhiteListUser> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
             model.addAttribute("whitelist", whiteListUsers);
             return "admin";
         }
     }
 
 
+    @ApiOperation(value = "get all users")
+    @GetMapping("/users")
+    public List<WhiteListUser> getAllUsers() {
+
+        return userService.getAllUsers();
+    }
 
 
-        @ApiOperation(value = "get all users")
-        @GetMapping("/users")
-        public List<WhiteListUser> getAllUsers () {
-            return userService.getAllUsers();
-        }
 
-        @ApiOperation(value = "create")
-        @PostMapping("/createUser")
-        public void createUser (@RequestBody WhiteListUser whiteListUser){
+    @ApiOperation(value = "create")
+    @PostMapping("/createUser")
+    public void createUser(@RequestBody WhiteListUser whiteListUser) {
 
-            userService.createUser(whiteListUser);
-        }
+        userService.createUser(whiteListUser);
+    }
 
-        @ApiOperation(value = "ограничить доступ")
-        @PostMapping("/limitAccess")
-        public void limitAccess (@RequestBody WhiteListUser whiteListUser){
-            userService.limitAccess(whiteListUser);
-        }
+    @ApiOperation(value = "ограничить доступ")
+    @PostMapping("/limitAccess")
+    public void limitAccess(@RequestBody WhiteListUser whiteListUser) {
+        userService.limitAccess(whiteListUser);
+    }
 
 //    @GetMapping("/login")
 //    public ModelAndView login() {
-//        ArrayList<?> membersOf = ldapTemplate.search(
-//                query().where("sAMAccountName").is(userCN),
-//                (AttributesMapper<ArrayList<?>>) attrs -> Collections.list(attrs.get("memberOf").getAll())
-//        ).get(0);
+//    ldapTemplate.search(
+//    query().where("objectclass").is("group"),
+//    (AttributesMapper<String>) attributes -> attributes.get("cn").get().toString();
+//);
 //        ModelAndView mav = new ModelAndView();
 //        mav.setViewName("custom-login");
 //
 //
 //        return mav;
 //    }
-    }
+}
