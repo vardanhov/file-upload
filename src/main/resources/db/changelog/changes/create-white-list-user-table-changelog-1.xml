@@ -12,9 +12,12 @@
             <column name="user_id" type="INT"/>
 
             <column name="create_date" defaultValueComputed="NOW()" type="TIMESTAMP"/>
+
             <column name="trigger" type="TIMESTAMP"/>
             <column name="admin" type="BIT"/>
             <column name="upload" type="BIT"/>
+            <column name="create"  defaultValueNumeric="extract(epoch from now())" type="BIGINT"/>
+
         </createTable>
     </changeSet>
 </databaseChangeLog>

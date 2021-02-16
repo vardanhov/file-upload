@@ -41,6 +41,9 @@ public class WhiteListUser {
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean upload;
 
+    @Column(name = "create")
+    private Long create =System.currentTimeMillis();
+
 //    @Convert(converter = UserProfileConverter.class)
 //    @Column(name = "profile_id")
 //    private UserProfile userProfile;
