@@ -66,13 +66,10 @@ public class UploadControllerTests {
         MockMultipartFile fileSpy = Mockito.spy(file);
         Mockito.doNothing().when(fileSpy).transferTo(any(File.class));
 
-        MockMvc mockMvc
-                = MockMvcBuilders.webAppContextSetup(context).build();
-
-        ResultActions resultActions = mockMvc.perform(multipart("/uploadFile").file(fileSpy)
+        ResultActions resultActions = mvc
+                .perform(multipart("/uploadFile")
+                .file(fileSpy)
                 .contentType(MediaType.MULTIPART_FORM_DATA))
                 .andExpect(status().isOk());
-
-        resultActions.andExpect(status().isOk());
     }
 }

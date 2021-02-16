@@ -54,7 +54,7 @@ public class UploadServiceTests {
         multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.ALL_VALUE,
                 "content".getBytes());
         uploadService.storeFile(multipartFile);
-        ExpectedException.none().expectMessage("invalid content type");
+        ExpectedException.none().expectMessage("Invalid content type");
     }
 
 

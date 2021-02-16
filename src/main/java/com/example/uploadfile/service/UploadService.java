@@ -29,7 +29,7 @@ public class UploadService {
         }
 
         if (multipartFile.getContentType() == null || !multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
-            throw new FileContentTypeException("invalid content type");
+            throw new FileContentTypeException("Invalid content type");
         }
 
         if (multipartFile.getOriginalFilename() == null) {
