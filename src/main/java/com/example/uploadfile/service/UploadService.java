@@ -48,8 +48,6 @@ public class UploadService {
         } catch (IOException e) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
         }
-
         return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
-
     }
 }

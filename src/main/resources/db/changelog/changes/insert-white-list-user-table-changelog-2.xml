@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="user" id="1">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="1"/>
+            <column name="user_id" valueNumeric="2"/>
+            <column name="admin" value="1"/>
+            <column name="upload" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="2">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="2"/>
+            <column name="user_id" valueNumeric="3"/>
+            <column name="admin" value="1"/>
+            <column name="upload" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="3">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="3"/>
+            <column name="user_id" valueNumeric="4"/>
+            <column name="admin" value="1"/>
+            <column name="upload" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="4">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="4"/>
+            <column name="user_id" valueNumeric="5"/>
+            <column name="admin" value="1"/>
+            <column name="upload" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="5">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="5"/>
+            <column name="user_id" valueNumeric="6"/>
+            <column name="admin" value="1"/>
+            <column name="upload" value="1"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>

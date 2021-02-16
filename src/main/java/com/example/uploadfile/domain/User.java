@@ -1,26 +1,33 @@
-package com.example.uploadfile.data.user;
+package com.example.uploadfile.domain;
 
-import lombok.Getter;
+
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 
-@Getter
-@Setter
-@NoArgsConstructor
 @Entity
-public class MyUser {
+@Table(name="user")
+@Data
+@NoArgsConstructor
+@ToString
+public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    public long id;
+    private Integer id;
 
-    @Column(unique = true)
+    @Column(name = "username", unique = true)
     private String username;
+
+    @Column(name = "password")
+    private String password;
+
+    @Column(name = "is_enabled")
     private boolean isEnabled = true;
 
-    public MyUser(String username) {
+    public User(String username) {
         this.username = username;
     }
 

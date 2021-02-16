@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet author="user" id="1">
+        <createTable tableName="white_list_user">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="INT"/>
+            <column name="create_date" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')" type="BIGINT"/>
+            <column name="trigger" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')" type="BIGINT"/>
+            <column name="admin" type="BIT"/>
+            <column name="upload" type="BIT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

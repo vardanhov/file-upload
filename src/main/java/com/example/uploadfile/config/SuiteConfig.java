@@ -18,7 +18,7 @@ import java.util.List;
 public class SuiteConfig {
 
     /**
-     * local users
+     * local usersa
      */
     List<String> local_users;
 

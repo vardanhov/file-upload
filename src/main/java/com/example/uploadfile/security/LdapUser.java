@@ -1,4 +1,4 @@
-package com.example.uploadfile.ldap;
+package com.example.uploadfile.security;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.ldap.userdetails.LdapUserDetails;
@@ -9,6 +9,8 @@ public class LdapUser implements LdapUserDetails {
 
     private final LdapUserDetails ldapUserDetails;
     private final String commonName;
+
+
 
     public LdapUser(LdapUserDetails ldapUserDetails, String commonName) {
         this.ldapUserDetails = ldapUserDetails;
