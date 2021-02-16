@@ -11,6 +11,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
+import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,15 +42,17 @@ public class UploadServiceTests {
         Assert.assertNull(uploadService.storeFile(null));
     }
 
-    @Test(expected = FileContentTypeException.class)
-    public void storeNotPyFile_thenThrowFileContentTypeException(){
-        multipartFile = new MockMultipartFile("test.txt", "test.txt","txt","content".getBytes());
+    @Test(expected = FileNameException.class)
+    public void storeNotPyFile_thenThrowFileNameException(){
+        multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.TEXT_PLAIN_VALUE,
+                "content".getBytes());
         uploadService.storeFile(multipartFile);
     }
 
     @Test(expected = FileContentTypeException.class)
     public void whenThrowFileContentTypeException_checkText(){
-        multipartFile = new MockMultipartFile("test.txt", "test.txt","txt","content".getBytes());
+        multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.ALL_VALUE,
+                "content".getBytes());
         uploadService.storeFile(multipartFile);
         ExpectedException.none().expectMessage("invalid content type");
     }
@@ -57,24 +60,25 @@ public class UploadServiceTests {
 
     @Test(expected = FileContentTypeException.class)
     public void whenStoreFileThrowFileContentTypeException_returnNull(){
-        multipartFile = new MockMultipartFile("test.txt", "test.txt","txt","content".getBytes());
+        multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.ALL_VALUE,
+                "content".getBytes());
         Assert.assertNull(uploadService.storeFile(multipartFile));
     }
 
     @Test(expected = FileNameException.class)
     public void whenFileNameNull_throwFileNameException(){
-        multipartFile = new MockMultipartFile("test.py","content".getBytes());
+        multipartFile = new MockMultipartFile("test.py", "content".getBytes());
         MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn("py");
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         uploadService.storeFile(mockMultipartFileMock);
     }
 
     @Test(expected = FileNameException.class)
     public void whenStoreFileThrowFileNameException_checkText(){
-        multipartFile = new MockMultipartFile("test.py","content".getBytes());
+        multipartFile = new MockMultipartFile("test.txt","content".getBytes());
         MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn("py");
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         uploadService.storeFile(mockMultipartFileMock);
         ExpectedException.none().expectMessage("Invalid file name");
@@ -84,7 +88,7 @@ public class UploadServiceTests {
     public void whenStoreFileThrowFileNameException_returnNull(){
         multipartFile = new MockMultipartFile("test.py","content".getBytes());
         MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn("py");
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         Assert.assertNull(uploadService.storeFile(mockMultipartFileMock));
     }
@@ -100,10 +104,11 @@ public class UploadServiceTests {
 
     @Test
     public void uploadPyFile_positiveTest(){
-        multipartFile = new MockMultipartFile("test.py", "test.py","py","content".getBytes());
+        multipartFile = new MockMultipartFile("test.py", "test.py",MediaType.TEXT_PLAIN_VALUE,
+                "content".getBytes());
         UploadFileResponse uploadFileResponseMock = Mockito.mock(UploadFileResponse.class);
         when(uploadFileResponseMock.getFileName()).thenReturn("test.py");
-        when(uploadFileResponseMock.getFileType()).thenReturn("py");
+        when(uploadFileResponseMock.getFileType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
         when(uploadFileResponseMock.getSize()).thenReturn(multipartFile.getSize());
         UploadFileResponse uploadFileResponseRes = uploadService.storeFile(multipartFile);
         Assert.assertEquals(uploadFileResponseRes.getFileName(),uploadFileResponseMock.getFileName());

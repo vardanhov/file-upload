@@ -7,6 +7,7 @@ import com.example.uploadfile.excepion.FileNameException;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.FileStorageException;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,15 +28,19 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
-        if (!"py".equals(multipartFile.getContentType())) {
+        if (multipartFile.getContentType() == null || !multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
             throw new FileContentTypeException("invalid content type");
         }
 
-        if (multipartFile.getOriginalFilename()== null) {
+        if (multipartFile.getOriginalFilename() == null) {
             throw new FileNameException("Invalid file name");
         }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
+
+        if (fileName.length() < 2 || !fileName.endsWith("py")) {
+            throw new FileNameException("Invalid file name");
+        }
 
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
