@@ -6,26 +6,19 @@ import com.example.uploadfile.excepion.FileNameException;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.FileStorageException;
 import com.example.uploadfile.service.UploadService;
-import lombok.SneakyThrows;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 import org.springframework.mock.web.MockMultipartFile;
-import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 
 import static org.mockito.Mockito.*;
 
 public class UploadServiceTests {
     UploadService uploadService;
     MultipartFile multipartFile;
-    UploadFileResponse uploadFileResponse;
 
     @Before
     public void initTest() {
@@ -116,6 +109,5 @@ public class UploadServiceTests {
         Assert.assertEquals(uploadFileResponseRes.getFileName(),uploadFileResponseMock.getFileName());
         Assert.assertEquals(uploadFileResponseRes.getFileType(),uploadFileResponseMock.getFileType());
         Assert.assertEquals(uploadFileResponseRes.getSize(),uploadFileResponseMock.getSize());
-
     }
 }
