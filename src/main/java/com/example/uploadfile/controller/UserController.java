@@ -1,6 +1,7 @@
 package com.example.uploadfile.controller;
 
 import com.example.uploadfile.domain.WhiteListUser;
+import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.service.UserService;
 import com.example.uploadfile.service.WhiteListUserService;
 import io.swagger.annotations.ApiOperation;
@@ -47,7 +48,7 @@ public class UserController {
             model.addAttribute("user", principal.getName());
             return "hello";
         } else {
-            List<WhiteListUser> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
+            List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
             model.addAttribute("whitelist", whiteListUsers);
             return "admin";
         }

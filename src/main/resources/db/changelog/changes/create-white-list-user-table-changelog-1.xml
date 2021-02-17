@@ -10,8 +10,8 @@
                 <constraints primaryKey="true"/>
             </column>
             <column name="user_id" type="INT"/>
-            <column name="create_date" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')" type="BIGINT"/>
-            <column name="trigger" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')" type="BIGINT"/>
+            <column name="create_date" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')*1000" type="BIGINT"/>
+            <column name="trigger" defaultValueNumeric="extract(epoch from now() at time zone 'Europe/Moscow')*1000" type="BIGINT"/>
             <column name="admin" type="BIT"/>
             <column name="upload" type="BIT"/>
         </createTable>
