@@ -19,7 +19,7 @@ import java.io.IOException;
 @Service
 public class UploadService {
 
-    @Value("upload.path")
+    @Value("${upload.path}")
     private String path;
 
 
@@ -28,14 +28,15 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
-        if (!multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
-            throw new FileContentTypeException("invalid content type");
+        if (multipartFile.getContentType() == null || !multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
+            throw new FileContentTypeException("Invalid content type");
+        }
+
+        if (multipartFile.getOriginalFilename() == null) {
+            throw new FileNameException("Invalid file name");
         }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        if (fileName == null) {
-            throw new FileNameException("Invalid file name");
-        }
 
         if (fileName.length() < 2 || !fileName.endsWith("py")) {
             throw new FileNameException("Invalid file name");
