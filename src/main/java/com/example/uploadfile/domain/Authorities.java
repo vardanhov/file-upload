@@ -17,10 +17,10 @@ import javax.persistence.*;
 public class Authorities {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+    private Integer id;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
+    @PrimaryKeyJoinColumn
     private User user;
 
     private String authority;
