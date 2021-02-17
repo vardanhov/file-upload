@@ -22,6 +22,8 @@ public class WhiteListUser {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "id")
+    @MapsId
     private User user;
 
     @Column(name = "create_date")
