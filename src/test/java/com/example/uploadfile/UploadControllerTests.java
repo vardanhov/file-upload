@@ -47,7 +47,7 @@ public class UploadControllerTests {
     @Test
     public void uploadFile_get404Error() throws Exception {
         mvc.perform(post("/uploadFileR")
-                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .contentType(MediaType.TEXT_PLAIN_VALUE)
                 .content(multipartFile.getBytes())
                 .accept(MediaType.ALL_VALUE))
                 .andExpect(status().is4xxClientError());
