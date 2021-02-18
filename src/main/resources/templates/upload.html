@@ -1,13 +1,35 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" >
+<head>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+    <th:block th:include="fragments/header :: head"> </th:block>
+</head>
 <body>
-
+<br>
+<nav>  <th:block th:replace="fragments/nav :: nav"></th:block>   </nav>
+<br>
 <h1>Spring Boot - File Upload</h1>
 
-<form method="POST" action="/uploadFile" enctype="multipart/form-data">
-    <input type="file" name="file" /><br />
-    <br /> <input type="submit" value="Submit" />
-</form>
+<section class="my-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-8 mx-auto">
+                <h2>Upload File Example</h2>
+                <p th:text="${message}" th:if="${message ne null}" class="alert alert-primary"></p>
+                <form method="post" th:action="@{/uploadFile}" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <input type="file" name="file" class="form-control-file">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Upload File</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer>
+    <th:block th:include="fragments/footer :: footer"></th:block>
+</footer>
 
 </body>
 </html>

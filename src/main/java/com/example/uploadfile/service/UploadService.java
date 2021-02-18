@@ -6,7 +6,9 @@ import com.example.uploadfile.excepion.FileContentTypeException;
 import com.example.uploadfile.excepion.FileNameException;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.FileStorageException;
+
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,8 +21,8 @@ import java.io.IOException;
 @Service
 public class UploadService {
 
-    @Value("upload.path")
-    private String path;
+    @Value("${upload.path}")
+    private String path ;
 
 
     public UploadFileResponse storeFile(MultipartFile multipartFile) {
@@ -28,7 +30,7 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
-        if (!multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
+        if (!multipartFile.getContentType().equals(MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
             throw new FileContentTypeException("invalid content type");
         }
 
