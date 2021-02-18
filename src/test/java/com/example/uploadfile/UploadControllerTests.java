@@ -3,14 +3,19 @@ package com.example.uploadfile;
 import com.example.uploadfile.controller.UploadController;
 import com.example.uploadfile.dto.UploadFileResponse;
 import com.example.uploadfile.service.UploadService;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import net.minidev.json.JSONUtil;
 import org.apache.catalina.Globals;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -20,18 +25,19 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
+import java.io.StringWriter;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-//@RunWith(SpringJUnit4ClassRunner.class)
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {UploadController.class, UploadService.class })
 @SpringBootTest
@@ -40,7 +46,11 @@ public class UploadControllerTests {
     @Autowired
     private WebApplicationContext context;
 
+    @MockBean
+    private UploadService uploadServiceMock;
+
     private MockMvc mvc;
+
     MockMultipartFile multipartFile;
 
     @Before
@@ -89,13 +99,22 @@ public class UploadControllerTests {
 
     @Test
     public void uploadFile_positiveTest() throws Exception {
-        //MockMultipartFile fileSpy = Mockito.spy(multipartFile);
-        //Mockito.doNothing().when(fileSpy).transferTo(any(File.class));
+        UploadFileResponse uploadFileResponse = new UploadFileResponse(
+                "hello.py",
+                MediaType.TEXT_PLAIN_VALUE,
+                multipartFile.getSize());
 
-       // ResultActions resultActions =
+        Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class))).thenReturn(uploadFileResponse);
+
         mvc.perform(multipart("/uploadFile")
            .file(multipartFile)
            .contentType(MediaType.MULTIPART_FORM_DATA))
-           .andExpect(status().isOk());
+           .andExpect(status().isOk())
+           .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
+                                                     uploadFileResponse.getFileName(),
+                                                     uploadFileResponse.getFileType(),
+                                                     uploadFileResponse.getSize())));
+
+        verify(uploadServiceMock).storeFile(any(MultipartFile.class));
     }
 }
