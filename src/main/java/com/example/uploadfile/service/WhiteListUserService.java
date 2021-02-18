@@ -1,15 +1,16 @@
 package com.example.uploadfile.service;
 
 
+import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
+import com.example.uploadfile.excepion.UserNotFoundException;
+import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,9 @@ public class WhiteListUserService {
 
     @Autowired
     private WhiteListUserRepository whiteListUserRepository;
+
+    @Autowired
+    private UserRepository userRepository;
 
 
     public List<WhiteListUserDto> getAllWhiteListUsers() {
@@ -29,6 +33,15 @@ public class WhiteListUserService {
         return whiteListUserDto;
     }
 
+    public void createWhiteList(WhiteListUserDto whiteListUserDto){
 
+        User user = userRepository.findByUsername(whiteListUserDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        WhiteListUser whiteListUser = UserMapper.convertWhiteListUserDtoToUser(whiteListUserDto,user);
+        whiteListUserRepository.save(whiteListUser);
+    }
+
+    public void updateWhiteList(WhiteListUserDto whiteListUser){
+
+    }
 
 }

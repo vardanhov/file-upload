@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.security.Principal;
 import java.util.List;
@@ -46,11 +45,11 @@ public class UserController {
         String role = sds.get(0);
         if ("ROLE_USER".equals(role)) {
             model.addAttribute("user", principal.getName());
-            return "hello";
+            return "upload";
         } else {
-            List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
-            model.addAttribute("whitelist", whiteListUsers);
-            return "admin";
+        List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
+        model.addAttribute("whitelist", whiteListUsers);
+        return "white_list";
         }
     }
 
@@ -64,12 +63,6 @@ public class UserController {
 
 
 
-    @ApiOperation(value = "create")
-    @PostMapping("/createUser")
-    public void createUser(@RequestBody WhiteListUser whiteListUser) {
-
-        userService.createUser(whiteListUser);
-    }
 
     @ApiOperation(value = "ограничить доступ")
     @PostMapping("/limitAccess")

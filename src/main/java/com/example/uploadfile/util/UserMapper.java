@@ -1,5 +1,6 @@
 package com.example.uploadfile.util;
 
+import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 
@@ -7,7 +8,6 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class UserMapper {
 
@@ -20,6 +20,17 @@ public class UserMapper {
         whiteListUserDto.setAdmin(whiteListUser.getAdmin());
         whiteListUserDto.setUpload(whiteListUser.getUpload());
         return whiteListUserDto;
+    }
+
+    public static WhiteListUser convertWhiteListUserDtoToUser(WhiteListUserDto whiteListUserDto, User user) {
+        WhiteListUser whiteListUser = new WhiteListUser();
+        whiteListUser.setId(whiteListUser.getId());
+        whiteListUser.setUser(user);
+//        whiteListUser.setCreateDate(whiteListUserDto.getCreateDate());
+//        whiteListUser.setTrigger(whiteListUserDto.getTrigger());
+        whiteListUser.setAdmin(whiteListUser.getAdmin());
+        whiteListUser.setUpload(whiteListUser.getUpload());
+        return whiteListUser;
     }
 
     public static String formatDate(WhiteListUser whiteListUser) {
