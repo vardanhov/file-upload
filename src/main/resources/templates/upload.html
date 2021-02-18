@@ -1,13 +1,50 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
+<head>
+    <th:block th:include="fragments/header :: head"></th:block>
+</head>
 <body>
+<nav class="navbar navbar-dark" style="background-color: cadetblue">
+    <th:block th:include="fragments/nav :: nav"></th:block>
+</nav>
+<div class="container">
+    <div class="row justify-content-md-center">
+        <div class="card col-12 col-lg-6 offset-0 offset-lg-3">
+            <div class="card-body">
+                <form method="POST" action="/uploadFile" enctype="multipart/form-data">
+                    <div class="container">
+                        <div class="input-group">
+                            <div class="custom-file">
+                                <input name="file" type="file" class="custom-file-input" id="customFileInput"
+                                       aria-describedby="customFileInput">
+                                <label class="custom-file-label" for="customFileInput">Выберите файл</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit" id="customFileInput"
+                                        style="bg-color: cadetblue">
+                                    Загрузить
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
 
-<h1>Spring Boot - File Upload</h1>
 
-<form method="POST" action="/uploadFile" enctype="multipart/form-data">
-    <input type="file" name="file" /><br />
-    <br /> <input type="submit" value="Submit" />
-</form>
+<script>
+    document.querySelector('.custom-file-input').addEventListener('change', function (e) {
+        var name = document.getElementById("customFileInput").files[0].name;
+        var nextSibling = e.target.nextElementSibling
+        nextSibling.innerText = name
+    })
+</script>
 
+
+<footer>
+    <th:block th:include="fragments/footer :: footer"></th:block>
+</footer>
 </body>
 </html>

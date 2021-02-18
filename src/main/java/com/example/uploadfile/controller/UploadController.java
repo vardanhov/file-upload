@@ -36,7 +36,6 @@ public class UploadController {
     @ApiOperation(value = "Загрузить файл")
     @PostMapping("/uploadFile")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-
         return uploadService.storeFile(file);
     }
 

@@ -1,8 +1,5 @@
 package com.example.uploadfile.config;
 
-
-
-
 import com.example.uploadfile.domain.Authorities;
 import com.example.uploadfile.domain.User;
 import com.example.uploadfile.repo.AuthoritiesRepository;

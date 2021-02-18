@@ -46,12 +46,17 @@ public class UserController {
         String role = sds.get(0);
         if ("ROLE_USER".equals(role)) {
             model.addAttribute("user", principal.getName());
-            return "hello";
+            return "upload";
         } else {
             List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
             model.addAttribute("whitelist", whiteListUsers);
-            return "admin";
+            return "upload";
         }
+    }
+
+    @GetMapping("/adminPanel")
+    public String admin() {
+        return "admin";
     }
 
 
@@ -61,7 +66,6 @@ public class UserController {
 
         return userService.getAllUsers();
     }
-
 
 
     @ApiOperation(value = "create")
