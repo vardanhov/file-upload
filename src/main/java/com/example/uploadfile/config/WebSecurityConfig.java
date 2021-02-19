@@ -32,7 +32,7 @@ import java.util.Collection;
 @EnableWebSecurity
 @Slf4j
 @Order(1)
-@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
+@EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = false)
 @EnableConfigurationProperties(LdapProperties.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -114,13 +114,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/").permitAll() // Open for all
+                .antMatchers("/login").permitAll() // Open for all
                 .anyRequest().authenticated() // All others requires authentication
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/hello", true)
                 .and()
-                .logout().logoutSuccessUrl("/");
+                .logout().logoutSuccessUrl("/login");
     }
 }

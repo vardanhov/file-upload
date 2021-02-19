@@ -22,9 +22,7 @@ public class AccountPrincipal implements UserDetails {
 
     String username;
 
-
     String password;
-
 
     boolean admin;
 

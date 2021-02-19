@@ -28,9 +28,9 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
-        if (multipartFile.getContentType() == null || !multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
-            throw new FileContentTypeException("Invalid content type");
-        }
+//        if (multipartFile.getContentType() == null || !multipartFile.getContentType().equals(MediaType.TEXT_PLAIN_VALUE)) {
+//            throw new FileContentTypeException("Invalid content type");
+//        }
 
         if (multipartFile.getOriginalFilename() == null) {
             throw new FileNameException("Invalid file name");

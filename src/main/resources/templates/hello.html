@@ -2,18 +2,21 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Hello</title>
+    <title>DagLoader</title>
 </head>
 <body>
+<nav class="navbar navbar-dark" style="background-color: cadetblue">
+    <th:block th:include="fragments/nav :: nav"></th:block>
+</nav>
 
-<h1>Welcome '<span th:text="${user}"></span>'</h1>
-<p>Hello '<span th:inline="text">[[${#httpServletRequest.remoteUser}]]</span>'</p>
+<h1><span th:text="${user}"></span></h1>
+<p>Недостаточно прав <span th:inline="text">[[${#httpServletRequest.remoteUser}]]</span></p>
 <p th:each="authority : ${#authentication.getAuthorities()}"
    th:if="${authority.getAuthority().startsWith('ROLE_')}"
    th:text="${authority.getAuthority().replaceFirst('ROLE_', '')}">
 </p>
 <form th:action="@{/logout}" method="post">
-    <input type="submit" value="Sign Out"/>
+    <input type="submit" value="Выйти"/>
 </form>
 </body>
 </html>

@@ -4,9 +4,10 @@
     <th:block th:include="fragments/header :: head"></th:block>
 </head>
 <body>
+<nav class="navbar navbar-dark" style="background-color: cadetblue">
+    <th:block th:include="fragments/nav :: nav"></th:block>
+</nav>
 <div class="container">
-
-    <h1>ALL LIST OF USERS </h1>
     <br>
     <table class="table table-striped">
         <thead>
@@ -28,39 +29,79 @@
             <td th:text="${user.admin}"></td>
             <td th:text="${user.upload}"></td>
             <td>
-                <a class="btn btn-primary" th:href="@{/updateCourse/__${user.id}__}" role="button">Update</a>
+                <button type="button" class="border-0" data-toggle="modal" th:data-target="@{#modal-__${user.id}__}">
+                    <i class="fas fa-pencil-alt" style="color: dimgray"></i>
+                </button>
+                <!-- Modal -->
+                <div class="modal fade" th:id="@{modal-__${user.id}__}" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Обновление пользователя: <span  th:text="${user.username}"></span></h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">Администратор  </span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="admin"
+                                           aria-describedby="basic-addon1" th:value="${user.admin}">
+                                </div>
+                                <div class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon1">Права на загрузку</span>
+                                    </div>
+                                    <input type="text" class="form-control" aria-label="admin"
+                                           aria-describedby="basic-addon1" th:value="${user.upload}">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                                <button type="button" class="btn btn-primary">Сохранить</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </td>
             <td>
-                <a class="btn btn-primary" th:href="@{/deleteCourse/__${user.id}__}" role="button">Delete</a>
+                <form th:action="@{/delete/__${user.id}__}" method="post">
+                    <button type="submit" class="border-0">
+                        <i class="fas fa-trash-alt" style="color:red"></i>
+                    </button>
+                </form>
             </td>
         </tr>
         </tbody>
     </table>
-
-
     <br>
-    <a class="btn btn-primary" th:href="@{/addCoursePage}" role="button">Add New Article</a>
+    <a href="#" data-toggle="modal" data-target="#modal">Добавить пользователя</a>
+    <!-- Modal -->
+    <div class="modal fade" id="modal" tabindex="-1" role="dialog"
+         aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Добавление пользователя</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Закрыть">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <i class="fas fa-smile-wink"></i>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Закрыть</button>
+                    <button type="button" class="btn btn-primary">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
     <br>
 
-    <nav aria-label="...">
-        <br>
-        <ul class="pagination justify-content-center">
-            <li class="page-item disabled">
-                <span class="page-link">Previous</span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">1</a></li>
-            <li class="page-item active" aria-current="page">
-      <span class="page-link">
-        2
-        <span class="sr-only">(current)</span>
-      </span>
-            </li>
-            <li class="page-item"><a class="page-link" href="#">3</a></li>
-            <li class="page-item">
-                <a class="page-link" href="#">Next</a>
-            </li>
-        </ul>
-    </nav>
 
     <footer>
         <th:block th:include="fragments/footer :: footer"></th:block>

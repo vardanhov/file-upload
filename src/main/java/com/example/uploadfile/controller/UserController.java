@@ -11,11 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.util.List;
@@ -35,12 +31,11 @@ public class UserController {
 
     @GetMapping("/")
     public String welcome() {
-        return "index";
+        return "login";
     }
 
     @GetMapping("/hello")
     public String hello(Model model, Principal principal) {
-
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<String> sds = auth.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList());
         String role = sds.get(0);
@@ -55,24 +50,49 @@ public class UserController {
     }
 
     @GetMapping("/adminPanel")
-    public String admin() {
+    public String admin(Model model) {
+        List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
+        model.addAttribute("whitelist", whiteListUsers);
         return "admin";
     }
 
 
-    @ApiOperation(value = "get all users")
-    @GetMapping("/users")
-    public List<WhiteListUser> getAllUsers() {
+//    @ApiOperation(value = "get all users")
+//    @GetMapping("/users")
+//
+//    public List<WhiteListUser> getAllUsers() {
+//        return userService.getAllUsers();
+//    }
 
-        return userService.getAllUsers();
-    }
+//    @ApiOperation(value = "create")
+//    @PostMapping("/create")
+//    public void createUser(@RequestBody WhiteListUser whiteListUser) {
+//        userService.createUser(whiteListUser);
+//    }
 
+//    @ApiOperation(value = "create")
+//    @GetMapping("/create")
+//    public String createUser(Model model) {
+////        userService.createUser(whiteListUser);
+//        return "newUser";
+//    }
+//
+//    @ApiOperation(value = "update")
+//    @GetMapping("/update")
+//    public String update() {
+////        userService.update(whiteListUser);
+//        return "update";
+//
+//    }
+//TODO
+    @ApiOperation(value = "delete")
+    @PostMapping("/delete/{guid}")
+    public String delete(@PathVariable Integer guid, Model model) {
+        userService.delete(guid);
+        List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
+        model.addAttribute("whitelist", whiteListUsers);
+        return "admin";
 
-    @ApiOperation(value = "create")
-    @PostMapping("/createUser")
-    public void createUser(@RequestBody WhiteListUser whiteListUser) {
-
-        userService.createUser(whiteListUser);
     }
 
     @ApiOperation(value = "ограничить доступ")
