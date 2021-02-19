@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+
+    <changeSet id="8" author="pkorobeinikov">
+        <createProcedure>
+            CREATE OR REPLACE FUNCTION upload.current_time_millisecond()
+            RETURNS BIGINT AS
+            $func$
+            BEGIN
+            RETURN (select extract(epoch from now())*1000 );
+            END
+            $func$  LANGUAGE plpgsql
+        </createProcedure>
+    </changeSet>
+</databaseChangeLog>

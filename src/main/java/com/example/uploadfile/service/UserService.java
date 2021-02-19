@@ -27,8 +27,9 @@ public class UserService {
     }
 
     @Scheduled(cron = "0 0 0/1 * * ?")
-    public void checkPermissions(){
-       // userRepository.changePermissions();
+    public void checkAccess(){
+         Long currentDateTimeMillisecond =System.currentTimeMillis();
+        whiteListUserRepository.changePermissions(currentDateTimeMillisecond);
 
 
     }
