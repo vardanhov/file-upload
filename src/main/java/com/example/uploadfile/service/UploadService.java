@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 
 @Service
@@ -30,8 +31,8 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
-        if (!multipartFile.getContentType().equals(MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
-            throw new FileContentTypeException("invalid content type");
+        if (!Objects.equals(multipartFile.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
+            throw new FileContentTypeException("Invalid content type: " + multipartFile.getContentType());
         }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
