@@ -63,7 +63,7 @@ public class UploadServiceTests {
 
     @Test(expected = FileNameException.class)
     public void storeNotPyFile_thenThrowFileNameException(){
-        multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.TEXT_PLAIN_VALUE,
+        multipartFile = new MockMultipartFile("test.txt", "test.txt", MediaType.APPLICATION_OCTET_STREAM_VALUE,
                 "content".getBytes());
         uploadService.storeFile(multipartFile);
     }
@@ -88,7 +88,7 @@ public class UploadServiceTests {
     public void whenFileNameNull_throwFileNameException(){
         multipartFile = new MockMultipartFile("test.py", "content".getBytes());
        // MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         uploadService.storeFile(mockMultipartFileMock);
     }
@@ -97,7 +97,7 @@ public class UploadServiceTests {
     public void whenStoreFileThrowFileNameException_checkText(){
         multipartFile = new MockMultipartFile("test.txt","content".getBytes());
       //  MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         uploadService.storeFile(mockMultipartFileMock);
         ExpectedException.none().expectMessage("Invalid file name");
@@ -107,7 +107,7 @@ public class UploadServiceTests {
     public void whenStoreFileThrowFileNameException_returnNull(){
         multipartFile = new MockMultipartFile("test.py","content".getBytes());
         //MockMultipartFile mockMultipartFileMock = Mockito.mock(MockMultipartFile.class);
-        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn(null);
         Assert.assertNull(uploadService.storeFile(mockMultipartFileMock));
     }
@@ -123,7 +123,7 @@ public class UploadServiceTests {
 
     @Test(expected = FileStorageException.class)
     public void whenStoreFileThrowIOException_thenThrowFileStorageException() throws IOException {
-        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
+        when(mockMultipartFileMock.getContentType()).thenReturn(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         when(mockMultipartFileMock.getOriginalFilename()).thenReturn("test.py");
         doThrow(IOException.class).when(mockMultipartFileMock).transferTo(any(File.class));
         uploadService.storeFile(mockMultipartFileMock);
@@ -134,7 +134,7 @@ public class UploadServiceTests {
         multipartFile = new MockMultipartFile(
                 "test.py",
                 "test.py",
-                MediaType.TEXT_PLAIN_VALUE,
+                MediaType.APPLICATION_OCTET_STREAM_VALUE,
                 "content".getBytes());
 
       //  doNothing().when(mockMultipartFileMock).transferTo(any(File.class));
@@ -142,7 +142,7 @@ public class UploadServiceTests {
         UploadFileResponse uploadFileResponseMock = Mockito.mock(UploadFileResponse.class);
 
         when(uploadFileResponseMock.getFileName()).thenReturn("test.py");
-        when(uploadFileResponseMock.getFileType()).thenReturn(MediaType.TEXT_PLAIN_VALUE);
+        when(uploadFileResponseMock.getFileType()).thenReturn(MediaType.APPLICATION_OCTET_STREAM_VALUE);
         when(uploadFileResponseMock.getSize()).thenReturn(multipartFile.getSize());
 
         UploadFileResponse uploadFileResponseRes = uploadService.storeFile(multipartFile);

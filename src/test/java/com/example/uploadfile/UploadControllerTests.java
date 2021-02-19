@@ -36,7 +36,7 @@ import java.io.StringWriter;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {UploadController.class, UploadService.class })
@@ -109,11 +109,12 @@ public class UploadControllerTests {
         mvc.perform(multipart("/uploadFile")
            .file(multipartFile)
            .contentType(MediaType.MULTIPART_FORM_DATA))
-           .andExpect(status().isOk())
-           .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
-                                                     uploadFileResponse.getFileName(),
-                                                     uploadFileResponse.getFileType(),
-                                                     uploadFileResponse.getSize())));
+           .andExpect(status().is3xxRedirection())
+           .andExpect(redirectedUrl("/"));
+          // .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
+          //                                           uploadFileResponse.getFileName(),
+          //                                           uploadFileResponse.getFileType(),
+          //                                           uploadFileResponse.getSize())));
 
         verify(uploadServiceMock).storeFile(any(MultipartFile.class));
     }
