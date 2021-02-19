@@ -12,12 +12,5 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User,Long> {
 
-    @Modifying
-    @Transactional
-    @Query(value = "UPDATE upload.white_list_user  SET upload=B'0' where trigger<NOW() AND upload=B'1'", nativeQuery = true)
-    void changePermissions();
-
     Optional<User> findByUsername(String username);
-
-
 }

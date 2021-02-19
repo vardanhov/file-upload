@@ -29,6 +29,25 @@ public class UploadController {
 
     @PostMapping("/uploadFile")
     public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+
+        //        Path path = Paths.get("c:\\data\\myfile.txt");
+//        String group = "GROUP_NAME";
+//        UserPrincipalLookupService lookupService = FileSystems.getDefault()
+//                .getUserPrincipalLookupService();
+//        GroupPrincipal groupPrincipal=null;
+//        try {
+//             groupPrincipal = lookupService.lookupPrincipalByGroupName(group);
+//            Files.getFileAttributeView(path, PosixFileAttributeView.class, LinkOption.NOFOLLOW_LINKS).setGroup(groupPrincipal);
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
+
+//        File originalFile = new File("original.jpg"); // just as an example
+//        try {
+//            GroupPrincipal group = Files.readAttributes(originalFile.toPath(), PosixFileAttributes.class, LinkOption.NOFOLLOW_LINKS).group();
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//        }
         uploadService.storeFile(file);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
