@@ -4,11 +4,9 @@ package com.example.uploadfile.domain;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import java.util.Date;
 
 @Entity
 @Table(name="white_list_user")
@@ -22,6 +20,8 @@ public class WhiteListUser {
     private Integer id;
 
     @OneToOne
+    @JoinColumn(name = "id")
+    @MapsId
     private User user;
 
     @Column(name = "create_date")
