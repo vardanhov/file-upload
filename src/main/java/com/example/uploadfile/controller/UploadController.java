@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.io.IOException;
-import java.nio.file.*;
-import java.nio.file.attribute.GroupPrincipal;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.UserPrincipalLookupService;
 
 
 @Controller
@@ -33,7 +28,7 @@ public class UploadController {
                              RedirectAttributes redirectAttributes) {
 
 
-        uploadService.storeFile(file);
+        uploadService.storeFile(file,confidential);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
         return "redirect:/";
