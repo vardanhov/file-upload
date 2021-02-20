@@ -9,6 +9,7 @@ import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -24,6 +25,12 @@ public class WhiteListUserService {
     private UserRepository userRepository;
 
 
+    @Scheduled(cron = "0 0 0/1 * * ?")
+    public void updateUserAccess(){
+        whiteListUserRepository.changePermissions();
+    }
+
+
     public List<WhiteListUserDto> getAllWhiteListUsers() {
         List<WhiteListUser> whiteListUsers = whiteListUserRepository.findAll();
         List<WhiteListUserDto> whiteListUserDto = new ArrayList<>();
@@ -32,6 +39,8 @@ public class WhiteListUserService {
         }
         return whiteListUserDto;
     }
+
+
 
     public void createWhiteList(WhiteListUserDto whiteListUserDto){
 
