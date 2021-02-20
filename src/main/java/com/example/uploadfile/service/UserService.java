@@ -26,13 +26,7 @@ public class UserService {
         whiteListUserRepository.save(whiteListUser);
     }
 
-    @Scheduled(cron = "0 0 0/1 * * ?")
-    public void checkAccess(){
-         Long currentDateTimeMillisecond =System.currentTimeMillis();
-        whiteListUserRepository.changePermissions(currentDateTimeMillisecond);
 
-
-    }
 
     public void limitAccess(WhiteListUser whiteListUser){
         WhiteListUser whiteListUser1 = new WhiteListUser();
