@@ -12,6 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.io.IOException;
+import java.nio.file.*;
+import java.nio.file.attribute.GroupPrincipal;
+import java.nio.file.attribute.PosixFileAttributeView;
+import java.nio.file.attribute.UserPrincipalLookupService;
 
 
 @Controller
@@ -23,7 +28,10 @@ public class UploadController {
 
 
     @PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String uploadFile(@RequestParam("file") MultipartFile file,
+                             @RequestParam(value="confidential", defaultValue= "false") boolean confidential,
+                             RedirectAttributes redirectAttributes) {
+
 
         uploadService.storeFile(file);
         redirectAttributes.addFlashAttribute("message",
