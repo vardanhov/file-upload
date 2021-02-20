@@ -28,7 +28,10 @@ public class UploadController {
 
 
     @PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file, RedirectAttributes redirectAttributes) {
+    public String uploadFile(@RequestParam("file") MultipartFile file,
+                             @RequestParam(value="confidential", defaultValue= "false") boolean confidential,
+                             RedirectAttributes redirectAttributes) {
+
 
         //        Path path = Paths.get("c:\\data\\myfile.txt");
 //        String group = "GROUP_NAME";
@@ -48,7 +51,7 @@ public class UploadController {
 //        } catch (IOException e) {
 //            e.printStackTrace();
 //        }
-        uploadService.storeFile(file);
+        uploadService.storeFile(file,confidential);
         redirectAttributes.addFlashAttribute("message",
                 "You successfully uploaded " + file.getOriginalFilename() + "!");
         return "redirect:/";

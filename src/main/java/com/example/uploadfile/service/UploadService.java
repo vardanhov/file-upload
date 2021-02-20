@@ -21,11 +21,14 @@ import java.io.IOException;
 @Service
 public class UploadService {
 
-    @Value("${upload.path}")
-    private String path ;
+    @Value("${upload.path.regular}")
+    private String pathOfRegularFiles;
+
+    @Value("${upload.path.confidential}")
+    private String pathOfConfidentialFiles;
 
 
-    public UploadFileResponse storeFile(MultipartFile multipartFile) {
+    public UploadFileResponse storeFile(MultipartFile multipartFile, boolean confidential) {
         if (multipartFile == null) {
             throw new FileNotFoundException("Cannot find file");
         }
@@ -42,7 +45,9 @@ public class UploadService {
         if (fileName.length() < 2 || !fileName.endsWith("py")) {
             throw new FileNameException("Invalid file name");
         }
-
+        String path = pathOfRegularFiles;
+        if (!confidential)
+            path = pathOfConfidentialFiles;
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
