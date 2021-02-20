@@ -14,6 +14,7 @@ import com.example.uploadfile.util.UserMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,6 +45,11 @@ public class WhiteListUserServiceTests {
 
     @MockBean
     private UserRepository userRepository;
+
+    @Test
+    public void updateUserAcess_positiveTest(){
+
+    }
 
     @Test(expected = NullPointerException.class)
     public void ifWhiteListNull_thenThrowException(){
@@ -102,5 +108,20 @@ public class WhiteListUserServiceTests {
         whiteListUserService.createWhiteList(whiteListUserDtoMock);
 
         verify(whiteListUserDtoMock).getUsername();
+    }
+
+    @Test(expected = UserNotFoundException.class)
+    public void createWhiteList_UserNotFound_checkText(){
+        WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
+        Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
+        whiteListUserService.createWhiteList(whiteListUserDtoMock);
+        ExpectedException.none().expectMessage("User not found");
+
+        verify(whiteListUserDtoMock).getUsername();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createWhiteList_UserNull(){
+        whiteListUserService.createWhiteList(null);
     }
 }

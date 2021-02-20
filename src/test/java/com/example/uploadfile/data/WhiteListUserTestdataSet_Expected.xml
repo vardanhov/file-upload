@@ -1,0 +1,8 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dataset>
+    <white_list_user ID="1" UPLOAD="0"/>
+    <white_list_user ID="2" UPLOAD="1"/>
+    <white_list_user ID="3" UPLOAD="1"/>
+    <white_list_user ID="4" UPLOAD="1"/>
+    <white_list_user ID="5" UPLOAD="1"/>
+</dataset>

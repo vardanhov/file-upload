@@ -29,13 +29,13 @@ import static org.mockito.Mockito.*;
 @RunWith(SpringRunner.class)
 public class UploadServiceTests {
 
-    @TestConfiguration
-    static class UploadServiceTestContextConfiguration {
-        @Bean
-        public UploadService uploadService() {
-            return new UploadService();
-        }
-    }
+//    @TestConfiguration
+//    static class UploadServiceTestContextConfiguration {
+//        @Bean
+//        public UploadService uploadService() {
+//            return new UploadService();
+//        }
+//    }
 
     @Autowired
     private UploadService uploadService;
