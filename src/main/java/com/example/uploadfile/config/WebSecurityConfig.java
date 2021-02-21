@@ -100,6 +100,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .userDetailsContextMapper(new CustomUserDetailsMapper())
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
+                .groupSearchFilter("uniqueMember={0}")
+                .groupRoleAttribute("cn")
+                .rolePrefix("ROLE_")
                 .contextSource()
                 .url("ldap://localhost:8389/dc=springframework,dc=org")
                 .root("dc=springframework,dc=org")
@@ -123,4 +126,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .logout().logoutSuccessUrl("/");
     }
+
+//    @Bean
+//    public UserDetailsContextMapper userDetailsContextMapper() {
+//        return new LdapUserDetailsMapper() {
+//            @Override
+//            public UserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
+//                UserDetails details= userDetailsService.loadUserByUsername(username+"@test.com");
+//                return  details;
+//            }
+//        };
+//    }
 }
