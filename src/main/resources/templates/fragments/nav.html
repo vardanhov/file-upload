@@ -7,13 +7,17 @@
         </button>
         <div class="dropdown-menu dropdown-menu-right bg-light" aria-labelledby="dropdownMenuButton" style="width:auto">
             <a class="dropdown-item" href="/login"> <i class="fas fa-home" style="color: dimgray"></i></a>
-            <a class="dropdown-item" href="/hello"> <i class="fas fa-paperclip" style="color: dimgray"></i></a>
+            <a class="dropdown-item" href="/upload"> <i class="fas fa-paperclip" style="color: dimgray"></i></a>
             <a class="dropdown-item" href="/adminPanel"> <i class="fas fa-user-shield" style="color: dimgray"></i></a>
-            <form action="/logout" method="post">
-                <button type="submit" class="border-0">
-                    <i class="fas fa-sign-out-alt" style="color: dimgray"></i>
-                </button>
-            </form>
+            <a class="dropdown-item">
+                <form action="/logout" method="post">
+
+                    <button type="submit" class="border-0">
+                        <i class="fas fa-sign-out-alt" style="color: dimgray"></i>
+                    </button>
+                </form>
+            </a>
+
         </div>
     </div>
 </nav>

@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name="white_list_user")
@@ -25,10 +26,10 @@ public class WhiteListUser {
     private User user;
 
     @Column(name = "create_date")
-    private Long createDate;
+    private LocalDateTime createDate;
 
     @Column(name = "trigger")
-    private Long trigger;
+    private LocalDateTime trigger;
 
     @Column(name = "admin", columnDefinition = "BIT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")

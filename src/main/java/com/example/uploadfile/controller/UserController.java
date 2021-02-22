@@ -11,6 +11,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -34,13 +35,15 @@ public class UserController {
 
 
     @GetMapping("/")
-    public String welcome() {
+    public String welcome(Model model,
+                          @ModelAttribute("message") String message) {
         return "login";
     }
 
     @GetMapping("/hello")
     public String hello(Model model, Principal principal) {
-        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        return "hello";
+/*        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<String> sds = auth.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList());
         String role = sds.get(0);
         if ("ROLE_USER".equals(role)) {
@@ -50,14 +53,14 @@ public class UserController {
             List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
             model.addAttribute("whitelist", whiteListUsers);
             return "upload";
-        }
+        }*/
     }
 
     @GetMapping("/adminPanel")
     public String admin(Model model) {
         List<WhiteListUserDto> whiteListUsers = whiteListUserService.getAllWhiteListUsers();
         model.addAttribute("whitelist", whiteListUsers);
-        return "admin";
+        return "white_list";
     }
 
 

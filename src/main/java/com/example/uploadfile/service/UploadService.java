@@ -45,10 +45,13 @@ public class UploadService {
 
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
+            if (!file.exists())
+                file.createNewFile();
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
+            throw new FileStorageException("Could not store file " + fileName + ". Please try again!", e);
         }
+
         return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
     }
 }

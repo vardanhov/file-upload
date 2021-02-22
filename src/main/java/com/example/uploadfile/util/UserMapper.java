@@ -6,6 +6,7 @@ import com.example.uploadfile.dto.WhiteListUserDto;
 
 import java.time.Instant;
 import java.time.ZoneId;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
@@ -35,7 +36,7 @@ public class UserMapper {
 
     public static String formatDate(WhiteListUser whiteListUser) {
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
-        String date = dtf.format(ZonedDateTime.ofInstant(Instant.ofEpochMilli(whiteListUser.getTrigger()), ZoneId.of("Europe/Moscow")));
+        String date = dtf.format(ZonedDateTime.ofLocal(whiteListUser.getTrigger(), ZoneId.of("Europe/Moscow"), ZoneOffset.UTC));
         return date;
     }
 }
