@@ -1,36 +1,31 @@
 package com.example.uploadfile.controller;
 
 
-import com.example.uploadfile.dto.UploadFileResponse;
 import com.example.uploadfile.service.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 
-
-@Controller
+@RestController
 @RequestMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadController {
 
+    //TODO через конструктор
     @Autowired
     private UploadService uploadService;
 
 
-    @PostMapping("/uploadFile")
-    public String uploadFile(@RequestParam("file") MultipartFile file,
-                             @RequestParam(value="confidential", defaultValue= "false") boolean confidential,
-                             RedirectAttributes redirectAttributes) {
+    @PostMapping("/api/upload")
+    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @RequestBody boolean confidential) {
+        return ResponseEntity.ok(uploadService.storeFile(file,confidential));
+    }
 
-
-        uploadService.storeFile(file,confidential);
-        redirectAttributes.addFlashAttribute("message",
-                "You successfully uploaded " + file.getOriginalFilename() + "!");
-        return "redirect:/";
+    @ExceptionHandler
+    public ResponseEntity<String> handleException(RuntimeException exception){
+        return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }

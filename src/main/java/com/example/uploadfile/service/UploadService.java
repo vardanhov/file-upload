@@ -34,6 +34,7 @@ public class UploadService {
             throw new FileNotFoundException("Cannot find file");
         }
 
+        //Fixme
         if (!Objects.equals(multipartFile.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
             throw new FileContentTypeException("Invalid content type: " + multipartFile.getContentType());
         }
@@ -47,6 +48,7 @@ public class UploadService {
             throw new FileNameException("Invalid file name");
         }
         String path = pathOfRegularFiles;
+        //Fixme - проверить проверку, вроде должно быть наоборот
         if (!confidential)
             path = pathOfConfidentialFiles;
         File file = new File(path + multipartFile.getOriginalFilename());

@@ -1,0 +1,6 @@
+1. Установить node.js
+2. в терминале Перейти в папку frontend
+3. Запустить npm install 
+   (будут установлены все пакеты из package.json)
+    4. npm start 
+    

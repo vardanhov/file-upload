@@ -4,7 +4,6 @@ package com.example.uploadfile.service;
 import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
-import com.example.uploadfile.excepion.UserNotFoundException;
 import com.example.uploadfile.excepion.WhiteListUserException;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.util.UserMapper;
@@ -20,8 +19,6 @@ public class WhiteListUserService {
 
     @Autowired
     private WhiteListUserRepository whiteListUserRepository;
-
-
 
 
     @Scheduled(cron = "0 0 0/1 * * ?")
@@ -43,9 +40,10 @@ public class WhiteListUserService {
     public void createOrUpdateWhiteList(WhiteListUserDto whiteListUserDto) {
         WhiteListUser whiteListUser;
         if (whiteListUserDto.getId() != null) {
+            //Fixme - у нас этот whiteListUser - перезапишется ниже
             whiteListUser = whiteListUserRepository.findById(whiteListUserDto.getId()).orElseThrow(() -> new WhiteListUserException("Can not find White List"));
         }
-     //   User user = userRepository.findByUsername(whiteListUserDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
+//        User user = userRepository.findByUsername(whiteListUserDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
         whiteListUser = UserMapper.convertWhiteListUserDtoToUser(whiteListUserDto, new User());
         whiteListUserRepository.save(whiteListUser);
     }
