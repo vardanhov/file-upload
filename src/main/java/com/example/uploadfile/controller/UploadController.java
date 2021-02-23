@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-
 @RestController
 @RequestMapping( produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadController {
@@ -22,7 +21,6 @@ public class UploadController {
 
     @PostMapping("/api/upload")
     public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @RequestBody boolean confidential) {
-        //TODO подумать, сможем ли перед отправкой файла тоже проверять есть ли у пользователя права
         return ResponseEntity.ok(uploadService.storeFile(file,confidential));
     }
 
