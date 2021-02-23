@@ -38,13 +38,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/").permitAll() // Open for all
+                .antMatchers("/login").permitAll() // Open for all
                 .anyRequest().authenticated() // All others requires authentication
                 .and()
                 .formLogin()
                 .defaultSuccessUrl("/upload", true)
                 .and()
-                .logout().logoutSuccessUrl("/");
+                .logout().logoutSuccessUrl("/login");
     }
 
     @Override
