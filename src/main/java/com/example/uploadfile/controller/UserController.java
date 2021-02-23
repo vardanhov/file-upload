@@ -37,8 +37,8 @@ public class UserController {
         return "index";
     }
 
-    @GetMapping("/hello")
-    public String hello(Model model, Principal principal) {
+    @GetMapping("/signIn")
+    public String signIn(Model model, Principal principal) {
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         List<String> sds = auth.getAuthorities().stream().map(a -> a.getAuthority()).collect(Collectors.toList());
