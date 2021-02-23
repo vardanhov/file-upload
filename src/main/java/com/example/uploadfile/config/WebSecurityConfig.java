@@ -42,7 +42,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() // All others requires authentication
                 .and()
                 .formLogin()
-                .defaultSuccessUrl("/hello", true)
+                .defaultSuccessUrl("/signIn", true)
                 .and()
                 .logout().logoutSuccessUrl("/");
     }
