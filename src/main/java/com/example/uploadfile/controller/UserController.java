@@ -39,7 +39,7 @@ public class UserController {
 
     @ApiOperation(value = "update")
     @PostMapping("/grant-access/{guid}")
-    public void grantAccessById(@RequestBody String dateTime, Integer guid) {
+    public void grantAccessById(@RequestBody String dateTime, @PathVariable Integer guid) {
         userService.grantAccessById(dateTime, guid);
     }
 }

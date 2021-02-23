@@ -5,14 +5,10 @@
       flat
   >
     <v-card-text>
-      <div>Word of the Day</div>
       <p class="display-1 text--primary">
-        el·ee·mos·y·nar·y
       </p>
-      <p>adjective</p>
       <div class="text--primary">
-        relating to or dependent on charity; charitable.<br>
-        "an eleemosynary educational institution."
+       Инструкция
       </div>
     </v-card-text>
     <v-card-actions>
@@ -21,7 +17,7 @@
           color="teal accent-4"
           @click="reveal = true"
       >
-        Learn More
+        Подробнее
       </v-btn>
     </v-card-actions>
 
@@ -33,10 +29,9 @@
       >
         <v-card-text class="pb-0">
           <p class="display-1 text--primary">
-            Origin
+            Инструкция
           </p>
-          <p>late 16th century (as a noun denoting a place where alms were distributed): from medieval Latin
-            eleemosynarius, from late Latin eleemosyna ‘alms’, from Greek eleēmosunē ‘compassion’ </p>
+          <p>Текст инструкции </p>
         </v-card-text>
         <v-card-actions class="pt-0">
           <v-btn
@@ -44,7 +39,7 @@
               color="teal accent-4"
               @click="reveal = false"
           >
-            Close
+            Закрыть
           </v-btn>
         </v-card-actions>
       </v-card>

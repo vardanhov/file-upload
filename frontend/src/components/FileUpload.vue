@@ -43,11 +43,11 @@
                 <v-card-actions>
                   <v-container>
                     <v-layout row justify-center>
-                      <v-btn left color="accent" flat @click="submitFile(false)">Не содержит</v-btn>
+                      <v-btn left color="accent" @click="submitFile(false)">Не содержит</v-btn>
                       &nbsp;
                       &nbsp;
                       &nbsp;
-                      <v-btn color="accent" flat @click="submitFile(true)">Содержит</v-btn>
+                      <v-btn color="accent" @click="submitFile(true)">Содержит</v-btn>
                     </v-layout>
                   </v-container>
                 </v-card-actions>

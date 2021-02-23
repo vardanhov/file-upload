@@ -84,12 +84,12 @@ export default {
       },
       {
         label: 'Отправить файл',
-        url: '/uploadFile',
+        url: '/upload',
         icon: 'mdi-paperclip',
       },
       {
         label: 'Панель управления',
-        url: '/adminPanel',
+        url: '/admin',
         icon: 'mdi-account-group',
       }
     ]
