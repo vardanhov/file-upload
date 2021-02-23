@@ -7,25 +7,17 @@ import lombok.ToString;
 
 import javax.persistence.*;
 
-@Entity
-@Table(name="user")
+
 @Data
 @NoArgsConstructor
 @ToString
 public class User {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "username", unique = true)
     private String username;
 
-    @Column(name = "password")
     private String password;
-
-    @Column(name = "is_enabled")
-    private boolean isEnabled = true;
 
     public User(String username) {
         this.username = username;
@@ -36,7 +28,7 @@ public class User {
         return new org.apache.commons.lang3.builder.ToStringBuilder(this)
                 .append("id", id)
                 .append("username", username)
-                .append("isEnabled", isEnabled)
+                .append("password", password)
                 .toString();
     }
 }
