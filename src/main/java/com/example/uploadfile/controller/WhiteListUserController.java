@@ -1,6 +1,5 @@
 package com.example.uploadfile.controller;
 
-import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.service.WhiteListUserService;
 import io.swagger.annotations.ApiOperation;
@@ -12,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 
-@Controller
+@RestController
 public class WhiteListUserController {
 
 
