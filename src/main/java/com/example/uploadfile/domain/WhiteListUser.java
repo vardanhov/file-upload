@@ -19,10 +19,8 @@ public class WhiteListUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @OneToOne
-    @JoinColumn(name = "id")
-    @MapsId
-    private User user;
+    @Column(name = "username")
+    private String username;
 
     @Column(name = "create_date")
     private Long createDate;

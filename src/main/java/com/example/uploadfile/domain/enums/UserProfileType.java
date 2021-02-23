@@ -1,6 +1,6 @@
 package com.example.uploadfile.domain.enums;
 
-public enum UserProfile  {
+public enum UserProfileType {
 
     ROLE_ADMIN(1, "ROLE_ADMIN"),
 
@@ -12,13 +12,13 @@ public enum UserProfile  {
     private String name;
 
 
-    UserProfile(int value, String name) {
+    UserProfileType(int value, String name) {
         this.value = value;
         this.name = name;
     }
 
-    public static UserProfile ofValue(final int value) {
-        for (UserProfile item : UserProfile.values()) {
+    public static UserProfileType ofValue(final int value) {
+        for (UserProfileType item : UserProfileType.values()) {
             if (item.getValue() == value) {
                 return item;
             }
@@ -27,8 +27,8 @@ public enum UserProfile  {
         return null;
     }
 
-    public static UserProfile ofName(final String name) {
-        for (UserProfile item : UserProfile.values()) {
+    public static UserProfileType ofName(final String name) {
+        for (UserProfileType item : UserProfileType.values()) {
             if (item.getName().equalsIgnoreCase(name)) {
                 return item;
             }

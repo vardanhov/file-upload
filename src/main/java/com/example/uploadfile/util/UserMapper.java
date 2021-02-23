@@ -17,7 +17,7 @@ public class UserMapper {
     public static WhiteListUserDto convertWhiteListUserToDto(WhiteListUser whiteListUser) {
         WhiteListUserDto whiteListUserDto = new WhiteListUserDto();
         whiteListUserDto.setId(whiteListUser.getId());
-        whiteListUserDto.setUsername(whiteListUser.getUser().getUsername());
+        whiteListUserDto.setUsername(whiteListUser.getUsername());
         whiteListUserDto.setCreateDate(convertToString(whiteListUser.getCreateDate()));
         whiteListUserDto.setTrigger(convertToString(whiteListUser.getTrigger()));
         whiteListUserDto.setAdmin(whiteListUser.getAdmin());
@@ -27,7 +27,7 @@ public class UserMapper {
 
     public static WhiteListUser convertWhiteListUserDtoToUser(WhiteListUserDto whiteListUserDto, User user) {
         WhiteListUser whiteListUser = new WhiteListUser();
-        whiteListUser.setUser(user);
+        whiteListUser.setUsername(user.getUsername());
         whiteListUser.setCreateDate(convertToLong(whiteListUserDto.getCreateDate()));
         whiteListUser.setTrigger(convertToLong(whiteListUserDto.getTrigger()));
         whiteListUser.setAdmin(whiteListUserDto.getAdmin());

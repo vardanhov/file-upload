@@ -6,7 +6,6 @@ import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.excepion.UserNotFoundException;
 import com.example.uploadfile.excepion.WhiteListUserException;
-import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,8 +21,7 @@ public class WhiteListUserService {
     @Autowired
     private WhiteListUserRepository whiteListUserRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+
 
 
     @Scheduled(cron = "0 0 0/1 * * ?")
@@ -47,8 +45,8 @@ public class WhiteListUserService {
         if (whiteListUserDto.getId() != null) {
             whiteListUser = whiteListUserRepository.findById(whiteListUserDto.getId()).orElseThrow(() -> new WhiteListUserException("Can not find White List"));
         }
-        User user = userRepository.findByUsername(whiteListUserDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
-        whiteListUser = UserMapper.convertWhiteListUserDtoToUser(whiteListUserDto, user);
+     //   User user = userRepository.findByUsername(whiteListUserDto.getUsername()).orElseThrow(() -> new UserNotFoundException("User not found"));
+        whiteListUser = UserMapper.convertWhiteListUserDtoToUser(whiteListUserDto, new User());
         whiteListUserRepository.save(whiteListUser);
     }
 

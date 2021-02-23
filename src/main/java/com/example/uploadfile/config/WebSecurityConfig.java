@@ -1,103 +1,56 @@
 package com.example.uploadfile.config;
 
 
-import com.example.uploadfile.repo.AuthoritiesRepository;
-import com.example.uploadfile.repo.UserRepository;
-import com.example.uploadfile.service.ConfigAdminUserDetailsService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.core.annotation.Order;
-import org.springframework.ldap.core.DirContextOperations;
-import org.springframework.security.authentication.DisabledException;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.ldap.authentication.ad.ActiveDirectoryLdapAuthenticationProvider;
-import org.springframework.security.ldap.userdetails.LdapUserDetailsMapper;
-import org.springframework.security.ldap.userdetails.UserDetailsContextMapper;
+import org.springframework.security.ldap.DefaultSpringSecurityContextSource;
+import org.springframework.security.ldap.userdetails.DefaultLdapAuthoritiesPopulator;
+import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 
-import java.util.Collection;
+import java.util.Set;
 
 
 @EnableWebSecurity
 @Slf4j
-@Order(1)
 @EnableGlobalMethodSecurity(prePostEnabled = true, securedEnabled = true)
 @EnableConfigurationProperties(LdapProperties.class)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final AuthoritiesRepository authoritiesRepository;
-    private final UserRepository userRepository;
-
-    public WebSecurityConfig(AuthoritiesRepository authoritiesRepository, UserRepository userRepository) {
-        this.authoritiesRepository = authoritiesRepository;
-        this.userRepository = userRepository;
-    }
-
     @Autowired
-    ConfigAdminUserDetailsService configAdminUserDetailsService;
+    private LdapGroupProperties groupProperties;
 
-    @Autowired
-    private LdapProperties ldapProperties;
-
-    @Autowired(required = false)
-    DaoAuthenticationProvider daoAuthenticationProvider;
-
-    @Autowired(required = false)
-    ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider;
+    @Value("${ldap.connection.url}")
+    private String ldapConnectionUrl;
 
 
-    @Bean
-    @ConditionalOnProperty(name = "spring.customized.suite.auth_type", havingValue = "local_user")
-    DaoAuthenticationProvider daoAuthenticationProvider() {
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
-        daoAuthenticationProvider.setUserDetailsService(configAdminUserDetailsService);
-        daoAuthenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
-        return daoAuthenticationProvider;
-    }
-
-    @Bean
-    public UserDetailsContextMapper userDetailsContextMapper() {
-        return new LdapUserDetailsMapper() {
-            @Override
-            public UserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
-                UserDetails userDetails = super.mapUserFromContext(ctx, username, authorities);
-                try {
-                    userDetails = configAdminUserDetailsService.loadUserByUsername(userDetails.getUsername());
-                    return userDetails;
-                } catch (Exception ex) {
-                    throw new DisabledException(ex.getMessage());
-                }
-            }
-        };
-    }
-
-
-
-    @Bean
-    @ConditionalOnProperty(name = "spring.customized.suite.auth_type", havingValue = "ldap")
-    ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider() {
-        ActiveDirectoryLdapAuthenticationProvider activeDirectoryLdapAuthenticationProvider = new ActiveDirectoryLdapAuthenticationProvider(null, ldapProperties.getUrls() != null && ldapProperties.getUrls().length >= 1 ? ldapProperties.getUrls()[0] : null, ldapProperties.getBase());
-        activeDirectoryLdapAuthenticationProvider.setUserDetailsContextMapper(userDetailsContextMapper());
-        return activeDirectoryLdapAuthenticationProvider;
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http
+                .authorizeRequests()
+                .antMatchers("/").permitAll() // Open for all
+                .anyRequest().authenticated() // All others requires authentication
+                .and()
+                .formLogin()
+                .defaultSuccessUrl("/hello", true)
+                .and()
+                .logout().logoutSuccessUrl("/");
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .ldapAuthentication()
-                .ldapAuthoritiesPopulator(new CustomAuthoritiesPopulator(authoritiesRepository, userRepository))
-                .userDetailsContextMapper(new CustomUserDetailsMapper())
                 .userDnPatterns("uid={0},ou=people")
                 .groupSearchBase("ou=groups")
                 .groupSearchFilter("uniqueMember={0}")
@@ -114,27 +67,29 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .antMatchers("/").permitAll() // Open for all
-                .anyRequest().authenticated() // All others requires authentication
-                .and()
-                .formLogin()
-                .defaultSuccessUrl("/hello", true)
-                .and()
-                .logout().logoutSuccessUrl("/");
+
+    @Bean
+    public LdapAuthoritiesPopulator ldapAuthoritiesPopulator() {
+
+        final DefaultLdapAuthoritiesPopulator authoritiesPopulator =
+                new DefaultLdapAuthoritiesPopulator(contextSource(),
+                        "ou=groups") {
+                    @Override
+                    public Set<GrantedAuthority> getGroupMembershipRoles(final String userDn,
+                                                                         final String username) {
+                        final Set<GrantedAuthority> groupMembershipRoles =
+                                super.getGroupMembershipRoles(userDn, username);
+                        return groupMembershipRoles;
+                    }
+                };
+        authoritiesPopulator.setGroupRoleAttribute(groupProperties.getAttribute());
+        authoritiesPopulator.setRolePrefix(groupProperties.getPrefix());
+        authoritiesPopulator.setGroupSearchFilter(groupProperties.getFilter());
+        return authoritiesPopulator;
     }
 
-//    @Bean
-//    public UserDetailsContextMapper userDetailsContextMapper() {
-//        return new LdapUserDetailsMapper() {
-//            @Override
-//            public UserDetails mapUserFromContext(DirContextOperations ctx, String username, Collection<? extends GrantedAuthority> authorities) {
-//                UserDetails details= userDetailsService.loadUserByUsername(username+"@test.com");
-//                return  details;
-//            }
-//        };
-//    }
+    @Bean
+    public DefaultSpringSecurityContextSource contextSource() {
+        return new DefaultSpringSecurityContextSource(ldapConnectionUrl);
+    }
 }
