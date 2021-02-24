@@ -36,7 +36,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //TODO csrf задизейблены временно
         http
+                .csrf().disable()
                 .authorizeRequests()
                 .antMatchers("/login").permitAll() // Open for all
                 .anyRequest().authenticated() // All others requires authentication

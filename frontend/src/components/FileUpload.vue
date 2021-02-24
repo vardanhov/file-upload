@@ -1,62 +1,86 @@
 <template>
-    <v-main>
-      <v-container
-          class="fill-height"
-          fluid
-          style="animation: frames(5)"
-      >
-        <v-col></v-col>
-        <v-col>
-          <v-file-input
-              v-model="file"
-              autofocus
-              accept=".py"
-              label="Выберите файл с расширением .py"
-              color="grey"
-          >
-          </v-file-input>
-        </v-col>
-        <v-col>
-          <v-layout row justify-left>
-            <v-dialog v-model="dialog" persistent max-width="500">
-              <template v-slot:activator="{ on }">
-                <v-btn text class="modal-btn" color="primary" v-on="on">
-                  <v-icon color="primary">mdi-file-upload</v-icon>
-                </v-btn>
+  <v-main>
+    <v-container
+        class="fill-height"
+        fluid
+        style="animation: frames(5)"
+    >
+      <v-row>
+        <v-col cols="12" sm="3"></v-col>
+        <v-col cols="12" sm="6">
+          <v-radio-group v-model="radios">
+            <template v-slot:label>
+              <div style="font-size: 20px; color: dodgerblue">Выберите, что вы хотите загрузить</div>
+            </template>
+            <v-divider></v-divider>
+            <br/>
+            <v-radio value="Dag" @click="files={}">
+              <template v-slot:label>
+                <div style="font-size: 14px">Даг</div>
+                <v-btn text color="green">?</v-btn>
               </template>
-              <v-card>
-                <v-container>
-                <v-row>
-                <v-card-title class="headline" style="color: gray">Отправка файла</v-card-title>
-                <v-spacer></v-spacer>
-                  <v-btn text @click="dialog = false">
-                  <v-icon color="red">mdi-window-close</v-icon>
-                </v-btn>
-                </v-row>
-                  </v-container>
-                <v-card-text>
-                  <p>Содержит ли Ваш файл конфиденциальную информацию?</p>
-                  <v-divider></v-divider>
-                  <p style="font-size: 12px">Файлы с конфиденциальной информацией будут сохранены в папке <b>scripts</b> и будут
-                    <span style="color: red"><b>не доступны</b></span> для запуска как dag airflow</p>
-                </v-card-text>
-                <v-card-actions>
-                  <v-container>
-                    <v-layout row justify-center>
-                      <v-btn left color="accent" @click="submitFile(false)">Не содержит</v-btn>
-                      &nbsp;
-                      &nbsp;
-                      &nbsp;
-                      <v-btn color="accent" @click="submitFile(true)">Содержит</v-btn>
-                    </v-layout>
-                  </v-container>
-                </v-card-actions>
-              </v-card>
-            </v-dialog>
-          </v-layout>
+            </v-radio>
+            <v-radio value="Script" @click="files={}">
+              <template v-slot:label>
+                <div style="font-size: 14px">
+                  Скрипты и другие файлы, <p>содержащие конфеденциальные данные</p></div>
+                <v-btn text color="green">?</v-btn>
+              </template>
+            </v-radio>
+          </v-radio-group>
+          <v-row>
+            <v-file-input
+                v-model="files"
+                accept=".py"
+                label="Выберите файл для сохранения в папку с Dags"
+                color="grey"
+                v-if="radios=='Dag'"
+                small-chips
+            >
+            </v-file-input>
+            <v-col cols="12" sm="1">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFiles()">
+                <v-icon color="primary">mdi-file-upload</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+          <br/>
+          <v-text-field
+              v-model="folder"
+              label="Директория"
+              placeholder="Укажите имя директории для сохранения файлов"
+              outlined
+              v-if="radios=='Script'"
+              clearable
+              counter="100"
+          ></v-text-field>
+          <v-row>
+            <v-file-input
+                clearable
+                v-model="files"
+                accept=".py, .txt, .jar, .war, .zip"
+                label="Несколько файлов для сохранения в папку с scripts"
+                color="grey"
+                v-if="radios=='Script'"
+                multiple="true"
+                small-chips
+            >
+            </v-file-input>
+            <v-col cols="12" sm="1">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles()"
+                     depressed
+                     :disabled="folder==''">
+                <v-icon color="primary">mdi-upload-multiple</v-icon>
+              </v-btn>
+
+            </v-col>
+          </v-row>
+
         </v-col>
-      </v-container>
-    </v-main>
+      </v-row>
+
+    </v-container>
+  </v-main>
 </template>
 
 <script>
@@ -66,18 +90,22 @@ export default {
   name: "FileUpload",
   data() {
     return {
-      file: '',
+      files: {},
+      script: '',
       dialog: false,
+      radios: '',
+      folder: ''
     }
   },
   components: {},
 //TODO вынести в store api
   methods: {
-    submitFile(isConfidential) {
+    submitFiles() {
       var self = this;
       let formData = new FormData();
-      formData.append('file', this.file);
-      formData.append('confidential', isConfidential);
+      for (var i in self.files) {
+        formData.append('files[' + i + ']', self.files[i]);
+      }
       axios.post('/api/upload',
           formData,
           {
@@ -85,15 +113,16 @@ export default {
               'Content-Type': 'multipart/form-data'
             }
           }
-      ).then(function (response) {
+      ).then(function () {
         console.log('SUCCESS!!');
       })
           .catch(function () {
             console.log('FAILURE!!');
-          }).then(function (){
-            self.dialog=false;
+          }).then(function () {
+        self.dialog = false;
+        self.files = {};
       });
-    }
+    },
   }
 }
 </script>
