@@ -39,7 +39,7 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFiles()">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFiles">
                 <v-icon color="primary">mdi-file-upload</v-icon>
               </v-btn>
             </v-col>
@@ -67,12 +67,11 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles()"
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles"
                      depressed
                      :disabled="folder==''">
                 <v-icon color="primary">mdi-upload-multiple</v-icon>
               </v-btn>
-
             </v-col>
           </v-row>
 
