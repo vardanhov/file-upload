@@ -3,12 +3,11 @@ package com.example.uploadfile;
 import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.service.WhiteListUserService;
-import com.github.springtestdbunit.DbUnitTestExecutionListener;
 import com.github.springtestdbunit.annotation.DatabaseSetup;
-import com.github.springtestdbunit.annotation.DbUnitConfiguration;
 import org.dbunit.*;
 import org.dbunit.database.DatabaseConnection;
 import org.dbunit.database.IDatabaseConnection;
+import org.dbunit.dataset.DataSetException;
 import org.dbunit.dataset.IDataSet;
 import org.dbunit.dataset.ITable;
 import org.dbunit.dataset.filter.DefaultColumnFilter;
@@ -21,23 +20,23 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestExecutionListeners;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.context.support.DependencyInjectionTestExecutionListener;
-import org.springframework.test.context.support.DirtiesContextTestExecutionListener;
-import org.springframework.test.context.transaction.TransactionalTestExecutionListener;
 
-import javax.sql.DataSource;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 
-import static org.mockito.Mockito.mock;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {WhiteListUserService.class})
-public class WhiteListUserDBTestCase extends DBTestCase {
+//@TestExecutionListeners({
+//        //TransactionalTestExecutionListener.class,
+//       // DependencyInjectionTestExecutionListener.class,
+//        DbUnitTestExecutionListener.class
+//})
+public class WhiteListUserDBTestCase extends AbstractDatabaseTester  {
 
     @Autowired
     private WhiteListUserService whiteListUserService;
@@ -52,19 +51,29 @@ public class WhiteListUserDBTestCase extends DBTestCase {
 
     @Before
     public void setUp() throws Exception {
-       // databaseTester = new JdbcDatabaseTester("org.hsqldb.jdbcDriver",
-       //         "jdbc:hsqldb:sample", "sa", "sa","upload");
-        Connection jdbcConnection = DriverManager.getConnection(
-                "jdbc:hsqldb:sample", "sa", "");
-        IDatabaseConnection connection = new DatabaseConnection(jdbcConnection);
-        IDataSet dataSet = getDataSet();
-        DatabaseOperation.CLEAN_INSERT.execute(connection, dataSet);
-       // databaseTester.setDataSet( dataSet );
-       // databaseTester.onSetup();
+        databaseTester = new JdbcDatabaseTester("org.hsqldb.jdbcDriver",
+                "jdbc:hsqldb:sample", "sa", "","upload");
+//        Connection jdbcConnection = DriverManager.getConnection(
+//                "jdbc:hsqldb:sample", "sa", "");
+        IDatabaseConnection connection = databaseTester.getConnection();
+      //  InputStream dataStream = getClass().getResourceAsStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml");
+      //  IDataSet initialDataSet = new FlatXmlDataSet(dataStream);
+          IDataSet initialDataSet = new FlatXmlDataSetBuilder()
+               .build(new FileInputStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml"));      // IDataSet fullDataSet = connection.createDataSet();
+        //FlatXmlDataSet.write(fullDataSet, new FileOutputStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml"));
+       DatabaseOperation.CLEAN_INSERT.execute(connection, initialDataSet);
+        databaseTester.setDataSet( new FlatXmlDataSetBuilder().build(new File("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml")));
+        databaseTester.setOperationListener(new DefaultOperationListener());
+
+        //Set up before and after test behaviour
+//        databaseTester.setSetUpOperation(DatabaseOperation.CLEAN_INSERT);
+//        databaseTester.setTearDownOperation(DatabaseOperation.DELETE_ALL);
+        databaseTester.onSetup();
     }
+//
+    public WhiteListUserDBTestCase() throws FileNotFoundException, DataSetException {
 
-    public WhiteListUserDBTestCase(){
-
+        this.setDataSet(new FlatXmlDataSetBuilder().build(new FileInputStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml")));
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_DRIVER_CLASS,
                 "org.hsqldb.jdbcDriver");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_CONNECTION_URL,
@@ -73,37 +82,48 @@ public class WhiteListUserDBTestCase extends DBTestCase {
                 "sa");
         System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_PASSWORD,
                 "");
-//        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA,
-//                "upload");
+        System.setProperty(PropertiesBasedJdbcDatabaseTester.DBUNIT_SCHEMA,
+                "upload");
     }
 
 //    @Override
-//    protected DatabaseOperation getSetUpOperation() throws Exception {
+//    protected IDatabaseConnection getConnection() throws Exception {
+//        Class.forName("org.hsqldb.jdbcDriver");
+//        Connection jdbcConnection =
+//                DriverManager.getConnection("jdbc:hsqldb:sample",
+//                        "sa", "");
+//        return new DatabaseConnection(jdbcConnection);
+//    }
+
+
+//    public DatabaseOperation getSetUpOperation()  {
 //        return DatabaseOperation.CLEAN_INSERT;
 //    }
 //
-//    @Override
-//    protected DatabaseOperation getTearDownOperation() throws Exception {
+//
+//    public DatabaseOperation getTearDownOperation() {
 //        return DatabaseOperation.NONE;
 //    }
 
-    @Override
-    protected IDataSet getDataSet() throws Exception {
-        return new FlatXmlDataSetBuilder()
-                .build(new FileInputStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml"));
-    }
+//    @Override
+//    protected IDataSet getDataSet() throws Exception {
+//        return new CachedDataSet(new FlatXmlProducer(new InputSource("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml")));
+////                new FlatXmlDataSetBuilder()
+////                .build(new FileInputStream("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml"));
+//    }
 
     @Test
+    @DatabaseSetup("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml")
     public void updateUserAccessTest() throws Exception {
-       // IDataSet exDataSet = getDataSet();
-
-        whiteListUserRepository.changePermissions();
-        //whiteListUserService.updateUserAccess();
+        //whiteListUserRepository.changePermissions();
+        whiteListUserService.updateUserAccess();
 
 
        // IDataSet dataSet = new FlatXmlDataSetBuilder()
        //         .build(new File("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml"));
-        IDataSet dataSet = getConnection().createDataSet();
+        //IDataSet dataSet = getConnection().createDataSet();
+        IDataSet dataSet =  this.getConnection().createDataSet();
+                //new CachedDataSet(new FlatXmlProducer(new InputSource("src/test/java/com/example/uploadfile/data/WhiteListUserTestDataSet.xml")));
         ITable actualTable = dataSet.getTable("WHITE_LIST_USER");
 
         IDataSet expectedDataSet = new FlatXmlDataSetBuilder()
@@ -115,4 +135,12 @@ public class WhiteListUserDBTestCase extends DBTestCase {
     }
 
 
+    @Override
+    public IDatabaseConnection getConnection() throws Exception {
+        Class.forName("org.hsqldb.jdbcDriver");
+        Connection jdbcConnection =
+                DriverManager.getConnection("jdbc:hsqldb:sample",
+                        "sa", "");
+        return new DatabaseConnection(jdbcConnection);
+    }
 }
