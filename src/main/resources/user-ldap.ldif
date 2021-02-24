@@ -76,18 +76,18 @@ objectclass: organizationalUnit
 ou: groups
 
 
-dn: cn=ROLE_ADMIN,ou=groups,dc=springframework,dc=org
+dn: cn=admin,ou=groups,dc=springframework,dc=org
 objectclass: top
 objectclass: groupOfUniqueNames
-cn: ROLE_ADMIN
+cn: admin
 description: Super Users
 uniqueMember: uid=admin,ou=people,dc=springframework,dc=org
 
 
-dn: cn=ROLE_USER,ou=groups,dc=springframework,dc=org
+dn: cn=user,ou=groups,dc=springframework,dc=org
 objectclass: top
 objectclass: groupOfUniqueNames
-cn: ROLE_USER
+cn: user
 description: Ordinary users
 uniqueMember: uid=anton,ou=people,dc=springframework,dc=org
 uniqueMember: uid=sergey,ou=people,dc=springframework,dc=org
