@@ -3,40 +3,28 @@ package com.example.uploadfile;
 import com.example.uploadfile.controller.UploadController;
 import com.example.uploadfile.dto.UploadFileResponse;
 import com.example.uploadfile.service.UploadService;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import net.minidev.json.JSONUtil;
-import org.apache.catalina.Globals;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.StringWriter;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.verify;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringRunner.class)
 @ContextConfiguration(classes = {UploadController.class, UploadService.class })
@@ -104,18 +92,20 @@ public class UploadControllerTests {
                 MediaType.TEXT_PLAIN_VALUE,
                 multipartFile.getSize());
 
-        Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class))).thenReturn(uploadFileResponse);
+        Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class),any(Boolean.class))).thenReturn(uploadFileResponse);
 
-        mvc.perform(multipart("/uploadFile")
+        mvc.perform(multipart("/api/uploadFile")
            .file(multipartFile)
-           .contentType(MediaType.MULTIPART_FORM_DATA))
-           .andExpect(status().is3xxRedirection())
-           .andExpect(redirectedUrl("/"));
-          // .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
-          //                                           uploadFileResponse.getFileName(),
-          //                                           uploadFileResponse.getFileType(),
-          //                                           uploadFileResponse.getSize())));
+           .contentType(MediaType.MULTIPART_FORM_DATA)
+         //       .param("confidential","false"));
+           .requestAttr("confidential",false));
+          // .andExpect(status().isOk());
+         //  .andExpect(redirectedUrl("/"));
+//           .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
+//                                                     uploadFileResponse.getFileName(),
+//                                                     uploadFileResponse.getFileType(),
+//                                                     uploadFileResponse.getSize())));
 
-        verify(uploadServiceMock).storeFile(any(MultipartFile.class));
+        verify(uploadServiceMock).storeFile(any(MultipartFile.class),any(Boolean.class));
     }
 }

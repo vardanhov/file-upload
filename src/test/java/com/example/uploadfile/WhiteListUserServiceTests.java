@@ -1,36 +1,27 @@
 package com.example.uploadfile;
 
-import com.example.uploadfile.controller.UploadController;
 import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
-import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.UserNotFoundException;
-import com.example.uploadfile.repo.UserRepository;
+//import com.example.uploadfile.repo.UserRepository;
+import com.example.uploadfile.excepion.WhiteListUserException;
 import com.example.uploadfile.repo.WhiteListUserRepository;
-import com.example.uploadfile.service.UploadService;
 import com.example.uploadfile.service.WhiteListUserService;
-import com.example.uploadfile.util.UserMapper;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 
 @RunWith(SpringRunner.class)
@@ -43,8 +34,8 @@ public class WhiteListUserServiceTests {
     @MockBean
     private WhiteListUserRepository whiteListUserRepository;
 
-    @MockBean
-    private UserRepository userRepository;
+//    @MockBean
+//    private UserRepository userRepository;
 
     @Test
     public void updateUserAcess_positiveTest(){
@@ -70,17 +61,17 @@ public class WhiteListUserServiceTests {
         WhiteListUser whiteListUser3 = new WhiteListUser();
 
         whiteListUser1.setId(1);
-        whiteListUser1.setUser(new User("Alex"));
+        whiteListUser1.setUsername("Alex");
         whiteListUser1.setCreateDate(1L);
         whiteListUser1.setTrigger(2L);
 
         whiteListUser2.setId(2);
-        whiteListUser2.setUser(new User("Bob"));
+        whiteListUser2.setUsername("Bob");
         whiteListUser2.setCreateDate(2L);
         whiteListUser2.setTrigger(3L);
 
         whiteListUser3.setId(3);
-        whiteListUser3.setUser(new User("Mike"));
+        whiteListUser3.setUsername("Mike");
         whiteListUser3.setCreateDate(3L);
         whiteListUser3.setTrigger(4L);
 
@@ -101,13 +92,23 @@ public class WhiteListUserServiceTests {
         verify(whiteListUserRepository).findAll();
     }
 
-    @Test(expected = UserNotFoundException.class)
+    @Test(expected = WhiteListUserException.class)
     public void createWhiteList_UserNotFound(){
         WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
-        Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
-        whiteListUserService.createWhiteList(whiteListUserDtoMock);
+        Mockito.when(whiteListUserDtoMock.getId()).thenThrow(WhiteListUserException.class);
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
 
-        verify(whiteListUserDtoMock).getUsername();
+        verify(whiteListUserDtoMock).getId();
+    }
+
+    @Test(expected = WhiteListUserException.class)
+    public void createWhiteList_checkText(){
+        WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
+        Mockito.when(whiteListUserDtoMock.getId()).thenThrow(WhiteListUserException.class);
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
+        ExpectedException.none().expectMessage("Can not find White List");
+
+        verify(whiteListUserDtoMock).getId();
     }
 
     @Test(expected = UserNotFoundException.class)
@@ -124,4 +125,11 @@ public class WhiteListUserServiceTests {
     public void createWhiteList_UserNull(){
         whiteListUserService.createWhiteList(null);
     }
+
+    @Test(expected = NullPointerException.class)
+    public void createWhiteList_withWhiteListUserDtoNull(){
+        whiteListUserService.createOrUpdateWhiteList(null);
+    }
+
+
 }
