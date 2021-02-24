@@ -6,7 +6,8 @@ import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.UserNotFoundException;
-import com.example.uploadfile.repo.UserRepository;
+//import com.example.uploadfile.repo.UserRepository;
+import com.example.uploadfile.excepion.WhiteListUserException;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.service.UploadService;
 import com.example.uploadfile.service.WhiteListUserService;
@@ -14,6 +15,7 @@ import com.example.uploadfile.util.UserMapper;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,9 +43,9 @@ public class WhiteListUserServiceTests {
 
     @MockBean
     private WhiteListUserRepository whiteListUserRepository;
-
-    @MockBean
-    private UserRepository userRepository;
+//
+//    @MockBean
+//    private UserRepository userRepository;
 
     @Test(expected = NullPointerException.class)
     public void ifWhiteListNull_thenThrowException(){
@@ -64,17 +66,17 @@ public class WhiteListUserServiceTests {
         WhiteListUser whiteListUser3 = new WhiteListUser();
 
         whiteListUser1.setId(1);
-        whiteListUser1.setUser(new User("Alex"));
+        whiteListUser1.setUsername("Alex");
         whiteListUser1.setCreateDate(1L);
         whiteListUser1.setTrigger(2L);
 
         whiteListUser2.setId(2);
-        whiteListUser2.setUser(new User("Bob"));
+        whiteListUser2.setUsername("Bob");
         whiteListUser2.setCreateDate(2L);
         whiteListUser2.setTrigger(3L);
 
         whiteListUser3.setId(3);
-        whiteListUser3.setUser(new User("Mike"));
+        whiteListUser3.setUsername("Mike");
         whiteListUser3.setCreateDate(3L);
         whiteListUser3.setTrigger(4L);
 
@@ -95,12 +97,42 @@ public class WhiteListUserServiceTests {
         verify(whiteListUserRepository).findAll();
     }
 
-    @Test(expected = UserNotFoundException.class)
-    public void createWhiteList_UserNotFound(){
+    @Test(expected = WhiteListUserException.class)
+    public void createWhiteList_withUserNameNull(){
         WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
         Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
-        whiteListUserService.createWhiteList(whiteListUserDtoMock);
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
 
         verify(whiteListUserDtoMock).getUsername();
+    }
+
+    @Test(expected = WhiteListUserException.class)
+    public void createWhiteList_withUserNameNull_checkText(){
+        WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
+        Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
+
+        ExpectedException.none().expectMessage("Can not find White List");
+
+        verify(whiteListUserDtoMock).getUsername();
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createWhiteList_withWhiteListUserDtoNull(){
+        whiteListUserService.createOrUpdateWhiteList(null);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void createWhiteList_withWhiteListUserNull(){
+        WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
+        Mockito.when(UserMapper.convertWhiteListUserDtoToUser(whiteListUserDtoMock, new User())).thenReturn(null);
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
+    }
+
+    @Test
+    public void createOrUpdateWhiteList_positiveTest(){
+        WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
+        Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(String.valueOf(Integer.valueOf(1)));
+        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
     }
 }

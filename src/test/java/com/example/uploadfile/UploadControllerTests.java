@@ -104,18 +104,19 @@ public class UploadControllerTests {
                 MediaType.TEXT_PLAIN_VALUE,
                 multipartFile.getSize());
 
-        Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class))).thenReturn(uploadFileResponse);
+        Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class),any(Boolean.class))).thenReturn(uploadFileResponse);
 
-        mvc.perform(multipart("/uploadFile")
+        mvc.perform(multipart("/api/uploadFile")
            .file(multipartFile)
-           .contentType(MediaType.MULTIPART_FORM_DATA))
-           .andExpect(status().is3xxRedirection())
-           .andExpect(redirectedUrl("/"));
+           .contentType(MediaType.MULTIPART_FORM_DATA)
+           .requestAttr("confidential",false))
+           .andExpect(status().isOk());
+           //.andExpect(redirectedUrl("/"));
           // .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
           //                                           uploadFileResponse.getFileName(),
           //                                           uploadFileResponse.getFileType(),
           //                                           uploadFileResponse.getSize())));
 
-        verify(uploadServiceMock).storeFile(any(MultipartFile.class));
+        verify(uploadServiceMock).storeFile(any(MultipartFile.class),any(Boolean.class));
     }
 }
