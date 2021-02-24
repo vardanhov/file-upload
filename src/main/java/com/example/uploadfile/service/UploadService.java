@@ -16,6 +16,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.Objects;
 
 
@@ -27,6 +31,9 @@ public class UploadService {
 
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
+
+    @Value("${upload.path.scripts}")
+    public String uploadDir;
 
 
     public UploadFileResponse storeFile(MultipartFile multipartFile, boolean confidential) {
@@ -59,4 +66,17 @@ public class UploadService {
         }
         return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
     }
+
+
+    public void uploadFile(MultipartFile file) {
+        try {
+            Path copyLocation = Paths.get(uploadDir + File.separator + StringUtils.cleanPath(file.getOriginalFilename()));
+            Files.copy(file.getInputStream(), copyLocation, StandardCopyOption.REPLACE_EXISTING);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileStorageException("File Not Found");
+        }
+    }
 }
+

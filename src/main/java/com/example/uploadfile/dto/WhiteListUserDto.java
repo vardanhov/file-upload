@@ -14,6 +14,10 @@ public class WhiteListUserDto {
 
     private String username;
 
+    private String fullName;
+
+    private String group;
+
     private String createDate;
 
     private String trigger;
@@ -22,6 +26,4 @@ public class WhiteListUserDto {
 
     private Boolean upload;
 
-    //TODO добавить группу из АД
-    //TODO доабавить ФИО
 }

@@ -1,6 +1,8 @@
 package com.example.uploadfile.service;
 
+import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
+import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,9 +14,15 @@ import java.util.List;
 @Service
 public class UserService {
 
-    //Fixme Autowired лучше через конструктор, а то можно NPE словить
-    @Autowired
+    private UserRepository userRepository;
+
     private WhiteListUserRepository whiteListUserRepository;
+
+    @Autowired
+    public UserService(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository) {
+        this.userRepository = userRepository;
+        this.whiteListUserRepository = whiteListUserRepository;
+    }
 
     //Fixme нам на админке надо получать всех вайтлист или лдаповских нужной группы?
     public List<WhiteListUser> getAllUsers() {
@@ -36,4 +44,8 @@ public class UserService {
         //TODO написать метод предоставления прав по времени
     }
 
+    public  User getUserByUserName(String username){
+       return userRepository.findUserByUsername(username);
+
+    }
 }
