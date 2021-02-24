@@ -25,18 +25,17 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping()
-    public ResponseEntity<List<WhiteListUser>> admin() {
-        return ResponseEntity.ok(userService.getAllUsers());
-    }
+    @ApiOperation(value = "список пользователей")
+    @GetMapping
+    public ResponseEntity<List<WhiteListUser>> admin() { return ResponseEntity.ok(userService.getAllUsers()); }
 
-    @ApiOperation(value = "ограничить доступ")
+    @ApiOperation(value = "ограничение доступа")
     @PostMapping("/limit-access/{guid}")
     public void limitAccess(@PathVariable Integer guid) {
         userService.limitAccessById(guid);
     }
 
-    @ApiOperation(value = "update")
+    @ApiOperation(value = "предоставление доступа")
     @PostMapping("/grant-access/{guid}")
     public void grantAccessById(@RequestBody String dateTime, @PathVariable Integer guid) {
         userService.grantAccessById(dateTime, guid);

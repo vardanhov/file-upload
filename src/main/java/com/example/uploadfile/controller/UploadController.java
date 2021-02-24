@@ -2,6 +2,7 @@ package com.example.uploadfile.controller;
 
 
 import com.example.uploadfile.service.UploadService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,7 +19,7 @@ public class UploadController {
     @Autowired
     private UploadService uploadService;
 
-
+    @ApiOperation(value = "загрузка файла")
     @PostMapping("/api/upload")
     public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @RequestBody boolean confidential) {
         return ResponseEntity.ok(uploadService.storeFile(file,confidential));
