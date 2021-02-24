@@ -9,7 +9,7 @@ module.exports = merge(common, {
         compress: true,
         port: 8070,
         allowedHosts: [
-            'localhost:9070'
+            'localhost:8888'
         ],
         //stats и clientLogLevel убирают всю информацию из консоли, кроме ошибок.
         /*stats: 'errors-only',

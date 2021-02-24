@@ -139,8 +139,6 @@ export default {
     ],
     dialogs: {},
     dialog: false,
-    datePick: {},
-    timePicker1: {},
     datePicker: {},
     timePicker: {},
     checkboxes: {},
@@ -164,10 +162,11 @@ export default {
       axios.post('/api/users/grant-access/' + id, {
         dateTime: self.datePicker[id] + " " + self.timePicker[id]
       }).then(function () {
-        self.dialogs[id] = false;
         console.log('SUCCESS!!');
       }).catch(function () {
         console.log('FAILURE!!');
+      }).then(function (){
+        self.dialogs[id] = false;
       });
     },
   }
