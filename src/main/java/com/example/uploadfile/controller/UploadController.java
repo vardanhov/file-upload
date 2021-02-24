@@ -19,6 +19,11 @@ public class UploadController {
     @Autowired
     private UploadService uploadService;
 
+    //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.
+
+    //TODO нужна апишка для множественного добавления файлов (в папку Script мы можем добавлять по несколько файлов)
+
+
     @ApiOperation(value = "загрузка файла")
     @PostMapping("/api/upload")
     public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @RequestBody boolean confidential) {

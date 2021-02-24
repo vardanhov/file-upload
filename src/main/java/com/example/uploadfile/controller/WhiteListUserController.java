@@ -16,7 +16,9 @@ public class WhiteListUserController {
     @Autowired
     private WhiteListUserService whiteListUserService;
 
-
+//TODO - надо будет переписать метод, или написать другой.
+// Мы с фронта не сможем юзера присылать, мы можем только логин,
+// поэтому надо по логину искать пользователя в AD
     @ApiOperation(value = "create")
     @PostMapping("/createWhiteListUser")
     public void createWhiteListUser(@RequestBody WhiteListUserDto whiteListUserDto) {
@@ -28,4 +30,5 @@ public class WhiteListUserController {
     public void updateWhiteListUser(@RequestBody WhiteListUserDto whiteListUserDto, @PathVariable(name = "id") String id) {
         whiteListUserService.createOrUpdateWhiteList( whiteListUserDto);
     }
+
 }

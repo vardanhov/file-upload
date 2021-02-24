@@ -40,4 +40,7 @@ public class UserController {
     public void grantAccessById(@RequestBody String dateTime, @PathVariable Integer guid) {
         userService.grantAccessById(dateTime, guid);
     }
+
+    //TODO - поиск пользователя в AD по логину.
+    //TODO - добавление найденного в АД пользователя к вайтлисту. С фронта мы не сможем присылать  WhiteListUserDto whiteListUserDto
 }
