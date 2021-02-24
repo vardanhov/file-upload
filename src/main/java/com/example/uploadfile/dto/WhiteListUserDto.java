@@ -21,4 +21,7 @@ public class WhiteListUserDto {
     private Boolean admin;
 
     private Boolean upload;
+
+    //TODO добавить группу из АД
+    //TODO доабавить ФИО
 }
