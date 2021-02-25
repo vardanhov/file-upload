@@ -42,28 +42,24 @@ public class UploadService {
        return Stream.of(multipartFileList).map(this::storeFile).collect(Collectors.toList());
     }
     public File storeFile(MultipartFile multipartFile) {
-//        if (multipartFile == null) {
-//            throw new FileNotFoundException("Cannot find file");
-//        }
-//
-//        //Fixme
-//        if (!Objects.equals(multipartFile.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
-//            throw new FileContentTypeException("Invalid content type: " + multipartFile.getContentType());
-//        }
+        if (multipartFile == null) {
+            throw new FileNotFoundException("Ни один файл не выбран! Такого не должно было случиться, но почему-то все равно случилось");
+        }
+
+        if (!Objects.equals(multipartFile.getContentType(), "text/x-python")) {
+            throw new FileContentTypeException("Неверное содержимое/тип файла: " + multipartFile.getContentType());
+        }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-//        if (fileName == null) {
-//            throw new FileNameException("Invalid file name");
-//        }
+        if (fileName == null) {
+            throw new FileNameException("Некорректное имя файла");
+        }
 //
 //        if (fileName.length() < 2 || !fileName.endsWith("py")) {
 //            throw new FileNameException("Invalid file name");
 //        }
         String path = pathOfRegularFiles;
         //Fixme - проверить проверку, вроде должно быть наоборот
-//        if (!confidential)
-//            path = pathOfConfidentialFiles;
-//        //Fixme - проверить проверку, вроде должно быть наоборот
 //        if (!confidential)
 //            path = pathOfConfidentialFiles;
         File file = new File(path + multipartFile.getOriginalFilename());

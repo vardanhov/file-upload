@@ -40,7 +40,10 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()"
+                depressed
+                :disabled="files===''">
+
                 <v-icon color="primary">mdi-file-upload</v-icon>
               </v-btn>
             </v-col>
