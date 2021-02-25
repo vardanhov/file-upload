@@ -31,11 +31,7 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<WhiteListUser>> admin() { return ResponseEntity.ok(userService.getAllUsers()); }
 
-    @ApiOperation(value = "ограничение доступа")
-    @PostMapping("/limit-access/{guid}")
-    public void limitAccess(@PathVariable Integer guid) {
-        userService.limitAccessById(guid);
-    }
+
 
     @ApiOperation(value = "предоставление доступа")
     @PostMapping("/grant-access/{guid}")

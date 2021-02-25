@@ -34,12 +34,7 @@ public class UserService {
         whiteListUserRepository.save(whiteListUser);
     }
 
-    public void limitAccessById(Integer guid) {
-        //Fixme переписать метод дизейблить по гуиду
-//        WhiteListUser whiteListUser1 = new WhiteListUser();
-//        whiteListUser1.setUpload(false);
-//        whiteListUserRepository.save(whiteListUser1);
-    }
+
     public void grantAccessById(String dateTime, Integer guid) {
         //TODO написать метод предоставления прав по времени
     }
