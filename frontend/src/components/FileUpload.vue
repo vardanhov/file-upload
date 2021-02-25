@@ -75,7 +75,7 @@
             <v-col cols="12" sm="1">
               <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" v-on:click="isHidden = !isHidden" @click="submitFiles()"
                      depressed
-                     :disabled="folder==''"
+                     :disabled="folder==''||folder=='ab'"
               >
                 <v-icon color="primary">mdi-upload-multiple</v-icon>
               </v-btn>
@@ -149,15 +149,12 @@ export default {
   components: {},
 //TODO вынести в store api
   methods: {
-    getInputText(){
-      return this.files
-    },
     submitFiles() {
       var self = this;
       let formData = new FormData();
 
       for (var i in self.files) {
-        if (self.files[i].size > 1024 * 1023) {
+        if (self.files[i].size > 1024 * 1024) {
           self.handleEditError("Превышен допустимый размер файла.Максимум 10Мб", "deep-orange accent-3")
           return;
         }
@@ -183,7 +180,7 @@ export default {
         self.files = {};
       });
     },
-    submitFile() {
+    submitFile: function () {
       var self = this;
       let formData = new FormData();
 
