@@ -47,10 +47,7 @@ public class UploadService {
         if (fileName.length() < 2 || !fileName.endsWith("py")) {
             throw new FileNameException("Invalid file name");
         }
-        String path = pathOfRegularFiles;
-        //Fixme - проверить проверку, вроде должно быть наоборот
-        if (!confidential)
-            path = pathOfConfidentialFiles;
+        String path = returnPath(confidential);
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
@@ -58,5 +55,9 @@ public class UploadService {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
         }
         return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
+    }
+
+    private String returnPath(Boolean confidential){
+        return (confidential?pathOfConfidentialFiles:pathOfRegularFiles);
     }
 }

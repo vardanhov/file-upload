@@ -16,6 +16,10 @@
           >
           </v-file-input>
         </v-col>
+
+        <span v-if="showErrorMsg" class="danger">{{nameErrorMsg}}</span>
+        <v-progress-linear :indeterminate="true"></v-progress-linear>
+
         <v-col>
           <v-layout row justify-left>
             <v-dialog v-model="dialog" persistent max-width="500">
