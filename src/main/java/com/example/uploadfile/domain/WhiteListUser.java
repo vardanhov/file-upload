@@ -37,5 +37,4 @@ public class WhiteListUser {
     private Boolean upload;
 
 
-
 }

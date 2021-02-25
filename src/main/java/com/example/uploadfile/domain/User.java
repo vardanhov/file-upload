@@ -5,10 +5,10 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 import org.springframework.ldap.odm.annotations.Attribute;
-import org.springframework.ldap.odm.annotations.Id;
 import org.springframework.ldap.odm.annotations.Entry;
-import javax.naming.Name;
+import org.springframework.ldap.odm.annotations.Id;
 
+import javax.naming.Name;
 
 
 @Data
