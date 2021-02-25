@@ -36,13 +36,14 @@
                 label="Выберите файл для сохранения в папку с Dags"
                 color="grey"
                 v-if="radios=='Dag'"
+                @change="fileChange=!fileChange"
                 small-chips
             >
             </v-file-input>
             <v-col cols="12" sm="1">
               <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()"
                 depressed
-                :disabled="files===''">
+                :disabled="!fileChange">
 
                 <v-icon color="primary">mdi-file-upload</v-icon>
               </v-btn>
@@ -139,6 +140,7 @@ export default {
       radios: '',
       folder: '',
       isHidden: true,
+      fileChange: false,
       snackbar:false,
       snackbarText:'',
       color: ''
@@ -147,10 +149,18 @@ export default {
   components: {},
 //TODO вынести в store api
   methods: {
+    getInputText(){
+      return this.files
+    },
     submitFiles() {
       var self = this;
       let formData = new FormData();
+
       for (var i in self.files) {
+        if (self.files[i].size > 1024 * 1023) {
+          self.handleEditError("Превышен допустимый размер файла.Максимум 10Мб", "deep-orange accent-3")
+          return;
+        }
         formData.append('files', self.files[i]);
       }
 
@@ -177,6 +187,11 @@ export default {
       var self = this;
       let formData = new FormData();
 
+      if (self.files.size > 1024 * 1024) {
+        self.handleEditError("Превышен допустимый размер файла.Максимум 10Мб", "deep-orange accent-3")
+        return;
+      }
+
       formData.append('files', self.files);
 
       var headers = {
@@ -190,7 +205,7 @@ export default {
             }
           }
       ).then(function () {
-        self.handleEditError("Успешно", "green")
+        self.handleEditError("Успешно", "green accent-3")
       })
           .catch(function (error) {
             self.handleEditError(error.response.data, "black")
@@ -204,6 +219,7 @@ export default {
       this.snackbar=true;
       this.snackbarText=response;
       this.color=color;
+      this.isHidden=true;
     }
   }
 }

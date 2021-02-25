@@ -50,6 +50,10 @@ public class UploadService {
             throw new FileContentTypeException("Неверное содержимое/тип файла: " + multipartFile.getContentType());
         }
 
+        if (multipartFile.getSize()>10485760){
+            throw new FileContentTypeException("Превышен допустимый размер файла");
+        }
+
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
         if (fileName == null) {
             throw new FileNameException("Некорректное имя файла");
