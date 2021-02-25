@@ -1,5 +1,8 @@
 package com.example.uploadfile.domain;
 
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 import org.springframework.ldap.odm.annotations.Attribute;
 import org.springframework.ldap.odm.annotations.DnAttribute;
 import org.springframework.ldap.odm.annotations.Entry;
@@ -9,8 +12,10 @@ import javax.naming.Name;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@Entry(objectClasses = {"groupOfNames", "top"}, base = "ou=Groups")
+@Data
+@NoArgsConstructor
+@ToString
+@Entry(objectClasses = {"groupOfUniqueNames", "top"}, base = "ou=groups")
 public class Group {
     @Id
     private Name id;
@@ -22,7 +27,7 @@ public class Group {
     @Attribute(name = "description")
     private String description;
 
-    @Attribute(name = "member")
-    private Set<Name> members = new HashSet<Name>();
+    @Attribute(name = "uniqueMember")
+    private Set<Name> members = new HashSet<>();
 
 }
