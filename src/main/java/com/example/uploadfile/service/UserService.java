@@ -32,7 +32,7 @@ public class UserService {
 //        whiteListUser1.setUpload(false);
 //        whiteListUserRepository.save(whiteListUser1);
     }
-    public void grantAccessById(String dateTime, Integer guid) {
+    public void grantAccessById(String dateTimeFrom, String dateTimeTo, Integer guid) {
         //TODO написать метод предоставления прав по времени
     }
 

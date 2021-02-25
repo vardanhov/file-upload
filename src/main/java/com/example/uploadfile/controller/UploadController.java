@@ -1,17 +1,15 @@
 package com.example.uploadfile.controller;
 
 
+import com.example.uploadfile.dto.UploadFileResponse;
 import com.example.uploadfile.service.UploadService;
 import io.swagger.annotations.ApiOperation;
-import liquibase.pro.packaged.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-
-import java.util.List;
 
 
 @RestController
@@ -29,9 +27,9 @@ public class UploadController {
     //TODO нужна апишка для множественного добавления файлов (в папку Script мы можем добавлять по несколько файлов)
 
 
-    @ApiOperation(value = "загрузка файла")
-    @PostMapping("/api/upload")
-    public void uploadFiles(@RequestBody List<MultipartFile> files) {
+    ////Fixme сделать обработку массива файлов
+    @PostMapping(value="/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public void uploadFile(@RequestParam(value="files", required=true) MultipartFile files[]){
         uploadService.storeFiles(files);
     }
 

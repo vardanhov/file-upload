@@ -36,16 +36,32 @@
             </v-container>
             <v-card-text>
               <v-container>
+                <div>Сервис доступен С:</div>
+                <br/>
                 <v-row>
                     <v-date-picker
-                        v-model="datePicker[item.id]"
+                        v-model="datePickerFrom[item.id]"
                     ></v-date-picker>
                     &nbsp;
                     &nbsp;
                     &nbsp;
                     <v-time-picker
-                        v-model="timePicker[item.id]"
+                        v-model="timePickerFrom[item.id]"
                     ></v-time-picker>
+                </v-row>
+                <br/>
+                <div>Сервис доступен ПО:</div>
+                <br/>
+                <v-row>
+                  <v-date-picker
+                      v-model="datePickerTo[item.id]"
+                  ></v-date-picker>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  <v-time-picker
+                      v-model="timePickerTo[item.id]"
+                  ></v-time-picker>
                 </v-row>
               </v-container>
 
@@ -77,6 +93,21 @@
         ></v-simple-checkbox>
       </template>
     </v-data-table>
+    <br/>
+
+      <v-col></v-col>
+    <v-col>
+      <v-row>
+        <v-spacer></v-spacer>
+    <v-text-field v-model="user"
+        label="Введите логин пользователя из AD"
+    ></v-text-field>
+    <v-btn text color="accent4" @click="sendUser()">
+     Добавить
+    </v-btn>
+      </v-row>
+    </v-col>
+
 
 <!--    <v-dialog v-model="dialog" persistent max-width="1000">-->
 <!--      <template v-slot:activator="{ on }">-->
@@ -139,9 +170,12 @@ export default {
     ],
     dialogs: {},
     dialog: false,
-    datePicker: {},
-    timePicker: {},
+    datePickerFrom: {},
+    timePickerFrom: {},
+    datePickerTo: {},
+    timePickerTo: {},
     checkboxes: {},
+    user:'',
 
     search: ''
   }),
@@ -160,7 +194,8 @@ export default {
     save(id) {
       var self = this;
       axios.post('/api/users/grant-access/' + id, {
-        dateTime: self.datePicker[id] + " " + self.timePicker[id]
+        dateTimeFrom: self.datePickerFrom[id] + " " + self.timePickerFrom[id],
+        dateTimeTo:self.datePickerTo[id] + " " + self.timePickerTo[id],
       }).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
@@ -169,6 +204,19 @@ export default {
         self.dialogs[id] = false;
       });
     },
+    sendUser(){
+      var self = this;
+      axios.post('/api/users/search', {
+        user: self.user
+      }).then(function () {
+        console.log('SUCCESS!!');
+      }).catch(function () {
+        console.log('FAILURE!!');
+      }).then(function (){
+        self.user = null;
+      });
+
+    }
   }
 }
 </script>

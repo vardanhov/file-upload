@@ -14,22 +14,23 @@
             </template>
             <v-divider></v-divider>
             <br/>
-            <v-radio value="Dag" @click="files={}">
+            <v-radio value="Dag" @click="files={}"
+
+            >
               <template v-slot:label>
                 <div style="font-size: 14px">Даг</div>
-                <v-btn text color="green">?</v-btn>
               </template>
             </v-radio>
             <v-radio value="Script" @click="files={}">
               <template v-slot:label>
                 <div style="font-size: 14px">
                   Скрипты и другие файлы, <p>содержащие конфеденциальные данные</p></div>
-                <v-btn text color="green">?</v-btn>
               </template>
             </v-radio>
           </v-radio-group>
           <v-row>
             <v-file-input
+                clearable
                 v-model="files"
                 accept=".py"
                 label="Выберите файл для сохранения в папку с Dags"
@@ -39,13 +40,14 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFiles">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()">
                 <v-icon color="primary">mdi-file-upload</v-icon>
               </v-btn>
             </v-col>
           </v-row>
           <br/>
           <v-text-field
+              autofocus
               v-model="folder"
               label="Директория"
               placeholder="Укажите имя директории для сохранения файлов"
@@ -67,9 +69,10 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles"
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles()"
                      depressed
-                     :disabled="folder==''">
+                     :disabled="folder==''"
+              >
                 <v-icon color="primary">mdi-upload-multiple</v-icon>
               </v-btn>
             </v-col>
@@ -93,7 +96,7 @@ export default {
       script: '',
       dialog: false,
       radios: '',
-      folder: ''
+      folder: '',
     }
   },
   components: {},
@@ -103,13 +106,43 @@ export default {
       var self = this;
       let formData = new FormData();
       for (var i in self.files) {
-        formData.append('files[' + i + ']', self.files[i]);
+        formData.append('files', self.files[i]);
       }
+
+      var headers = {
+        'Content-Type': 'multipart/form-data',
+      };
       axios.post('/api/upload',
           formData,
           {
             headers: {
-              'Content-Type': 'multipart/form-data'
+              headers
+            }
+          }
+      ).then(function () {
+        console.log('SUCCESS!!');
+      })
+          .catch(function () {
+            console.log('FAILURE!!');
+          }).then(function () {
+        self.dialog = false;
+        self.files = {};
+      });
+    },
+    submitFile() {
+      var self = this;
+      let formData = new FormData();
+
+      formData.append('files', self.files);
+
+      var headers = {
+        'Content-Type': 'multipart/form-data',
+      };
+      axios.post('/api/upload',
+          formData,
+          {
+            headers: {
+              headers
             }
           }
       ).then(function () {

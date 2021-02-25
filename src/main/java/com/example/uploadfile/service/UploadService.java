@@ -10,6 +10,8 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -21,10 +23,10 @@ public class UploadService {
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
 
-    public void storeFiles(List<MultipartFile> multipartFileList){
-       multipartFileList.forEach(this::storeFile);
+    public void storeFiles(MultipartFile[] multipartFileList){
+       Stream.of(multipartFileList).map(this::storeFile).collect(Collectors.toList());
     }
-    private UploadFileResponse storeFile(MultipartFile multipartFile) {
+    public File storeFile(MultipartFile multipartFile) {
 //        if (multipartFile == null) {
 //            throw new FileNotFoundException("Cannot find file");
 //        }
@@ -52,6 +54,7 @@ public class UploadService {
         } catch (IOException e) {
 //            throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
         }
-        return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
+//        return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
+        return file;
     }
 }

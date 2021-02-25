@@ -37,8 +37,16 @@ public class UserController {
 
     @ApiOperation(value = "предоставление доступа")
     @PostMapping("/grant-access/{guid}")
-    public void grantAccessById(@RequestBody String dateTime, @PathVariable Integer guid) {
-        userService.grantAccessById(dateTime, guid);
+    public void grantAccessById(@RequestBody String dateTimeFrom, @RequestBody String dateTimeTo, @PathVariable Integer guid) {
+        System.out.println(dateTimeFrom+" "+ dateTimeTo);
+        userService.grantAccessById(dateTimeFrom, dateTimeTo, guid);
+    }
+
+    @ApiOperation(value = "search")
+    @PostMapping("/search")
+    public String updateWhiteListUser(@RequestBody String user) {
+        System.out.println(user);
+        return "test";
     }
 
     //TODO - поиск пользователя в AD по логину.
