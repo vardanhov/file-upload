@@ -20,9 +20,7 @@ import java.util.List;
 @Service
 public class WhiteListUserService {
 
-
     private UserRepository userRepository;
-
 
     private WhiteListUserRepository whiteListUserRepository;
 
@@ -84,6 +82,12 @@ public class WhiteListUserService {
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
         WhiteListUserDto whiteListUserDto = UserMapper.convertWhiteListUserToDto(whiteListUserResponse);
         return whiteListUserDto;
+    }
+
+    public void changeAccess(Integer id,boolean accessType){
+        WhiteListUser whiteListUser = whiteListUserRepository.findById(id).orElseThrow(()->new WhiteListUserException("can not find current white list"));
+        whiteListUser.setUpload(accessType);
+        whiteListUserRepository.save(whiteListUser);
     }
 
 }

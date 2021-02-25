@@ -28,17 +28,21 @@ public class WhiteListUserController {
     }
 
     @ApiOperation(value = "create white list by User name")
-    @PostMapping("/createWhiteListUserByUserName")
+    @PostMapping("/create-white-list-by-username")
     public WhiteListUserDto createWhiteListUserByUserName(@RequestParam String username) {
       return   whiteListUserService.createWhiteListUserByUserName(username);
     }
 
 
-
-    @ApiOperation(value = "update/{id}")
-    @PutMapping("/updateWhiteListUser")
+    @ApiOperation(value = "update whit list")
+    @PutMapping("/update-white-list/{id}")
     public void updateWhiteListUser(@Valid @RequestBody WhiteListUserDto whiteListUserDto, @PathVariable(name = "id") Integer id) {
         whiteListUserService.updateWhiteList(whiteListUserDto,id);
     }
 
+    @ApiOperation(value = "change access")
+    @PutMapping("/change-access/{id}")
+    public void changeAccess(@PathVariable Integer id, @RequestParam boolean accessType) {
+        whiteListUserService.changeAccess(id,accessType);
+    }
 }
