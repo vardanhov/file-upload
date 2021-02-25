@@ -39,15 +39,15 @@
                 <div>Сервис доступен С:</div>
                 <br/>
                 <v-row>
-                    <v-date-picker
-                        v-model="datePickerFrom[item.id]"
-                    ></v-date-picker>
-                    &nbsp;
-                    &nbsp;
-                    &nbsp;
-                    <v-time-picker
-                        v-model="timePickerFrom[item.id]"
-                    ></v-time-picker>
+                  <v-date-picker
+                      v-model="datePickerFrom[item.id]"
+                  ></v-date-picker>
+                  &nbsp;
+                  &nbsp;
+                  &nbsp;
+                  <v-time-picker
+                      v-model="timePickerFrom[item.id]"
+                  ></v-time-picker>
                 </v-row>
                 <br/>
                 <div>Сервис доступен ПО:</div>
@@ -68,10 +68,10 @@
             </v-card-text>
             <v-spacer></v-spacer>
             <v-card-actions>
-                <v-spacer></v-spacer>
-                  <v-btn text color="green" @click="save(item.id)">
-                    Сохранить
-                  </v-btn>
+              <v-spacer></v-spacer>
+              <v-btn text color="green" @click="save(item.id)">
+                Сохранить
+              </v-btn>
             </v-card-actions>
           </v-card>
         </v-dialog>
@@ -95,55 +95,39 @@
     </v-data-table>
     <br/>
 
-      <v-col></v-col>
+    <v-col></v-col>
     <v-col>
       <v-row>
         <v-spacer></v-spacer>
-    <v-text-field v-model="user"
-        label="Введите логин пользователя из AD"
-    ></v-text-field>
-    <v-btn text color="accent4" @click="sendUser()">
-     Добавить
-    </v-btn>
+        <v-text-field v-model="user"
+                      label="Введите логин пользователя из AD"
+        ></v-text-field>
+        <v-btn text color="accent4" @click="addUser()">
+          Добавить
+        </v-btn>
       </v-row>
     </v-col>
-
-
-<!--    <v-dialog v-model="dialog" persistent max-width="1000">-->
-<!--      <template v-slot:activator="{ on }">-->
-<!--        <v-btn text class="modal-btn" v-model="dialog" color="primary" v-on="on">-->
-<!--          Редактировать выбранных-->
-<!--        </v-btn>-->
-<!--      </template>-->
-<!--      <v-card>-->
-<!--        <v-card-title class="headline grey lighten-2">-->
-<!--          Назначить время и дату выбранным пользователям-->
-<!--        </v-card-title>-->
-<!--        <v-card-text>-->
-<!--          <v-container>-->
-<!--            <v-row justify="center">-->
-<!--              <v-date-picker></v-date-picker>-->
-<!--              &nbsp;-->
-<!--              &nbsp;-->
-<!--              &nbsp;-->
-<!--              <v-time-picker v-model="timePicker1"></v-time-picker>-->
-<!--            </v-row>-->
-<!--          </v-container>-->
-
-<!--        </v-card-text>-->
-<!--        <v-divider></v-divider>-->
-
-<!--        <v-card-actions>-->
-<!--          <v-spacer></v-spacer>-->
-<!--          <v-layout row justify-right>-->
-<!--            <v-btn text color="green" @click="save(item.id)">-->
-<!--              Сохранить-->
-<!--            </v-btn>-->
-<!--          </v-layout>-->
-<!--        </v-card-actions>-->
-<!--      </v-card>-->
-<!--    </v-dialog>-->
   </div>
+  <template>
+    <div class="text-center">
+      <v-snackbar
+          v-model="snackbar"
+      >
+        {{ snackbarText }}
+
+<!--        <template v-slot:action="{ attrs }">-->
+        <template>
+          <v-btn
+              color="indigo"
+              text
+              @click="snackbar = false"
+          >
+            Close
+          </v-btn>
+        </template>
+      </v-snackbar>
+    </div>
+  </template>
 
 </template>
 
@@ -175,9 +159,10 @@ export default {
     datePickerTo: {},
     timePickerTo: {},
     checkboxes: {},
-    user:'',
-
-    search: ''
+    user: '',
+    snackbar:false,
+    search: '',
+    snackbarText:'',
   }),
 
   created() {
@@ -195,27 +180,30 @@ export default {
       var self = this;
       axios.post('/api/users/grant-access/' + id, {
         dateTimeFrom: self.datePickerFrom[id] + " " + self.timePickerFrom[id],
-        dateTimeTo:self.datePickerTo[id] + " " + self.timePickerTo[id],
+        dateTimeTo: self.datePickerTo[id] + " " + self.timePickerTo[id],
       }).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
         console.log('FAILURE!!');
-      }).then(function (){
+      }).then(function () {
         self.dialogs[id] = false;
       });
     },
-    sendUser(){
+    addUser() {
       var self = this;
-      axios.post('/api/users/find-by-username', {
-        user: self.user
-      }).then(function () {
-        console.log('SUCCESS!!');
-      }).catch(function () {
-        console.log('FAILURE!!');
-      }).then(function (){
-        self.user = null;
+      axios.post('/api/whitelist/add-by-username', self.user,  {headers: {"Content-Type": "text/plain"}})
+          .then(response => {
+        resolve(response.data.content)
+      }, response => {
+        this.handleEditError(response)
+      })
+          .then(function () {
+        self.user = '';
       });
-
+    },
+    handleEditError(response){
+      this.snackbar=true;
+      this.snackbarText=response.data.content;
     }
   }
 }

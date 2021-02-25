@@ -1,6 +1,5 @@
 package com.example.uploadfile.service;
 
-
 import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
@@ -22,8 +21,6 @@ public class WhiteListUserService {
 
 
     private UserRepository userRepository;
-
-
     private WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
@@ -75,7 +72,13 @@ public class WhiteListUserService {
 
     @Transactional
     public WhiteListUserDto createWhiteListUserByUserName(String username) {
-        User user = userRepository.findUserByUsername(username);
+        //TODO обработать проблемы лдап и ексепшены
+        User user = null;
+        try{
+            user=userRepository.findUserByUsername(username);
+        }catch (Exception e){
+            throw new UserNotFoundException("Проблемы с настройками LDAP");
+        }
         if (user==null){
             throw new UserNotFoundException("Can not find user");
         }
