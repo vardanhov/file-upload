@@ -108,26 +108,7 @@
       </v-row>
     </v-col>
   </div>
-  <template>
-    <div class="text-center">
-      <v-snackbar
-          v-model="snackbar"
-      >
-        {{ snackbarText }}
 
-<!--        <template v-slot:action="{ attrs }">-->
-        <template>
-          <v-btn
-              color="indigo"
-              text
-              @click="snackbar = false"
-          >
-            Close
-          </v-btn>
-        </template>
-      </v-snackbar>
-    </div>
-  </template>
 
 </template>
 
