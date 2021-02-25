@@ -9,7 +9,7 @@ import org.hibernate.annotations.Type;
 import javax.persistence.*;
 
 @Entity
-@Table(name="white_list_user")
+@Table(name="white_list_user", schema = "upload")
 @Data
 @NoArgsConstructor
 @ToString
@@ -19,7 +19,7 @@ public class WhiteListUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    @Column(name = "name")
+    @Column(name = "ФИО")
     private String text;
 
     @Column(name = "username")
@@ -38,6 +38,10 @@ public class WhiteListUser {
     @Column(name = "upload", columnDefinition = "BIT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private Boolean upload;
+
+    @Column(name = "ФИО", columnDefinition = "BIT", length = 2)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private String ФИО;
 
 
 }
