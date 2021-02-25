@@ -27,10 +27,6 @@
         created() {
             this.intervalId = setInterval(() => this.date = Date.now(), 100);
         },
-
-       // beforeDestroy() {
-       //     if (this.intervalId) clearInterval(this.intervalId)
-      //  },
     }
 </script>
 

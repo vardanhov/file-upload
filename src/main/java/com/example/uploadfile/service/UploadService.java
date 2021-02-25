@@ -48,6 +48,14 @@ public class UploadService {
         //Fixme - проверить проверку, вроде должно быть наоборот
 //        if (!confidential)
 //            path = pathOfConfidentialFiles;
+        if (fileName == null) {
+            throw new FileNameException("Invalid file name");
+        }
+
+        if (fileName.length() < 2 || !fileName.endsWith("py")) {
+            throw new FileNameException("Invalid file name");
+        }
+        String path = returnPath(confidential);
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
@@ -56,5 +64,9 @@ public class UploadService {
         }
 //        return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
         return file;
+    }
+
+    private String returnPath(Boolean confidential){
+        return (confidential?pathOfConfidentialFiles:pathOfRegularFiles);
     }
 }
