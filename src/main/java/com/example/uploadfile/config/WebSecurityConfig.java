@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
+import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -89,6 +90,25 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         authoritiesPopulator.setGroupSearchFilter(groupProperties.getFilter());
         return authoritiesPopulator;
     }
+
+
+    @Bean
+    public LdapTemplate ldapTemplate()  {
+        LdapTemplate ldapTemplate = new LdapTemplate(contextSource());
+        ldapTemplate.setIgnorePartialResultException(true);
+        ldapTemplate.setContextSource(contextSource());
+        return ldapTemplate;
+    }
+//    @Bean
+//    public LdapContextSource contextSource() throws Exception{
+//        LdapContextSource ldapContextSource = new LdapContextSource();
+//        ldapContextSource.setUrl("ldap://54.154.65.69:389");
+//        ldapContextSource.setBase("dc=example,dc=org");
+//        ldapContextSource.setUserDn("daniel@example");
+//        ldapContextSource.setPassword("Test1234");
+//        return ldapContextSource;
+//    }
+
 
     @Bean
     public DefaultSpringSecurityContextSource contextSource() {

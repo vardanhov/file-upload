@@ -40,8 +40,4 @@ public class WhiteListUser {
     private Boolean upload;
 
 
-//    @Convert(converter = UserProfileConverter.class)
-//    @Column(name = "profile_id")
-//    private UserProfile userProfile;
-
 }

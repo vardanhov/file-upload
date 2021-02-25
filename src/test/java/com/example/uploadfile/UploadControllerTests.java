@@ -85,9 +85,9 @@ public class UploadControllerTests {
     @Test
     public void uploadFileAtInvalidURL_get404Error() throws Exception {
         mvc.perform(post("/uploadFileR")
-           .content(multipartFile.getBytes())
-           .contentType(MediaType.MULTIPART_FORM_DATA))
-           .andExpect(status().is4xxClientError());
+                .content(multipartFile.getBytes())
+                .contentType(MediaType.MULTIPART_FORM_DATA))
+                .andExpect(status().is4xxClientError());
     }
 
     @Test
@@ -108,15 +108,15 @@ public class UploadControllerTests {
         Mockito.when(uploadServiceMock.storeFile(Mockito.any(MultipartFile.class),any(Boolean.class))).thenReturn(uploadFileResponse);
 
         mvc.perform(multipart("/api/uploadFile")
-           .file(multipartFile)
-           .contentType(MediaType.MULTIPART_FORM_DATA)
-           .requestAttr("confidential",false))
-           .andExpect(status().isOk());
-           //.andExpect(redirectedUrl("/"));
-          // .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
-          //                                           uploadFileResponse.getFileName(),
-          //                                           uploadFileResponse.getFileType(),
-          //                                           uploadFileResponse.getSize())));
+                .file(multipartFile)
+                .contentType(MediaType.MULTIPART_FORM_DATA)
+                .requestAttr("confidential",false))
+                .andExpect(status().isOk());
+        //.andExpect(redirectedUrl("/"));
+        // .andExpect(MockMvcResultMatchers.content().string(String.format("{\"fileName\":\"%s\",\"fileType\":\"%s\",\"size\":%s}",
+        //                                           uploadFileResponse.getFileName(),
+        //                                           uploadFileResponse.getFileType(),
+        //                                           uploadFileResponse.getSize())));
 
         verify(uploadServiceMock).storeFile(any(MultipartFile.class),any(Boolean.class));
     }

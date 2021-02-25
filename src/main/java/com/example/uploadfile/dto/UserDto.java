@@ -13,15 +13,8 @@ public class UserDto {
 
     private Long id;
 
-    private String login;
+   private String username;
 
-    private Date adding;
-
-    private Date trigger;
-
-    private Boolean admin;
-
-    private Boolean upload;
-
+   private String password;
 
 }
