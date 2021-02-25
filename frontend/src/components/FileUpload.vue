@@ -101,6 +101,28 @@
       </v-row>
 
     </v-container>
+    <template>
+      <div class="text-center ma-2">
+        <v-snackbar
+            :color=color
+            v-model="snackbar"
+            @mousemove="snackbarText=false"
+        >
+          {{ snackbarText }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="red"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+            >
+              <v-icon>mdi-window-close</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
+    </template>
   </v-main>
 </template>
 
@@ -117,6 +139,9 @@ export default {
       radios: '',
       folder: '',
       isHidden: true,
+      snackbar:false,
+      snackbarText:'',
+      color: ''
     }
   },
   components: {},
@@ -140,10 +165,9 @@ export default {
             }
           }
       ).then(function () {
-        console.log('SUCCESS!!');
-      })
-          .catch(function () {
-            console.log('FAILURE!!');
+        self.handleEditError("загружен", "green")      })
+          .catch(function (error) {
+            self.handleEditError(error.response.data, "black")
           }).then(function () {
         self.dialog = false;
         self.files = {};
@@ -166,15 +190,21 @@ export default {
             }
           }
       ).then(function () {
-        console.log('SUCCESS!!');
+        self.handleEditError("Успешно", "green")
       })
-          .catch(function () {
-            console.log('FAILURE!!');
+          .catch(function (error) {
+            self.handleEditError(error.response.data, "black")
           }).then(function () {
         self.dialog = false;
         self.files = {};
       });
     },
+
+    handleEditError(response, color ){
+      this.snackbar=true;
+      this.snackbarText=response;
+      this.color=color;
+    }
   }
 }
 </script>

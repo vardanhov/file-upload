@@ -107,6 +107,28 @@
         </v-btn>
       </v-row>
     </v-col>
+
+    <template>
+      <div class="text-center ma-2">
+        <v-snackbar
+            v-model="snackbar"
+            @mousemove="snackbarText=false"
+        >
+          {{ snackbarText }}
+
+          <template v-slot:action="{ attrs }">
+            <v-btn
+                color="pink"
+                text
+                v-bind="attrs"
+                @click="snackbar = false"
+            >
+              <v-icon>mdi-cancel</v-icon>
+            </v-btn>
+          </template>
+        </v-snackbar>
+      </div>
+    </template>
   </div>
 
 
@@ -173,18 +195,15 @@ export default {
     addUser() {
       var self = this;
       axios.post('/api/whitelist/add-by-username', self.user,  {headers: {"Content-Type": "text/plain"}})
-          .then(response => {
-        resolve(response.data.content)
-      }, response => {
-        this.handleEditError(response)
-      })
-          .then(function () {
+          .catch(function (error) {
+        self.handleEditError(error.response.data)
+      }).then(function () {
         self.user = '';
       });
     },
     handleEditError(response){
       this.snackbar=true;
-      this.snackbarText=response.data.content;
+      this.snackbarText=response;
     }
   }
 }
