@@ -12,8 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import java.util.Arrays;
+
+
+
 @RestController
-@RequestMapping( produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadController {
 
     private UploadService uploadService;
@@ -23,18 +27,24 @@ public class UploadController {
         this.uploadService = uploadService;
     }
 
+    @PostMapping("/api/uploadFiles")
+    public void uploadFiles(@RequestParam("files") MultipartFile[] files) {
+        Arrays.asList(files)
+                .stream()
+                .forEach(file -> uploadService.uploadFile(file));
+    }
+
     //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.
-    //TODO нужна апишка для множественного добавления файлов (в папку Script мы можем добавлять по несколько файлов)
 
+    @ApiOperation(value = "загрузка файла")
+    @PostMapping("/api/upload")
+    public ResponseEntity<?> uploadFile(@RequestBody MultipartFile file, @RequestBody boolean confidential) {
+        return ResponseEntity.ok(uploadService.storeFile(file, confidential));
 
-    ////Fixme сделать обработку массива файлов
-    @PostMapping(value="/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam(value="files", required=true) MultipartFile files[]){
-        uploadService.storeFiles(files);
     }
 
     @ExceptionHandler
-    public ResponseEntity<String> handleException(RuntimeException exception){
+    public ResponseEntity<String> handleException(RuntimeException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 }
