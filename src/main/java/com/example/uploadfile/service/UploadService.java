@@ -20,7 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.List;
 import java.util.Objects;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -35,36 +38,39 @@ public class UploadService {
     @Value("${upload.path.scripts}")
     public String uploadDir;
 
-
-    public UploadFileResponse storeFile(MultipartFile multipartFile, boolean confidential) {
-        if (multipartFile == null) {
-            throw new FileNotFoundException("Cannot find file");
-        }
-
-        //Fixme
-        if (!Objects.equals(multipartFile.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
-            throw new FileContentTypeException("Invalid content type: " + multipartFile.getContentType());
-        }
+    public List<File> storeFiles(MultipartFile[] multipartFileList){
+       return Stream.of(multipartFileList).map(this::storeFile).collect(Collectors.toList());
+    }
+    public File storeFile(MultipartFile multipartFile) {
+//        if (multipartFile == null) {
+//            throw new FileNotFoundException("Cannot find file");
+//        }
+//
+//        //Fixme
+//        if (!Objects.equals(multipartFile.getContentType(), MediaType.APPLICATION_OCTET_STREAM_VALUE)) {
+//            throw new FileContentTypeException("Invalid content type: " + multipartFile.getContentType());
+//        }
 
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
-        if (fileName == null) {
-            throw new FileNameException("Invalid file name");
-        }
-
-        if (fileName.length() < 2 || !fileName.endsWith("py")) {
-            throw new FileNameException("Invalid file name");
-        }
+//        if (fileName == null) {
+//            throw new FileNameException("Invalid file name");
+//        }
+//
+//        if (fileName.length() < 2 || !fileName.endsWith("py")) {
+//            throw new FileNameException("Invalid file name");
+//        }
         String path = pathOfRegularFiles;
-        //Fixme - проверить проверку, вроде должно быть наоборот
-        if (!confidential)
-            path = pathOfConfidentialFiles;
+//        //Fixme - проверить проверку, вроде должно быть наоборот
+//        if (!confidential)
+//            path = pathOfConfidentialFiles;
         File file = new File(path + multipartFile.getOriginalFilename());
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!");
         }
-        return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
+        return file;
+//        return new UploadFileResponse(fileName, multipartFile.getContentType(), multipartFile.getSize());
     }
 
 

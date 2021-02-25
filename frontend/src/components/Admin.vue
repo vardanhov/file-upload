@@ -206,7 +206,7 @@ export default {
     },
     sendUser(){
       var self = this;
-      axios.post('/api/users/search', {
+      axios.post('/api/users/find-by-username', {
         user: self.user
       }).then(function () {
         console.log('SUCCESS!!');
