@@ -37,11 +37,15 @@
                 color="grey"
                 v-if="radios=='Dag'"
                 small-chips
+                @change="changeFile"
+
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()" :disabled="state_btn">
                 <v-icon color="primary">mdi-file-upload</v-icon>
+
+
               </v-btn>
             </v-col>
           </v-row>
@@ -66,22 +70,40 @@
                 v-if="radios=='Script'"
                 multiple="true"
                 small-chips
+                @change="changeFile2"
             >
             </v-file-input>
-            <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles()"
-                     depressed
-                     :disabled="folder==''"
-              >
+             <v-col cols="12" sm="1">
+                       <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" v-on:click="isHidden = !isHidden" @click="submitFiles()"
+                              depressed
+                              :disabled="state_btn2"
+                       >
+
                 <v-icon color="primary">mdi-upload-multiple</v-icon>
               </v-btn>
             </v-col>
           </v-row>
 
+
         </v-col>
       </v-row>
 
     </v-container>
+       <v-row
+                 class="fill-height"
+                 align-content="center"
+                 justify="center"
+             >
+               <v-col cols="6">
+                 <v-progress-linear
+                     color="blue darken-2"
+                     indeterminate
+                     rounded
+                     height="6"
+                     v-if="!isHidden"
+                 ></v-progress-linear>
+               </v-col>
+             </v-row>
   </v-main>
 </template>
 
@@ -97,11 +119,27 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
+      state_btn: true,
+      state_btn2: true,
+       isHidden: true
     }
   },
   components: {},
 //TODO вынести в store api
   methods: {
+    changeFile(file)
+    {
+
+        console.log(file)
+        if(file.name && file.name.split('.').pop() == 'py')
+            this.state_btn = false
+    },
+    changeFile2(files)
+    {
+        if(files.length)
+            this.state_btn2 = false;
+
+    },
     submitFiles() {
       var self = this;
       let formData = new FormData();
@@ -130,6 +168,13 @@ export default {
       });
     },
     submitFile() {
+
+       this.isHidden = !this.isHidden;
+
+       setTimeout(() => {
+        this.isHidden = !this.isHidden;
+       }, 4000)
+
       var self = this;
       let formData = new FormData();
 
