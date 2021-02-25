@@ -101,7 +101,7 @@ public class WhiteListUserServiceTests {
     public void createWhiteList_withWhiteListUserException(){
         WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
         Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
-        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
+        whiteListUserService.createWhiteList(whiteListUserDtoMock);
 
         verify(whiteListUserDtoMock).getUsername();
     }
@@ -110,7 +110,7 @@ public class WhiteListUserServiceTests {
     public void createWhiteList_withWhiteListUserException_checkText(){
         WhiteListUserDto whiteListUserDtoMock = Mockito.mock(WhiteListUserDto.class);
         Mockito.when(whiteListUserDtoMock.getUsername()).thenReturn(null);
-        whiteListUserService.createOrUpdateWhiteList(whiteListUserDtoMock);
+        whiteListUserService.createWhiteList(whiteListUserDtoMock);
         ExpectedException.none().expectMessage("Can not find White List");
 
         verify(whiteListUserDtoMock).getUsername();
@@ -118,12 +118,12 @@ public class WhiteListUserServiceTests {
 
     @Test(expected = NullPointerException.class)
     public void createWhiteList_withWhiteListUserDtoNull(){
-        whiteListUserService.createOrUpdateWhiteList(null);
+        whiteListUserService.createWhiteList(null);
     }
 
     @Test(expected = NullPointerException.class)
     public void createWhiteList_withWhiteListUserNull(){
-        whiteListUserService.createOrUpdateWhiteList(null);
+        whiteListUserService.createWhiteList(null);
     }
 
 }

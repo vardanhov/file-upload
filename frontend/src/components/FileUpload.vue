@@ -69,7 +69,7 @@
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" @click="submitFiles()"
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" v-on:click="isHidden = !isHidden" @click="submitFiles()"
                      depressed
                      :disabled="folder==''"
               >
@@ -78,6 +78,22 @@
             </v-col>
           </v-row>
 
+        </v-col>
+      </v-row>
+
+      <v-row
+          class="fill-height"
+          align-content="center"
+          justify="center"
+      >
+        <v-col cols="6">
+          <v-progress-linear
+              color="blue darken-2"
+              indeterminate
+              rounded
+              height="6"
+              v-if="!isHidden"
+          ></v-progress-linear>
         </v-col>
       </v-row>
 
@@ -97,6 +113,7 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
+      isHidden: true,
     }
   },
   components: {},

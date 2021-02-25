@@ -47,7 +47,7 @@ public class UserController {
     @ApiOperation(value = "найти пользователя")
     @PostMapping("/findUserByUsername")
     public User findUserByUsername(@RequestParam String username) {
-      User user =  userService.getUserByUserName(username);
+        User user =  userService.getUserByUserName(username);
         return user;
     }
 }
