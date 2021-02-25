@@ -31,10 +31,10 @@ public class WhiteListUserController {
         whiteListUserService.createWhiteList(whiteListUserDto);
     }
 
-    @ApiOperation(value = "create white list by User name")
-    @PostMapping("/add-by-username")
-    public WhiteListUserDto createWhiteListUserByUserName(@RequestBody String userName) {
-      return   whiteListUserService.createWhiteListUserByUserName(userName);
+
+    @PostMapping("/create-white-list-by-username")
+    public WhiteListUserDto createWhiteListUserByUserName(@RequestParam String username) {
+      return   whiteListUserService.createWhiteListUserByUserName(username);
     }
 
 
@@ -49,4 +49,9 @@ public class WhiteListUserController {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
+    @ApiOperation(value = "change access")
+    @PutMapping("/change-access/{id}")
+    public void changeAccess(@PathVariable Integer id, @RequestParam boolean accessType) {
+        whiteListUserService.changeAccess(id,accessType);
+    }
 }

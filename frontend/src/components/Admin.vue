@@ -145,6 +145,7 @@ export default {
   data: () => ({
     headers: [
       {text: 'id', value: 'id'},
+      {text: 'ФИО', value: 'username'},
       {text: 'логин', value: 'username'},
       {text: 'дата создания', value: 'createDate'},
       {text: 'дата обновления', value: 'trigger'},

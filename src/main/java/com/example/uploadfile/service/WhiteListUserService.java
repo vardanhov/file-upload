@@ -1,5 +1,6 @@
 package com.example.uploadfile.service;
 
+
 import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
@@ -19,8 +20,8 @@ import java.util.List;
 @Service
 public class WhiteListUserService {
 
-
     private UserRepository userRepository;
+
     private WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
@@ -72,13 +73,7 @@ public class WhiteListUserService {
 
     @Transactional
     public WhiteListUserDto createWhiteListUserByUserName(String username) {
-        //TODO обработать проблемы лдап и ексепшены
-        User user = null;
-        try{
-            user=userRepository.findUserByUsername(username);
-        }catch (Exception e){
-            throw new UserNotFoundException("Проблемы с настройками LDAP");
-        }
+        User user = userRepository.findUserByUsername(username);
         if (user==null){
             throw new UserNotFoundException("Can not find user");
         }
@@ -87,6 +82,12 @@ public class WhiteListUserService {
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
         WhiteListUserDto whiteListUserDto = UserMapper.convertWhiteListUserToDto(whiteListUserResponse);
         return whiteListUserDto;
+    }
+
+    public void changeAccess(Integer id,boolean accessType){
+        WhiteListUser whiteListUser = whiteListUserRepository.findById(id).orElseThrow(()->new WhiteListUserException("can not find current white list"));
+        whiteListUser.setUpload(accessType);
+        whiteListUserRepository.save(whiteListUser);
     }
 
 }

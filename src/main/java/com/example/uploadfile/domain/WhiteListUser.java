@@ -19,6 +19,9 @@ public class WhiteListUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
+    @Column(name = "name")
+    private String text;
+
     @Column(name = "username")
     private String username;
 

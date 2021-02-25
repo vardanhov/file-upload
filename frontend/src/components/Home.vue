@@ -1,14 +1,14 @@
 <template>
   <v-card
       class="mx-auto"
-      max-width="344"
+      max-width="340"
       flat
   >
     <v-card-text>
       <p class="display-1 text--primary">
       </p>
       <div class="text--primary">
-       Инструкция
+       Инструкция по загрузке файлов
       </div>
     </v-card-text>
     <v-card-actions>
@@ -29,9 +29,12 @@
       >
         <v-card-text class="pb-0">
           <p class="display-1 text--primary">
-            Инструкция
+
           </p>
-          <p>Текст инструкции </p>
+          <p> Файлы не должны превышать 10 Мб; <br>
+              Файлы загружаются в в следующие папки: dags и scripts; <br>
+              Родительский скрипт должен лежать в папке dags
+          </p>
         </v-card-text>
         <v-card-actions class="pt-0">
           <v-btn
