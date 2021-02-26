@@ -42,6 +42,9 @@ public class UploadServiceImpl implements UploadService {
     @Value("${upload.path.scripts}")
     public String uploadDir;
 
+    @Value("${allowed.file.content.types}")
+    String allowedContentTypes;
+
     WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
@@ -113,6 +116,11 @@ public class UploadServiceImpl implements UploadService {
     private boolean isWithinRange(LocalDateTime from, LocalDateTime to) {
         return (from.isBefore(toLocalDate(System.currentTimeMillis()))
                 && to.isAfter(toLocalDate(System.currentTimeMillis())));
+    }
+
+    public String getAllowedContentTypes(Authentication authentication){
+        checkUserUploadRights(authentication);
+        return allowedContentTypes;
     }
 }
 
