@@ -35,6 +35,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     
 
     @Transactional
+    @Override
     public WhiteListUserDto createWhiteListUserByUserName(String username, Authentication authentication) {
         checkUserAdminRights(authentication);
         //TODO обработать проблемы лдап и ексепшены
@@ -53,14 +54,14 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserResponse);
         return whiteListUserDto;
     }
-
+    @Override
     public List<WhiteListUserDto> getAllUsers(Authentication authentication) {
         checkUserAdminRights(authentication);
         return whiteListUserRepository.findAll()
                 .stream().map(UserMapper::toWhiteListUserDto).collect(Collectors.toList());
     }
 
-
+    @Override
     public void grantAccessById(String dateTimeFrom, String dateTimeTo, Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
@@ -72,7 +73,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     }
 
 //TODO поправить работу со временем
-
+    @Override
     public void limitAccessById(Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
@@ -81,6 +82,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     }
 
 //TODO переделать с использованием authorities
+    @Override
     public void checkUserAdminRights(Authentication authentication){
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
         if (!whiteListUserDto.getAdmin()) throw new RuntimeException("Недостаточно прав");

@@ -1,42 +1,32 @@
 package com.example.uploadfile;
 
-import com.example.uploadfile.controller.UploadController;
-import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
-import com.example.uploadfile.excepion.FileNotFoundException;
-import com.example.uploadfile.excepion.UserNotFoundException;
-//import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.excepion.WhiteListUserException;
+import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
-import com.example.uploadfile.service.UploadService;
-import com.example.uploadfile.service.WhiteListUserService;
-import com.example.uploadfile.util.UserMapper;
+import com.example.uploadfile.service.WhiteListUserServiceImpl;
+import com.example.uploadfile.service.iface.WhiteListUserService;
 import org.junit.Assert;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
+
 
 /*
 @RunWith(SpringRunner.class)
-@ContextConfiguration(classes = {WhiteListUserService.class})
+@ContextConfiguration(classes = {WhiteListUserServiceImpl.class})
 public class WhiteListUserServiceTests {
 
     @Autowired
@@ -45,8 +35,8 @@ public class WhiteListUserServiceTests {
     @MockBean
     private WhiteListUserRepository whiteListUserRepository;
 
-//    @MockBean
-//    private UserRepository userRepository;
+    @MockBean
+    private UserRepository userRepository;
 
     @Test(expected = NullPointerException.class)
     public void ifWhiteListNull_thenThrowException(){
@@ -127,4 +117,5 @@ public class WhiteListUserServiceTests {
         whiteListUserService.createOrUpdateWhiteList(null);
     }
 
-}*/
+}
+*/

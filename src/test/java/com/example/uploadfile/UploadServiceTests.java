@@ -5,7 +5,7 @@ import com.example.uploadfile.excepion.FileContentTypeException;
 import com.example.uploadfile.excepion.FileNameException;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.FileStorageException;
-import com.example.uploadfile.service.UploadService;
+//import com.example.uploadfile.service.UploadService;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

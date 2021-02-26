@@ -31,6 +31,7 @@ import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 
 @Service
+
 public class UploadServiceImpl implements UploadService {
 
     @Value("${upload.path.regular}")
@@ -48,13 +49,14 @@ public class UploadServiceImpl implements UploadService {
     public UploadServiceImpl(WhiteListUserRepository whiteListUserRepository) {
         this.whiteListUserRepository = whiteListUserRepository;
     }
-
+    @Override
     public List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication) {
         checkUserUploadRights(authentication);
         return Stream.of(multipartFileList).map(multipartFile -> storeFile(multipartFile, path, authentication)).collect(Collectors.toList());
     }
 
     //TODO еще поработать с этим методом
+    @Override
     public File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
        //TODO сделать проверку что кастомный путь заканчивается на слеш или нет
 
@@ -82,6 +84,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
 //Fixme
+    @Override
     public boolean isOwnerSame(String username, Path path) {
         boolean isOwnerSame = false;
         FileOwnerAttributeView ownerInfo = Files.getFileAttributeView(path, FileOwnerAttributeView.class);
@@ -98,6 +101,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
 //Fixme
+    @Override
     public void checkUserUploadRights(Authentication authentication) {
         WhiteListUserDto whiteListUserDto = null;
                 try{

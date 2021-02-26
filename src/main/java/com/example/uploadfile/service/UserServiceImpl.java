@@ -20,19 +20,21 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     public UserServiceImpl(UserRepository userRepository) {
+
         this.userRepository = userRepository;
     }
-
+    @Override
     public void limitAccessById(Integer guid, Authentication authentication) {
         //Fixme переписать метод дизейблить по гуиду
 //        WhiteListUser whiteListUser1 = new WhiteListUser();
 //        whiteListUser1.setUpload(false);
 //        whiteListUserRepository.save(whiteListUser1);
     }
+    @Override
     public void grantAccessById(String dateTimeFrom, String dateTimeTo, Integer guid, Authentication authentication) {
         //TODO написать метод предоставления прав по времени
     }
-
+    @Override
     public  User getUserByUserName(String username){
        return userRepository.findUserByUsername(username);
 

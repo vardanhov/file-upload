@@ -127,6 +127,7 @@ export default {
   components: {},
 //TODO вынести в store api
   methods: {
+
     submitFiles() {
       var self = this;
       let formData = new FormData();

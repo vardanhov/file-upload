@@ -2,7 +2,7 @@ package com.example.uploadfile;
 
 import com.example.uploadfile.controller.UploadController;
 import com.example.uploadfile.dto.UploadFileResponse;
-import com.example.uploadfile.service.UploadService;
+//import com.example.uploadfile.service.UploadService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import net.minidev.json.JSONUtil;
 import org.apache.catalina.Globals;
