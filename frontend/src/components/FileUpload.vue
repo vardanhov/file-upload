@@ -32,11 +32,13 @@
             <v-file-input
                 clearable
                 v-model="files"
-                accept=".py"
+                :accept=contentTypes
                 label="Выберите файл для сохранения в папку с Dags"
                 color="grey"
                 v-if="radios=='Dag'"
                 small-chips
+                show-size
+                truncate-length="15"
             >
             </v-file-input>
             <v-col cols="12" sm="1">
@@ -63,12 +65,15 @@
             <v-file-input
                 clearable
                 v-model="files"
-                accept=".py, .txt, .jar, .war, .zip"
+                :accept=contentTypes
                 label="Несколько файлов для сохранения в папку с scripts"
                 color="grey"
                 v-if="radios=='Script'"
                 multiple="true"
                 small-chips
+                small-chips
+                show-size
+                truncate-length="15"
             >
             </v-file-input>
              <v-col cols="12" sm="1">
@@ -139,6 +144,10 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
+      snackbar: false,
+      snackbarText: '',
+      color: '',
+      contentTypes: '.py'
       fileEmpty: true,
       filesEmpty: true,
       isHidden: true,
@@ -148,8 +157,17 @@ export default {
     }
   },
   components: {},
+  mounted() {
+    this.getContentTypes()
+  },
 //TODO вынести в store api
   methods: {
+    getContentTypes() {
+      axios.get('/api/upload/contentType').then(function (response) {
+        self.contentTypes = response.data.content
+      });
+    },
+
     fileDisableBtn(){
       if (this.files!=null) {
         this.fileEmpty = !(this.files.size > 0);

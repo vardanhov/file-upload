@@ -6,6 +6,7 @@ import com.example.uploadfile.excepion.FileNameException;
 import com.example.uploadfile.excepion.FileNotFoundException;
 import com.example.uploadfile.excepion.FileStorageException;
 import com.example.uploadfile.repo.WhiteListUserRepository;
+import com.example.uploadfile.service.iface.UploadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -30,7 +31,7 @@ import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 
 @Service
-public class UploadService {
+public class UploadServiceImpl implements UploadService {
 
     @Value("${upload.path.regular}")
     private String pathOfRegularFiles;
@@ -38,10 +39,16 @@ public class UploadService {
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
 
+    @Value("${upload.path.scripts}")
+    public String uploadDir;
+
+    @Value("${allowed.file.content.types}")
+    String allowedContentTypes;
+
     WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
-    public UploadService(WhiteListUserRepository whiteListUserRepository) {
+    public UploadServiceImpl(WhiteListUserRepository whiteListUserRepository) {
         this.whiteListUserRepository = whiteListUserRepository;
     }
 
@@ -131,6 +138,11 @@ public class UploadService {
     private boolean isWithinRange(LocalDateTime from, LocalDateTime to) {
         return (from.isBefore(toLocalDate(System.currentTimeMillis()))
                 && to.isAfter(toLocalDate(System.currentTimeMillis())));
+    }
+
+    public String getAllowedContentTypes(Authentication authentication){
+        checkUserUploadRights(authentication);
+        return allowedContentTypes;
     }
 
     private Path returnTargetPath(String path, Authentication authentication){
