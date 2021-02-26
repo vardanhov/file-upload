@@ -15,7 +15,7 @@
             <column name="create_date" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
             <column name="from" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
             <column name="to" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
-            <column name="admin" type="INT"/>
+            <column name="admin" type="BIT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

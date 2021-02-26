@@ -32,22 +32,21 @@ public class WhiteListUser {
     @Column(name="full_name")
     private String fullName;
 
-    @Column
+    @Column(name = "group")
     private String group;
 
     @Column(name = "create_date")
     private Long createDate;
 
-    @Column
+    @Column(name = "from")
     private Long from;
 
-    @Column
+    @Column(name = "to")
     private Long to;
 
-    @Column
-    private Integer admin;
-
-
+    @Column(name = "admin", columnDefinition = "BIT", length = 1)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean admin;
 
 }
 
