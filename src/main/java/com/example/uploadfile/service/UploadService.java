@@ -37,9 +37,9 @@ public class UploadService {
 
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
-
-    @Value("${upload.path.scripts}")
-    public String uploadDir;
+//
+//    @Value("${upload.path.scripts}")
+//    public String uploadDir;
 
     WhiteListUserRepository whiteListUserRepository;
 
@@ -56,14 +56,16 @@ public class UploadService {
     //TODO еще поработать с этим методом
     public File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
        //TODO сделать проверку что кастомный путь заканчивается на слеш или нет
-        path="test";
+       // path="test";
         //временно для тестов
-        File filePath = new File(pathOfConfidentialFiles+path);
+
+        File filePath = new File(returnTargetPath(path,authentication));
 
         try{
             if(filePath.mkdir()) {
                 System.out.println("Directory Created");
             } else {
+
                 System.out.println("Directory is not created");
             }
         } catch(Exception e){
@@ -71,16 +73,24 @@ public class UploadService {
         }
 
         if (multipartFile == null) { throw new FileNotFoundException("Файл отсутствует"); }
-        Path pathSaveFileTo = path!=null ? Paths.get(pathOfConfidentialFiles + path) : Paths.get(pathOfRegularFiles);
+        Path pathSaveFileTo = path.equals("") ? Paths.get(pathOfRegularFiles):Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path );
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
         if (fileName == null || fileName.length() < 4) { throw new FileNameException("Некорректное имя файла"); }
         //TODO из настроек массив допустимых типов файлов
 //        if (!fileName.endsWith(".py")) { throw new FileNameException("Неверный формат файла"); }
 
-        File file = new File(pathSaveFileTo.toString()+"\\"+ multipartFile.getOriginalFilename());
+        File file = new File(pathSaveFileTo.toString(), multipartFile.getOriginalFilename());
 
         if (file.exists() && !isOwnerSame(authentication.getName(), pathSaveFileTo)) throw new FileNameException("Файл с таким именем уже существует, выберите другое имя");
+        else if (!file.exists() ){
+            try {
+                file.getParentFile().mkdirs();
+                file.createNewFile();
+            } catch (IOException e) {
+                throw new FileStorageException(String.format("Файл не может быть сохранен. Второй раз можно не пробовать!", fileName));
+            }
+        }
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
@@ -126,5 +136,11 @@ public class UploadService {
         return (from.isBefore(toLocalDate(System.currentTimeMillis()))
                 && to.isAfter(toLocalDate(System.currentTimeMillis())));
     }
+
+    private String returnTargetPath(String path, Authentication authentication){
+        return (path.equals(""))?pathOfRegularFiles:pathOfConfidentialFiles+"\\"+ path+"\\"+ authentication.getName();
+
+    }
+
 }
 

@@ -37,16 +37,14 @@
                 color="grey"
                 v-if="radios=='Dag'"
                 small-chips
-                @change="fileChange=!fileChange"
-
             >
             </v-file-input>
             <v-col cols="12" sm="1">
               <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()"
                      depressed
-                     :disabled="!fileChange">
+                     :disabled="fileDisableBtn()"
+              >
                 <v-icon color="primary">mdi-file-upload</v-icon>
-
               </v-btn>
             </v-col>
           </v-row>
@@ -71,7 +69,6 @@
                 v-if="radios=='Script'"
                 multiple="true"
                 small-chips
-                @change="filesChange=!filesChange"
             >
             </v-file-input>
              <v-col cols="12" sm="1">
@@ -142,9 +139,8 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
-      fileChange: false,
-      filesChange: false,
-      state_btn2: true,
+      fileEmpty: true,
+      filesEmpty: true,
       isHidden: true,
       snackbar:false,
       snackbarText:'',
@@ -154,12 +150,27 @@ export default {
   components: {},
 //TODO вынести в store api
   methods: {
+    fileDisableBtn(){
+      if (this.files!=null) {
+        this.fileEmpty = !(this.files.size > 0);
+      }
+      else {this.fileEmpty=true;}
+      console.log("method start");
+      console.log(this.fileEmpty)
+      return this.fileEmpty;
+    },
     filesDisableBtn(){
-      return (!this.filesChange)||this.folder==='';
+      this.filesEmpty = !(this.files.length > 0);
+      return (this.filesEmpty)||this.folder===''||this.folder==null;
     },
     submitFiles() {
       var self = this;
       let formData = new FormData();
+
+      if (this.folder===''||this.folder==null){
+        self.handleEditError("Имя папки не должо быть пустым", "deep-orange accent-3")
+        return;
+      }
 
       for (const i in self.files) {
         const fileSize = self.files[i].size;
@@ -167,7 +178,9 @@ export default {
           self.handleEditError("Превышен допустимый размер файла-" + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
           return;
         }
+
         formData.append('files', self.files[i]);
+        formData.append('path', self.folder);
       }
 
       var headers = {
@@ -194,12 +207,18 @@ export default {
       let formData = new FormData();
 
       const fileSize = self.files.size;
+
+      if (self.files.name.split('.').pop()!=='py'){
+        self.handleEditError("Недопустимое содержимое файла. Выберите файл \"*.py\" и повторите отправку.", "deep-orange accent-3")
+        return;
+      }
       if (fileSize > 10485760) {
         self.handleEditError("Превышен допустимый размер файла - " + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
         return;
       }
 
       formData.append('files', self.files);
+      formData.append('path', '');
 
       var headers = {
         'Content-Type': 'multipart/form-data',
