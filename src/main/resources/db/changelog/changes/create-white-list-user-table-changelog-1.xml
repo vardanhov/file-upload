@@ -9,11 +9,13 @@
             <column autoIncrement="true" name="id" type="INT">
                 <constraints primaryKey="true"/>
             </column>
-            <column name="username" type="varchar(255)"/>
+            <column name="user_name" type="varchar(255)"/>
+            <column name="full_name" type="varchar(255)"/>
+            <column name="group" type="varchar(255)"/>
             <column name="create_date" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
-            <column name="trigger" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
-            <column name="admin" type="BIT"/>
-            <column name="upload" type="BIT"/>
+            <column name="from" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
+            <column name="to" defaultValueNumeric="cast(extract(epoch from now())*1000 as bigint)" type="BIGINT"/>
+            <column name="admin" type="INT"/>
         </createTable>
     </changeSet>
 </databaseChangeLog>

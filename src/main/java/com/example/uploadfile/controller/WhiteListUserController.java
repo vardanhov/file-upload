@@ -7,9 +7,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
+import java.util.List;
 
 
 @RestController
@@ -24,34 +25,35 @@ public class WhiteListUserController {
         this.whiteListUserService = whiteListUserService;
     }
 
+    @ApiOperation(value = "список пользователей")
+    @GetMapping
+    public ResponseEntity<List<WhiteListUserDto>> admin(Authentication authentication) { return ResponseEntity.ok(whiteListUserService.getAllUsers(authentication)); }
 
-    @ApiOperation(value = "create")
-    @PostMapping("/createWhiteListUser")
-    public void createWhiteListUser(@RequestBody WhiteListUserDto whiteListUserDto) {
-        whiteListUserService.createWhiteList(whiteListUserDto);
+
+    @ApiOperation(value = "create white list by User name")
+    @PostMapping("/add-by-username")
+    public WhiteListUserDto createWhiteListUserByUserName(@RequestBody String userName, Authentication authentication) {
+        return whiteListUserService.createWhiteListUserByUserName(userName, authentication);
     }
 
+//TODO добавить метод для добавления в вайт лист целой группы из АД
 
-    @PostMapping("/create-white-list-by-username")
-    public WhiteListUserDto createWhiteListUserByUserName(@RequestParam String username) {
-      return   whiteListUserService.createWhiteListUserByUserName(username);
-    }
-
-
-    @ApiOperation(value = "update/{id}")
-    @PutMapping("/updateWhiteListUser")
-    public void updateWhiteListUser(@Valid @RequestBody WhiteListUserDto whiteListUserDto, @PathVariable(name = "id") Integer id) {
-        whiteListUserService.updateWhiteList(whiteListUserDto,id);
-    }
 
     @ExceptionHandler
     public ResponseEntity<String> handleException(RuntimeException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
     }
 
-    @ApiOperation(value = "change access")
-    @PutMapping("/change-access/{id}")
-    public void changeAccess(@PathVariable Integer id, @RequestParam boolean accessType) {
-        whiteListUserService.changeAccess(id,accessType);
+    @ApiOperation(value = "ограничение доступа")
+    @PostMapping("/limit-access/{guid}")
+    public void limitAccess(@PathVariable Integer guid, Authentication authentication) {
+        whiteListUserService.limitAccessById(guid, authentication);
     }
+
+    @ApiOperation(value = "предоставление доступа")
+    @PostMapping("/grant-access/{guid}")
+    public void grantAccessById(@RequestBody String dateTimeFrom, @RequestBody String dateTimeTo, @PathVariable Integer guid, Authentication authentication) {
+        whiteListUserService.grantAccessById(dateTimeFrom, dateTimeTo, guid, authentication);
+    }
+
 }

@@ -81,12 +81,6 @@
           <v-icon @click="disable(item.id)">mdi-window-close</v-icon>
         </v-btn>
       </template>
-      <template v-slot:item.upload="{ item }">
-        <v-card-text>{{ item.upload }}
-          <v-icon v-model="item.upload" v-if="item.upload" color="green">mdi-circle-medium</v-icon>
-          <v-icon v-model="item.upload" v-else color="red">mdi-circle-medium</v-icon>
-        </v-card-text>
-      </template>
       <template v-slot:item.сhecked="{ item }">
         <v-simple-checkbox
             v-model="checkboxes[item.id]"
@@ -145,11 +139,11 @@ export default {
   data: () => ({
     headers: [
       {text: 'id', value: 'id'},
-      {text: 'ФИО', value: 'username'},
       {text: 'логин', value: 'username'},
+      {text: 'ФИО', value: 'fullname'},
       {text: 'дата создания', value: 'createDate'},
-      {text: 'дата обновления', value: 'trigger'},
-      {text: 'права на загрузку', value: 'upload'},
+      {text: 'доступ с', value: 'from'},
+      {text: 'доступ по', value: 'to'},
       {text: 'админ', value: 'admin'},
       {text: "редактировать", value: "edit"},
       {text: 'задизейблить', value: "delete"},
@@ -174,7 +168,7 @@ export default {
   },
   methods: {
     disable(id) {
-      axios.post('/api/users/limit-access/' + id).then(function () {
+      axios.post('/api/whitelist/limit-access/' + id).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
         console.log('FAILURE!!');
@@ -182,10 +176,8 @@ export default {
     },
     save(id) {
       var self = this;
-      axios.post('/api/users/grant-access/' + id, {
-        dateTimeFrom: self.datePickerFrom[id] + " " + self.timePickerFrom[id],
-        dateTimeTo: self.datePickerTo[id] + " " + self.timePickerTo[id],
-      }).then(function () {
+      axios.post('/api/whitelist/grant-access/' + id, self.datePickerFrom[id] + " " + self.timePickerFrom[id], {headers: {"Content-Type": "text/plain"}}
+      ).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
         console.log('FAILURE!!');
