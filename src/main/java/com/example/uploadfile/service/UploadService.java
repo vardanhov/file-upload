@@ -56,19 +56,6 @@ public class UploadService {
     //TODO еще поработать с этим методом
     public File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
        //TODO сделать проверку что кастомный путь заканчивается на слеш или нет
-        path="test";
-        //временно для тестов
-        File filePath = new File(pathOfConfidentialFiles+path);
-
-        try{
-            if(filePath.mkdir()) {
-                System.out.println("Directory Created");
-            } else {
-                System.out.println("Directory is not created");
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
 
         if (multipartFile == null) { throw new FileNotFoundException("Файл отсутствует"); }
         Path pathSaveFileTo = path!=null ? Paths.get(pathOfConfidentialFiles + path) : Paths.get(pathOfRegularFiles);
