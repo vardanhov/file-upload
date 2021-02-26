@@ -37,14 +37,15 @@
                 color="grey"
                 v-if="radios=='Dag'"
                 small-chips
-                @change="changeFile"
+                @change="fileChange=!fileChange"
 
             >
             </v-file-input>
             <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()" :disabled="state_btn">
+              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()"
+                     depressed
+                     :disabled="!fileChange">
                 <v-icon color="primary">mdi-file-upload</v-icon>
-
 
               </v-btn>
             </v-col>
@@ -70,13 +71,13 @@
                 v-if="radios=='Script'"
                 multiple="true"
                 small-chips
-                @change="changeFile2"
+                @change="filesChange=!filesChange"
             >
             </v-file-input>
              <v-col cols="12" sm="1">
                        <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" v-on:click="isHidden = !isHidden" @click="submitFiles()"
                               depressed
-                              :disabled="state_btn2"
+                              :disabled="filesDisableBtn()"
                        >
 
                 <v-icon color="primary">mdi-upload-multiple</v-icon>
@@ -142,9 +143,10 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
-      state_btn: true,
+      fileChange: false,
+      filesChange: false,
       state_btn2: true,
-       isHidden: true
+      isHidden: true,
       snackbar:false,
       snackbarText:'',
       color: ''
@@ -153,26 +155,17 @@ export default {
   components: {},
 //TODO вынести в store api
   methods: {
-    changeFile(file)
-    {
-
-        console.log(file)
-        if(file.name && file.name.split('.').pop() == 'py')
-            this.state_btn = false
-    },
-    changeFile2(files)
-    {
-        if(files.length)
-            this.state_btn2 = false;
-
+    filesDisableBtn(){
+      return (!this.filesChange)||this.folder==='';
     },
     submitFiles() {
       var self = this;
       let formData = new FormData();
 
-      for (var i in self.files) {
-        if (self.files[i].size > 1024 * 1024) {
-          self.handleEditError("Превышен допустимый размер файла.Максимум 10Мб", "deep-orange accent-3")
+      for (const i in self.files) {
+        const fileSize = self.files[i].size;
+        if (fileSize > 10485760) {
+          self.handleEditError("Превышен допустимый размер файла-" + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
           return;
         }
         formData.append('files', self.files[i]);
@@ -189,7 +182,7 @@ export default {
             }
           }
       ).then(function () {
-        self.handleEditError("загружен", "green")      })
+        self.handleEditError("загружен", "light-green accent-4")      })
           .catch(function (error) {
             self.handleEditError(error.response.data, "black")
           }).then(function () {
@@ -201,8 +194,9 @@ export default {
       var self = this;
       let formData = new FormData();
 
-      if (self.files.size > 1024 * 1024) {
-        self.handleEditError("Превышен допустимый размер файла.Максимум 10Мб", "deep-orange accent-3")
+      const fileSize = self.files.size;
+      if (fileSize > 10485760) {
+        self.handleEditError("Превышен допустимый размер файла - " + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
         return;
       }
 
@@ -219,7 +213,7 @@ export default {
             }
           }
       ).then(function () {
-        self.handleEditError("Успешно", "green accent-3")
+        self.handleEditError("Успешно", "light-green accent-4")
       })
           .catch(function (error) {
             self.handleEditError(error.response.data, "black")
@@ -233,6 +227,7 @@ export default {
       this.snackbar=true;
       this.snackbarText=response;
       this.color=color;
+      this.isHidden=true;
     }
   }
 }
