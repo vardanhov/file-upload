@@ -4,6 +4,7 @@
         class="fill-height"
         fluid
         style="animation: frames(5)"
+
     >
       <v-row>
         <v-col cols="12" sm="3"></v-col>
@@ -32,11 +33,13 @@
             <v-file-input
                 clearable
                 v-model="files"
-                accept=".py"
+                :accept=contentTypes
                 label="Выберите файл для сохранения в папку с Dags"
                 color="grey"
                 v-if="radios=='Dag'"
                 small-chips
+                show-size
+                truncate-length="15"
             >
             </v-file-input>
             <v-col cols="12" sm="1">
@@ -60,12 +63,15 @@
             <v-file-input
                 clearable
                 v-model="files"
-                accept=".py, .txt, .jar, .war, .zip"
+                :accept=contentTypes
                 label="Несколько файлов для сохранения в папку с scripts"
                 color="grey"
                 v-if="radios=='Script'"
                 multiple="true"
                 small-chips
+                small-chips
+                show-size
+                truncate-length="15"
             >
             </v-file-input>
             <v-col cols="12" sm="1">
@@ -119,14 +125,24 @@ export default {
       dialog: false,
       radios: '',
       folder: '',
-      snackbar:false,
-      snackbarText:'',
-      color: ''
+      snackbar: false,
+      snackbarText: '',
+      color: '',
+      contentTypes: '.py'
     }
   },
   components: {},
+  mounted() {
+    this.getContentTypes()
+  },
 //TODO вынести в store api
   methods: {
+    getContentTypes() {
+      axios.get('/api/upload/contentType').then(function (response) {
+        self.contentTypes = response.data.content
+      });
+    },
+
     submitFiles() {
       var self = this;
       let formData = new FormData();
@@ -145,7 +161,8 @@ export default {
             }
           }
       ).then(function () {
-        self.handleEditError("загружен", "green")      })
+        self.handleEditError("загружен", "green")
+      })
           .catch(function (error) {
             self.handleEditError(error.response.data, "black")
           }).then(function () {
@@ -180,10 +197,10 @@ export default {
       });
     },
 
-    handleEditError(response, color ){
-      this.snackbar=true;
-      this.snackbarText=response;
-      this.color=color;
+    handleEditError(response, color) {
+      this.snackbar = true;
+      this.snackbarText = response;
+      this.color = color;
     }
   }
 }

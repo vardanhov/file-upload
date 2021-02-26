@@ -11,7 +11,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 
@@ -35,10 +34,16 @@ public class UploadController {
 //    }
 
     @ApiOperation(value = "загрузка файлов")
-    ////Fixme сделать обработку массива файлов
     @PostMapping(value="/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam(value="files", required=true) @NotNull @NotEmpty MultipartFile files[], String path, Authentication authentication){
+    public void uploadFile(@RequestParam(value="files", required=true) @NotNull @NotEmpty MultipartFile files[],
+                           String path, Authentication authentication){
         uploadServiceImpl.storeFiles(files, path, authentication);
+    }
+
+    @ApiOperation(value = "разрешенные типы файлов из настроек приложения")
+    @GetMapping(value="/api/upload/contentType")
+    public ResponseEntity<String> getAllowedContentTypes(Authentication authentication){
+        return ResponseEntity.ok(uploadServiceImpl.getAllowedContentTypes(authentication));
     }
 
     //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.
