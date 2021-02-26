@@ -180,9 +180,8 @@ export default {
         }
 
         formData.append('files', self.files[i]);
-        formData.append('path', self.folder);
       }
-
+      formData.append('path', self.folder);
       var headers = {
         'Content-Type': 'multipart/form-data',
       };
@@ -200,6 +199,7 @@ export default {
           }).then(function () {
         self.dialog = false;
         self.files = {};
+        self.folder = '';
       });
     },
     submitFile() {

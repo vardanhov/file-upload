@@ -37,9 +37,6 @@ public class UploadService {
 
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
-//
-//    @Value("${upload.path.scripts}")
-//    public String uploadDir;
 
     WhiteListUserRepository whiteListUserRepository;
 
@@ -56,24 +53,23 @@ public class UploadService {
     //TODO еще поработать с этим методом
     public File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
        //TODO сделать проверку что кастомный путь заканчивается на слеш или нет
-       // path="test";
-        //временно для тестов
-
-        File filePath = new File(returnTargetPath(path,authentication));
-
-        try{
-            if(filePath.mkdir()) {
-                System.out.println("Directory Created");
-            } else {
-
-                System.out.println("Directory is not created");
-            }
-        } catch(Exception e){
-            e.printStackTrace();
-        }
+//
+//
+//        File filePath = new File(returnTargetPath(path,authentication));
+//
+//        try{
+//            if(filePath.mkdir()) {
+//                System.out.println("Directory Created");
+//            } else {
+//
+//                System.out.println("Directory is not created");
+//            }
+//        } catch(Exception e){
+//            e.printStackTrace();
+//        }
 
         if (multipartFile == null) { throw new FileNotFoundException("Файл отсутствует"); }
-        Path pathSaveFileTo = path.equals("") ? Paths.get(pathOfRegularFiles):Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path );
+        Path pathSaveFileTo = returnTargetPath(path,authentication);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
         if (fileName == null || fileName.length() < 4) { throw new FileNameException("Некорректное имя файла"); }
@@ -137,8 +133,8 @@ public class UploadService {
                 && to.isAfter(toLocalDate(System.currentTimeMillis())));
     }
 
-    private String returnTargetPath(String path, Authentication authentication){
-        return (path.equals(""))?pathOfRegularFiles:pathOfConfidentialFiles+"\\"+ path+"\\"+ authentication.getName();
+    private Path returnTargetPath(String path, Authentication authentication){
+        return (path.equals("") ? Paths.get(pathOfRegularFiles):Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ));
 
     }
 
