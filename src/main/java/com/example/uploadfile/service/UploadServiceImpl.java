@@ -39,9 +39,6 @@ public class UploadServiceImpl implements UploadService {
     @Value("${upload.path.confidential}")
     private String pathOfConfidentialFiles;
 
-    @Value("${upload.path.scripts}")
-    public String uploadDir;
-
     @Value("${allowed.file.content.types}")
     String allowedContentTypes;
 
