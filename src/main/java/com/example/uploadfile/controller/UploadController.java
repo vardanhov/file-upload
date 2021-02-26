@@ -1,8 +1,7 @@
 package com.example.uploadfile.controller;
 
 
-import com.example.uploadfile.dto.UploadFileResponse;
-import com.example.uploadfile.service.UploadService;
+import com.example.uploadfile.service.UploadServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,19 +14,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Arrays;
-import java.util.List;
 
 
 @RestController
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 public class UploadController {
 
-    private UploadService uploadService;
+    private UploadServiceImpl uploadServiceImpl;
 
     @Autowired
-    public UploadController(UploadService uploadService) {
-        this.uploadService = uploadService;
+    public UploadController(UploadServiceImpl uploadServiceImpl) {
+        this.uploadServiceImpl = uploadServiceImpl;
     }
 
 //    @PostMapping("/api/uploadFiles")
@@ -41,7 +38,7 @@ public class UploadController {
     ////Fixme сделать обработку массива файлов
     @PostMapping(value="/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public void uploadFile(@RequestParam(value="files", required=true) @NotNull @NotEmpty MultipartFile files[], String path, Authentication authentication){
-        uploadService.storeFiles(files, path, authentication);
+        uploadServiceImpl.storeFiles(files, path, authentication);
     }
 
     //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.

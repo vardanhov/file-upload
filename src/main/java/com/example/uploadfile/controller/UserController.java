@@ -1,8 +1,7 @@
 package com.example.uploadfile.controller;
 
 import com.example.uploadfile.domain.User;
-import com.example.uploadfile.domain.WhiteListUser;
-import com.example.uploadfile.service.UserService;
+import com.example.uploadfile.service.UserServiceImpl;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,24 +10,22 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping(value = "/api/users", produces = MediaType.APPLICATION_JSON_VALUE)
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userServiceImpl;
 
     @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
+    public UserController(UserServiceImpl userServiceImpl) {
+        this.userServiceImpl = userServiceImpl;
     }
 
 
     @ApiOperation(value = "ограничение доступа")
     @PostMapping("/limit-access/{guid}")
     public void limitAccess(@PathVariable Integer guid, Authentication authentication) {
-        userService.limitAccessById(guid, authentication);
+        userServiceImpl.limitAccessById(guid, authentication);
     }
 
     @ApiOperation(value = "предоставление доступа")
@@ -40,7 +37,7 @@ public class UserController {
     @ApiOperation(value = "найти пользователя")
     @PostMapping("/find-by-username")
     public ResponseEntity<User> findUserByUsername(@RequestBody String username, Authentication authentication) {
-      return ResponseEntity.ok(userService.getUserByUserName(username));
+      return ResponseEntity.ok(userServiceImpl.getUserByUserName(username));
     }
 
     @ExceptionHandler

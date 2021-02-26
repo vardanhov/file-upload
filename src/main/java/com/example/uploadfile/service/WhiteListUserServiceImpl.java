@@ -6,6 +6,7 @@ import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.excepion.UserNotFoundException;
 import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
+import com.example.uploadfile.service.iface.WhiteListUserService;
 import com.example.uploadfile.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -21,13 +22,13 @@ import static com.example.uploadfile.util.UserMapper.toWhiteListUser;
 import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 @Service
-public class WhiteListUserService{
+public class WhiteListUserServiceImpl implements WhiteListUserService {
 
     private final UserRepository userRepository;
     private final WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
-    public WhiteListUserService(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository) {
+    public WhiteListUserServiceImpl(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository) {
         this.userRepository = userRepository;
         this.whiteListUserRepository = whiteListUserRepository;
     }
@@ -70,7 +71,7 @@ public class WhiteListUserService{
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
-//Fixme решить проблему с сохранением в базу с хибернейт
+//TODO поправить работу со временем
 
     public void limitAccessById(Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
@@ -79,7 +80,7 @@ public class WhiteListUserService{
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
-//Fixme переделать с использованием authorities
+//TODO переделать с использованием authorities
     public void checkUserAdminRights(Authentication authentication){
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
         if (!whiteListUserDto.getAdmin()) throw new RuntimeException("Недостаточно прав");

@@ -147,7 +147,7 @@ export default {
       {text: 'админ', value: 'admin'},
       {text: "редактировать", value: "edit"},
       {text: 'задизейблить', value: "delete"},
-      {text: 'выбрать', value: "сhecked"},
+      // {text: 'выбрать', value: "сhecked"},
 
     ],
     dialogs: {},
