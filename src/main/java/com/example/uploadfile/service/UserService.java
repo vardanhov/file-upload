@@ -15,14 +15,11 @@ import java.util.List;
 @Service
 public class UserService {
 
-    private UserRepository userRepository;
-
-    private WhiteListUserRepository whiteListUserRepository;
+    private final UserRepository userRepository;
 
     @Autowired
-    public UserService(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository) {
+    public UserService(UserRepository userRepository) {
         this.userRepository = userRepository;
-        this.whiteListUserRepository = whiteListUserRepository;
     }
 
     public void limitAccessById(Integer guid, Authentication authentication) {

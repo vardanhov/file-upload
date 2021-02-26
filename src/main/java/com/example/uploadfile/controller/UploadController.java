@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.util.Arrays;
 import java.util.List;
 
@@ -38,8 +40,8 @@ public class UploadController {
     @ApiOperation(value = "загрузка файлов")
     ////Fixme сделать обработку массива файлов
     @PostMapping(value="/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam(value="files", required=true) MultipartFile files[], Authentication authentication){
-        uploadService.storeFiles(files, authentication);
+    public void uploadFile(@RequestParam(value="files", required=true) @NotNull @NotEmpty MultipartFile files[], String path, Authentication authentication){
+        uploadService.storeFiles(files, path, authentication);
     }
 
     //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.

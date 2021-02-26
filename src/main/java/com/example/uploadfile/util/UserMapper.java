@@ -15,7 +15,7 @@ import java.util.Date;
 
 public class UserMapper {
 
-    public static WhiteListUserDto toWhiteListUserToDto(WhiteListUser whiteListUser) {
+    public static WhiteListUserDto toWhiteListUserDto(WhiteListUser whiteListUser) {
         WhiteListUserDto whiteListUserDto = new WhiteListUserDto();
         whiteListUserDto.setId(whiteListUser.getId());
         whiteListUserDto.setUsername(whiteListUser.getUserName());

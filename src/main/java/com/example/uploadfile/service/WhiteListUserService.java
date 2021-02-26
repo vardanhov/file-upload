@@ -8,7 +8,6 @@ import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.util.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.uploadfile.util.UserMapper.toWhiteListUser;
-import static com.example.uploadfile.util.UserMapper.toWhiteListUserToDto;
+import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 @Service
 public class WhiteListUserService{
@@ -50,38 +49,39 @@ public class WhiteListUserService{
         WhiteListUser whiteListUser = new WhiteListUser();
         whiteListUser.setUserName(user.getUsername());
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
-        WhiteListUserDto whiteListUserDto = toWhiteListUserToDto(whiteListUserResponse);
+        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserResponse);
         return whiteListUserDto;
     }
 
     public List<WhiteListUserDto> getAllUsers(Authentication authentication) {
         checkUserAdminRights(authentication);
         return whiteListUserRepository.findAll()
-                .stream().map(UserMapper::toWhiteListUserToDto).collect(Collectors.toList());
+                .stream().map(UserMapper::toWhiteListUserDto).collect(Collectors.toList());
     }
 
 
-    public void grantAccessById(String dateTimeFrom, Integer guid, Authentication authentication) {
+    public void grantAccessById(String dateTimeFrom, String dateTimeTo, Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
-        WhiteListUserDto whiteListUserDto = toWhiteListUserToDto(whiteListUserRepository.getOne(guid));
+        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         whiteListUserDto.setFrom(LocalDateTime.parse(dateTimeFrom, formatter));
         whiteListUserDto.setId(guid);
-//        whiteListUserDto.setTo(LocalDateTime.parse(dateTimeTo));
+        whiteListUserDto.setTo(LocalDateTime.parse(dateTimeTo));
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
-//TODO поправить работу со временем
+//Fixme решить проблему с сохранением в базу с хибернейт
 
     public void limitAccessById(Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
-        WhiteListUserDto whiteListUserDto = toWhiteListUserToDto(whiteListUserRepository.getOne(guid));
+        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
         whiteListUserDto.setTo(LocalDateTime.now());
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
-
+//Fixme переделать с использованием authorities
     public void checkUserAdminRights(Authentication authentication){
-        if (authentication.getAuthorities().contains("ADMIN")) throw new RuntimeException("Недостаточно прав");
+        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
+        if (!whiteListUserDto.getAdmin()) throw new RuntimeException("Недостаточно прав");
     }
 }
