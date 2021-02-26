@@ -8,49 +8,43 @@
     <changeSet author="user" id="1">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="1"/>
-            <column name="username" value="admin"/>
+            <column name="user_name" value="admin"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
     <changeSet author="user" id="2">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="2"/>
-            <column name="username" value="anton"/>
+            <column name="user_name" value="anton"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
     <changeSet author="user" id="3">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="3"/>
-            <column name="username" value="sergey"/>
+            <column name="user_name" value="sergey"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
     <changeSet author="user" id="4">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="4"/>
-            <column name="username" value="oleg"/>
+            <column name="user_name" value="oleg"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
     <changeSet author="user" id="5">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="5"/>
-            <column name="username" value="andrey"/>
+            <column name="user_name" value="andrey"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
     <changeSet author="user" id="6">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="6"/>
-            <column name="username" value="stas"/>
+            <column name="user_name" value="stas"/>
             <column name="admin" value="1"/>
-            <column name="upload" value="1"/>
         </insert>
     </changeSet>
 </databaseChangeLog>

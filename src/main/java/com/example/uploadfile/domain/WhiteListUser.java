@@ -1,47 +1,53 @@
 package com.example.uploadfile.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.*;
 
 import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import java.sql.Timestamp;
+import java.time.LocalDateTime;
 
 @Entity
-@Table(name="white_list_user", schema = "upload")
+@Table(name="white_list_user")
 @Data
 @NoArgsConstructor
 @ToString
+@DynamicUpdate
+@DynamicInsert
 public class WhiteListUser {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Integer id;
 
-    @Column(name = "ФИО")
-    private String text;
+    @Column(name = "user_name")
+    private String userName;
 
-    @Column(name = "username")
-    private String username;
+    @Column(name="full_name")
+    private String fullName;
+
+    @Column
+    private String group;
 
     @Column(name = "create_date")
     private Long createDate;
 
-    @Column(name = "trigger")
-    private Long trigger;
+    @Column
+    private Long from;
 
-    @Column(name = "admin", columnDefinition = "BIT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean admin;
+    @Column
+    private Long to;
 
-    @Column(name = "upload", columnDefinition = "BIT", length = 1)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private Boolean upload;
+    @Column
+    private Integer admin;
 
-    @Column(name = "ФИО", columnDefinition = "BIT", length = 2)
-    @Type(type = "org.hibernate.type.NumericBooleanType")
-    private String ФИО;
 
 
 }
+

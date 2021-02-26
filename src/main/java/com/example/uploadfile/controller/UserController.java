@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,22 +24,22 @@ public class UserController {
         this.userService = userService;
     }
 
-    @ApiOperation(value = "список пользователей")
-    @GetMapping
-    public ResponseEntity<List<WhiteListUser>> admin() { return ResponseEntity.ok(userService.getAllUsers()); }
 
-
+    @ApiOperation(value = "ограничение доступа")
+    @PostMapping("/limit-access/{guid}")
+    public void limitAccess(@PathVariable Integer guid, Authentication authentication) {
+        userService.limitAccessById(guid, authentication);
+    }
 
     @ApiOperation(value = "предоставление доступа")
     @PostMapping("/grant-access/{guid}")
-    public void grantAccessById(@RequestParam String dateTime, @PathVariable Integer guid) {
+    public void grantAccessById(@RequestParam String dateTime, @PathVariable Integer guid, Authentication authentication) {
 //        userService.grantAccessById(dateTime, guid);
     }
 
-
     @ApiOperation(value = "найти пользователя")
     @PostMapping("/find-by-username")
-    public ResponseEntity<User> findUserByUsername(@RequestBody String username) {
+    public ResponseEntity<User> findUserByUsername(@RequestBody String username, Authentication authentication) {
       return ResponseEntity.ok(userService.getUserByUserName(username));
     }
 

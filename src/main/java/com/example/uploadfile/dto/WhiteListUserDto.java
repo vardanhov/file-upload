@@ -4,6 +4,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.time.LocalDateTime;
+
 
 @Data
 @NoArgsConstructor
@@ -18,12 +20,12 @@ public class WhiteListUserDto {
 
     private String group;
 
-    private String createDate;
-
-    private String trigger;
+    private LocalDateTime createDate;
 
     private Boolean admin;
 
-    private Boolean upload;
+    private LocalDateTime from;
+
+    private LocalDateTime to;
 
 }
