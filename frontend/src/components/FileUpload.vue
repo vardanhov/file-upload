@@ -147,13 +147,10 @@ export default {
       snackbar: false,
       snackbarText: '',
       color: '',
-      contentTypes: '.py'
+      contentTypes: '.py',
       fileEmpty: true,
       filesEmpty: true,
-      isHidden: true,
-      snackbar:false,
-      snackbarText:'',
-      color: ''
+      isHidden: true
     }
   },
   components: {},
