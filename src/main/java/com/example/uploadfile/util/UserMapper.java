@@ -24,7 +24,7 @@ public class UserMapper {
         whiteListUserDto.setCreateDate(toLocalDate(whiteListUser.getCreateDate()));
         whiteListUserDto.setFrom(toLocalDate(whiteListUser.getFrom()));
         whiteListUserDto.setTo(toLocalDate(whiteListUser.getTo()));
-        whiteListUserDto.setAdmin(toBolean(whiteListUser.getAdmin()));
+        whiteListUserDto.setAdmin(whiteListUser.getAdmin());
         return whiteListUserDto;
     }
 
@@ -36,7 +36,7 @@ public class UserMapper {
         whiteListUser.setCreateDate(toLong(whiteListUserDto.getCreateDate()));
         whiteListUser.setFrom(toLong(whiteListUserDto.getFrom()));
         whiteListUser.setTo(toLong(whiteListUserDto.getTo()));
-        whiteListUser.setAdmin(toInteger(whiteListUserDto.getAdmin()));
+        whiteListUser.setAdmin(whiteListUserDto.getAdmin());
         return whiteListUser;
     }
 

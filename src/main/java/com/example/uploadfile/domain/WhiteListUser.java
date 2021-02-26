@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Date;
 
 @Entity
 @Table(name="white_list_user")
@@ -32,22 +33,21 @@ public class WhiteListUser {
     @Column(name="full_name")
     private String fullName;
 
-    @Column
+    @Column(name = "group")
     private String group;
 
     @Column(name = "create_date")
     private Long createDate;
 
-    @Column
+    @Column(name = "from")
     private Long from;
 
-    @Column
+    @Column(name = "to")
     private Long to;
 
-    @Column
-    private Integer admin;
-
-
+    @Column(name = "admin", columnDefinition = "BIT", length = 1)
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private Boolean admin;
 
 }
 

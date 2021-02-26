@@ -9,6 +9,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="1"/>
             <column name="user_name" value="admin"/>
+            <column name="full_name" value="full name of admin"/>
+            <column name="group" value="admin"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
@@ -16,6 +18,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="2"/>
             <column name="user_name" value="anton"/>
+            <column name="full_name" value="full name of anton"/>
+            <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
@@ -23,6 +27,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="3"/>
             <column name="user_name" value="sergey"/>
+            <column name="full_name" value="full name of sergey"/>
+            <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
@@ -30,6 +36,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="4"/>
             <column name="user_name" value="oleg"/>
+            <column name="full_name" value="full name of oleg"/>
+            <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
@@ -37,6 +45,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="5"/>
             <column name="user_name" value="andrey"/>
+            <column name="full_name" value="full name of andrey"/>
+            <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
@@ -44,6 +54,8 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="6"/>
             <column name="user_name" value="stas"/>
+            <column name="full_name" value="full name of stas"/>
+            <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
     </changeSet>
