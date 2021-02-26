@@ -24,6 +24,8 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.nio.file.attribute.FileOwnerAttributeView;
+import java.nio.file.attribute.UserPrincipal;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -100,6 +102,21 @@ public class UploadService {
             e.printStackTrace();
             throw new FileStorageException("File Not Found");
         }
+    }
+
+    public boolean isOwnerSame(String username, Path path){
+        boolean isOwnerSame = false;
+        FileOwnerAttributeView ownerInfo = Files.getFileAttributeView(path,  FileOwnerAttributeView.class);
+        UserPrincipal fileOwner = null;
+        try {
+            fileOwner = ownerInfo.getOwner();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        String ownerName =fileOwner.getName();
+        if (ownerName.equals(username))
+            isOwnerSame =true;
+        return isOwnerSame;
     }
 
     //TODO поправить работу со временем
