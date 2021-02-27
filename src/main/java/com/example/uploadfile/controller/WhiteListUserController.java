@@ -52,8 +52,12 @@ public class WhiteListUserController {
 
     @ApiOperation(value = "предоставление доступа")
     @PostMapping("/grant-access/{guid}")
-    public void grantAccessById(@RequestBody String dateTimeFrom, @RequestBody String dateTimeTo, @PathVariable Integer guid, Authentication authentication) {
-        whiteListUserServiceImpl.grantAccessById(dateTimeFrom, dateTimeTo, guid, authentication);
+    public void grantAccessById(@RequestBody String dateFrom,
+                                @RequestBody String timeFrom,
+                                @RequestBody String dateTo,
+                                @RequestBody String timeTo,
+                                @PathVariable Integer guid, Authentication authentication) {
+        whiteListUserServiceImpl.grantAccessById(dateFrom, timeFrom, dateTo, timeTo, guid, authentication);
     }
 
 }

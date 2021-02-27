@@ -13,7 +13,9 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -62,13 +64,14 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     }
 
     @Override
-    public void grantAccessById(String dateTimeFrom, String dateTimeTo, Integer guid, Authentication authentication) {
+    public void grantAccessById(String dateFrom, String timeFrom, String dateTo, String timeTo, Integer guid, Authentication authentication) {
+
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        whiteListUserDto.setFrom(LocalDateTime.parse(dateTimeFrom, formatter));
+//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        whiteListUserDto.setFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
         whiteListUserDto.setId(guid);
-        whiteListUserDto.setTo(LocalDateTime.parse(dateTimeTo));
+        whiteListUserDto.setTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
