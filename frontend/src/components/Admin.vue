@@ -176,7 +176,12 @@ export default {
     },
     save(id) {
       var self = this;
-      axios.post('/api/whitelist/grant-access/' + id, self.datePickerFrom[id] + " " + self.timePickerFrom[id], {headers: {"Content-Type": "text/plain"}}
+      let formData = new FormData();
+      formData.append('dateFrom', self.datePickerFrom[id]);
+      formData.append('timeFrom', self.timePickerFrom[id]);
+      formData.append('dateTo', self.datePickerTo[id]);
+      formData.append('timeTo', self.timePickerTo[id]);
+      axios.post('/api/whitelist/grant-access/' + id, formData, {headers: {"Content-Type": "text/plain"}}
       ).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
