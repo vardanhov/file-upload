@@ -40,17 +40,17 @@ public class UploadController {
         uploadServiceImpl.storeFiles(files, path, authentication);
     }
 
-    @ApiOperation(value = "разрешенные типы файлов из настроек приложения")
-    @GetMapping(value="/api/upload/contentType")
-    public ResponseEntity<String> getAllowedContentTypes(Authentication authentication){
-        return ResponseEntity.ok(uploadServiceImpl.getAllowedContentTypes(authentication));
-    }
-
     //TODO нужна апишка которая будет принимать имя файла и возвращать true-false можно ли его добавлять.
 
 
     @ExceptionHandler
     public ResponseEntity<String> handleException(RuntimeException exception) {
         return new ResponseEntity<>(exception.getMessage(), HttpStatus.NOT_FOUND);
+    }
+
+    @ApiOperation(value = "проверка прав")
+    @PostMapping("/check-access")
+    public void grantAccessById(Authentication authentication) {
+        uploadServiceImpl.checkUserUploadRights(authentication);
     }
 }

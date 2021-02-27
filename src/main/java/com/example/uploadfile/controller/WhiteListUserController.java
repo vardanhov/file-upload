@@ -56,7 +56,7 @@ public class WhiteListUserController {
                                 @RequestParam String timeFrom,
                                 @RequestParam String dateTo,
                                 @RequestParam String timeTo,
-                                @RequestParam Integer guid, Authentication authentication) {
+                                @PathVariable Integer guid, Authentication authentication) {
         whiteListUserServiceImpl.grantAccessById(dateFrom, timeFrom, dateTo, timeTo, guid, authentication);
     }
 

@@ -63,12 +63,11 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
                 .stream().map(UserMapper::toWhiteListUserDto).collect(Collectors.toList());
     }
 
-    @Override
+//    @Override
     public void grantAccessById(String dateFrom, String timeFrom, String dateTo, String timeTo, Integer guid, Authentication authentication) {
 
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-//        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
         whiteListUserDto.setFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
         whiteListUserDto.setId(guid);
         whiteListUserDto.setTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));

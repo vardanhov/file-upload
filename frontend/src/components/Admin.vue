@@ -181,7 +181,7 @@ export default {
       formData.append('timeFrom', self.timePickerFrom[id]);
       formData.append('dateTo', self.datePickerTo[id]);
       formData.append('timeTo', self.timePickerTo[id]);
-      axios.post('/api/whitelist/grant-access/' + id, formData, {headers: {"Content-Type": "text/plain"}}
+      axios.post('/api/whitelist/grant-access/' + id, formData, {headers: {   'Content-Type': 'multipart/form-data',}}
       ).then(function () {
         console.log('SUCCESS!!');
       }).catch(function () {
