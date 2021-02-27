@@ -25,8 +25,8 @@ public class WhiteListUserDto {
 
     private Boolean admin;
 
-    private LocalDateTime from;
+    private LocalDateTime dateFrom;
 
-    private LocalDateTime to;
+    private LocalDateTime dateTo;
 
 }

@@ -139,11 +139,11 @@ export default {
   data: () => ({
     headers: [
       {text: 'id', value: 'id'},
-      {text: 'логин', value: 'username'},
-      {text: 'ФИО', value: 'fullname'},
+      {text: 'логин', value: 'userName'},
+      {text: 'ФИО', value: 'fullName'},
       {text: 'дата создания', value: 'createDate'},
-      {text: 'доступ с', value: 'from'},
-      {text: 'доступ по', value: 'to'},
+      {text: 'доступ с', value: 'dateFrom'},
+      {text: 'доступ по', value: 'dateTo'},
       {text: 'админ', value: 'admin'},
       {text: "редактировать", value: "edit"},
       {text: 'задизейблить', value: "delete"},

@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -68,18 +67,17 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
 
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-        whiteListUserDto.setFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
+        whiteListUserDto.setDateFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
         whiteListUserDto.setId(guid);
-        whiteListUserDto.setTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));
+        whiteListUserDto.setDateTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
-//TODO поправить работу со временем
     @Override
     public void limitAccessById(Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-        whiteListUserDto.setTo(LocalDateTime.now());
+        whiteListUserDto.setDateTo(null);
         whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
     }
 
