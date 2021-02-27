@@ -66,19 +66,21 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     public void grantAccessById(String dateFrom, String timeFrom, String dateTo, String timeTo, Integer guid, Authentication authentication) {
 
         checkUserAdminRights(authentication);
-        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-        whiteListUserDto.setDateFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
-        whiteListUserDto.setId(guid);
-        whiteListUserDto.setDateTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));
-        whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
+        WhiteListUser whiteListUser = whiteListUserRepository.getOne(guid);
+        whiteListUser.setDateFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
+        whiteListUser.setId(guid);
+        whiteListUser.setDateTo(LocalDateTime.of(LocalDate.parse(dateTo), LocalTime.parse(timeTo)));
+        whiteListUserRepository.save(whiteListUser);
     }
 
     @Override
     public void limitAccessById(Integer guid, Authentication authentication) {
         checkUserAdminRights(authentication);
-        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getOne(guid));
-        whiteListUserDto.setDateTo(null);
-        whiteListUserRepository.save(toWhiteListUser(whiteListUserDto));
+        WhiteListUser whiteListUser = whiteListUserRepository.getOne(guid);
+        whiteListUser.setId(guid);
+        whiteListUser.setDateTo(null);
+        whiteListUser.setDateFrom(null);
+        whiteListUserRepository.save(whiteListUser);
     }
 
 //TODO переделать с использованием authorities

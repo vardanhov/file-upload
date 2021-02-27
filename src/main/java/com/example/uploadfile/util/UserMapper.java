@@ -8,7 +8,7 @@ public class UserMapper {
     public static WhiteListUserDto toWhiteListUserDto(WhiteListUser whiteListUser) {
         WhiteListUserDto whiteListUserDto = new WhiteListUserDto();
         whiteListUserDto.setId(whiteListUser.getId());
-        whiteListUserDto.setUsername(whiteListUser.getUserName());
+        whiteListUserDto.setUserName(whiteListUser.getUserName());
         whiteListUserDto.setFullName(whiteListUser.getFullName());
         whiteListUserDto.setGroup(whiteListUser.getGroup());
         whiteListUserDto.setCreateDate(whiteListUser.getCreateDate());
@@ -20,7 +20,7 @@ public class UserMapper {
 
     public static WhiteListUser toWhiteListUser(WhiteListUserDto whiteListUserDto) {
         WhiteListUser whiteListUser = new WhiteListUser();
-        whiteListUser.setUserName(whiteListUserDto.getUsername());
+        whiteListUser.setUserName(whiteListUserDto.getUserName());
         whiteListUser.setFullName(whiteListUserDto.getFullName());
         whiteListUser.setGroup(whiteListUserDto.getGroup());
         whiteListUser.setCreateDate(whiteListUserDto.getCreateDate());

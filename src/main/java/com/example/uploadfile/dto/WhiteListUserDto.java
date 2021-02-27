@@ -15,7 +15,7 @@ public class WhiteListUserDto {
 
     private Integer id;
 
-    private String username;
+    private String userName;
 
     private String fullName;
 
