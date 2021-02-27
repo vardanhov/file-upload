@@ -1,7 +1,7 @@
 package com.example.uploadfile.controller;
 
 import com.example.uploadfile.dto.WhiteListUserDto;
-import com.example.uploadfile.service.WhiteListUserServiceImpl;
+import com.example.uploadfile.service.iface.WhiteListUserService;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -18,26 +18,25 @@ import java.util.List;
 public class WhiteListUserController {
 
 
-    private WhiteListUserServiceImpl whiteListUserServiceImpl;
+    private WhiteListUserService whiteListUserService;
 
     @Autowired
-    public WhiteListUserController(WhiteListUserServiceImpl whiteListUserServiceImpl) {
-        this.whiteListUserServiceImpl = whiteListUserServiceImpl;
+    public WhiteListUserController(WhiteListUserService whiteListUserService) {
+        this.whiteListUserService = whiteListUserService;
     }
 
     @ApiOperation(value = "список пользователей")
     @GetMapping
-    public ResponseEntity<List<WhiteListUserDto>> admin(Authentication authentication) { return ResponseEntity.ok(whiteListUserServiceImpl.getAllUsers(authentication)); }
+    public ResponseEntity<List<WhiteListUserDto>> admin(Authentication authentication) { return ResponseEntity.ok(whiteListUserService.getAllUsers(authentication)); }
 
 
     @ApiOperation(value = "create white list by User name")
     @PostMapping("/add-by-username")
     public WhiteListUserDto createWhiteListUserByUserName(@RequestBody String userName, Authentication authentication) {
-        return whiteListUserServiceImpl.createWhiteListUserByUserName(userName, authentication);
+        return whiteListUserService.createWhiteListUserByUserName(userName, authentication);
     }
 
 //TODO добавить метод для добавления в вайт лист целой группы из АД
-
 
     @ExceptionHandler
     public ResponseEntity<String> handleException(RuntimeException exception) {
@@ -47,7 +46,7 @@ public class WhiteListUserController {
     @ApiOperation(value = "ограничение доступа")
     @PostMapping("/limit-access/{guid}")
     public void limitAccess(@PathVariable Integer guid, Authentication authentication) {
-        whiteListUserServiceImpl.limitAccessById(guid, authentication);
+        whiteListUserService.limitAccessById(guid, authentication);
     }
 
     @ApiOperation(value = "предоставление доступа")
@@ -57,7 +56,7 @@ public class WhiteListUserController {
                                 @RequestParam String dateTo,
                                 @RequestParam String timeTo,
                                 @PathVariable Integer guid, Authentication authentication) {
-        whiteListUserServiceImpl.grantAccessById(dateFrom, timeFrom, dateTo, timeTo, guid, authentication);
+        whiteListUserService.grantAccessById(dateFrom, timeFrom, dateTo, timeTo, guid, authentication);
     }
 
 }

@@ -1,8 +1,6 @@
 package com.example.uploadfile.service.iface;
 
 import com.example.uploadfile.dto.WhiteListUserDto;
-import com.example.uploadfile.repo.UserRepository;
-import com.example.uploadfile.repo.WhiteListUserRepository;
 import org.springframework.security.core.Authentication;
 
 import java.util.List;
