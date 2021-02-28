@@ -17,8 +17,8 @@
     <changeSet author="user" id="2">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="2"/>
-            <column name="user_name" value="Антон"/>
-            <column name="full_name" value="Антон Антонович Антонов"/>
+            <column name="user_name" value="Anton"/>
+            <column name="full_name" value="Антон Владимирович Сергеев "/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -26,8 +26,8 @@
     <changeSet author="user" id="3">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="3"/>
-            <column name="user_name" value="sergey"/>
-            <column name="full_name" value="Сергей Сергеевич Сергеев"/>
+            <column name="user_name" value="Sergey"/>
+            <column name="full_name" value="Сергей Антонович Дрожжин"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -35,8 +35,8 @@
     <changeSet author="user" id="4">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="4"/>
-            <column name="user_name" value="oleg"/>
-            <column name="full_name" value="Олег Олегович Ольгин"/>
+            <column name="user_name" value="Oleg"/>
+            <column name="full_name" value="Олег Андреевич Петров"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -44,8 +44,8 @@
     <changeSet author="user" id="5">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="5"/>
-            <column name="user_name" value="andrey"/>
-            <column name="full_name" value="Андрей Андреевич Андреев"/>
+            <column name="user_name" value="Andrey"/>
+            <column name="full_name" value="Андрей Викторович Родионов"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -53,8 +53,8 @@
     <changeSet author="user" id="6">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="6"/>
-            <column name="user_name" value="stas"/>
-            <column name="full_name" value="Стас Стасович Стасов"/>
+            <column name="user_name" value="Stas"/>
+            <column name="full_name" value="Стас Валентинович Герман "/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
