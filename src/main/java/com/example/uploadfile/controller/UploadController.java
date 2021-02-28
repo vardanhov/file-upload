@@ -41,8 +41,8 @@ public class UploadController {
 
 
     @ApiOperation(value = "проверка прав")
-    @PostMapping("/check-access")
-    public void grantAccessById(Authentication authentication) {
-        uploadService.checkUserUploadRights(authentication);
+    @GetMapping("api/upload/check-access")
+    public ResponseEntity<Boolean> checkAccess(Authentication authentication) {
+        return ResponseEntity.ok(uploadService.checkUserUploadRightsOnEnter(authentication));
     }
 }
