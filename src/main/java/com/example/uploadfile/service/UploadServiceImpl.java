@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.constraints.NotNull;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
@@ -47,6 +48,7 @@ public class UploadServiceImpl implements UploadService {
         this.whiteListUserRepository = whiteListUserRepository;
     }
 
+    //TODO надо пользователю как-то говорить какие были загружены а какие нет
     @Override
     public List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication) {
         checkUserUploadRights(authentication);
@@ -75,7 +77,7 @@ public class UploadServiceImpl implements UploadService {
         Path pathSaveFileTo = returnTargetPath(path,authentication);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-        if (fileName == null || fileName.length() < 4) { throw new FileNameException("Некорректное имя файла"); }
+        if (fileName.length() < 4) { throw new FileNameException("Некорректное имя файла"); }
         //TODO из настроек массив допустимых типов файлов
 //        if (!fileName.endsWith(".py")) { throw new FileNameException("Неверный формат файла"); }
 
@@ -87,13 +89,13 @@ public class UploadServiceImpl implements UploadService {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
-                throw new FileStorageException(String.format("Файл не может быть сохранен. Второй раз можно не пробовать!", fileName));
+                throw new FileStorageException(String.format("Файл не может быть сохранен. Второй раз можно не пробовать!"));
             }
         }
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            throw new FileStorageException(String.format("Файл не может быть сохранен. Попробуйте еще раз!", fileName));
+            throw new FileStorageException(String.format("Файл не может быть сохранен. Попробуйте еще раз!"));
         }
         return file;
         //Fixme
@@ -117,15 +119,29 @@ public class UploadServiceImpl implements UploadService {
             throw new RuntimeException("Недостаточно прав для загрузки");
     }
 
-    private boolean isWithinRange(LocalDateTime from, LocalDateTime to) {
+    public boolean checkUserUploadRightsOnEnter(Authentication authentication) {
+        WhiteListUserDto whiteListUserDto = null;
+        try{
+            whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
+        } catch (Exception e)
+        {
+            throw new RuntimeException("Анонимный пользователь");
+        }
+        return isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo());
+    }
+
+    //FIXme NPE
+    private boolean isWithinRange(@NotNull LocalDateTime from, @NotNull LocalDateTime to) {
+        if(from ==null || to == null) throw new RuntimeException("Не установлен допустимый диапазон времени для загрузки");
         LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime();
-        return (from.isBefore(currentTime) && to.isAfter(currentTime));
+        return from.isBefore(currentTime) && to.isAfter(currentTime);
     }
 
     private Path returnTargetPath(String path, Authentication authentication){
         return (path.equals("") ? Paths.get(pathOfRegularFiles):Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ));
-
     }
+
+
 
 }
 

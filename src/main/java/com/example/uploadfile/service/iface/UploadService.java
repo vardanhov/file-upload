@@ -12,4 +12,5 @@ public interface UploadService {
 
     List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication);
     void checkUserUploadRights(Authentication authentication);
+    boolean checkUserUploadRightsOnEnter(Authentication authentication);
 }

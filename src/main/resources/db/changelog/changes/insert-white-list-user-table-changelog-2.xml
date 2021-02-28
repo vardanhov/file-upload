@@ -17,8 +17,8 @@
     <changeSet author="user" id="2">
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="2"/>
-            <column name="user_name" value="anton"/>
-            <column name="full_name" value="full name of anton"/>
+            <column name="user_name" value="Антон"/>
+            <column name="full_name" value="Антон Антонович Антонов"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -27,7 +27,7 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="3"/>
             <column name="user_name" value="sergey"/>
-            <column name="full_name" value="full name of sergey"/>
+            <column name="full_name" value="Сергей Сергеевич Сергеев"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -36,7 +36,7 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="4"/>
             <column name="user_name" value="oleg"/>
-            <column name="full_name" value="full name of oleg"/>
+            <column name="full_name" value="Олег Олегович Ольгин"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -45,7 +45,7 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="5"/>
             <column name="user_name" value="andrey"/>
-            <column name="full_name" value="full name of andrey"/>
+            <column name="full_name" value="Андрей Андреевич Андреев"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>
@@ -54,7 +54,7 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="6"/>
             <column name="user_name" value="stas"/>
-            <column name="full_name" value="full name of stas"/>
+            <column name="full_name" value="Стас Стасович Стасов"/>
             <column name="group" value="user"/>
             <column name="admin" value="1"/>
         </insert>

@@ -15,18 +15,22 @@
         :items-per-page="10"
         class="elevation-1"
         :search="search"
+        sort-by="fullName"
     >
       <template v-slot:item.edit="{ item }">
-        <v-dialog v-model="dialogs[item.id]" persistent max-width="800">
+        <v-dialog v-model="dialogs[item.id]" persistent max-width="900">
           <template v-slot:activator="{ on }">
             <v-btn text class="modal-btn" v-model="item.edit" color="primary" v-on="on">
               <v-icon color="secondary">mdi-pencil</v-icon>
+<!--              нужно у каждого разрешенного поставить кружочек -->
+<!--                <v-icon v-model="item.dateTo" v-if="item.dateTo>Date.now()" color="green">mdi-circle-medium</v-icon>-->
             </v-btn>
           </template>
           <v-card>
             <v-container>
               <v-row>
-                <v-card-title class="headline" style="color: gray">Настройка времени для {{ item.username }}
+                <v-card-title class="headline" style="color: gray">Настройка времени для {{ item.fullName }} группа
+                  {{ item.group }}
                 </v-card-title>
                 <v-spacer></v-spacer>
                 <v-btn text @click.stop="$set(dialogs, item.id, false)">
@@ -36,7 +40,7 @@
             </v-container>
             <v-card-text>
               <v-container>
-                <div>Сервис доступен С:</div>
+                <div>Предоставить доступ С:</div>
                 <br/>
                 <v-row>
                   <v-date-picker
@@ -50,7 +54,7 @@
                   ></v-time-picker>
                 </v-row>
                 <br/>
-                <div>Сервис доступен ПО:</div>
+                <div>ПО:</div>
                 <br/>
                 <v-row>
                   <v-date-picker
@@ -64,15 +68,25 @@
                   ></v-time-picker>
                 </v-row>
               </v-container>
-
             </v-card-text>
             <v-spacer></v-spacer>
             <v-card-actions>
-              <v-spacer></v-spacer>
-              <v-btn text color="green" @click="save(item.id)">
-                Сохранить
-              </v-btn>
-            </v-card-actions>
+              <v-divider></v-divider>
+              <v-card-text v-if="timePickerFrom[item.id] !=null && datePickerFrom[item.id] != null && timePickerTo[item.id] !=null && datePickerTo[item.id] != null">
+                <span
+                    style="font-size: 11px">Предоставить доступ для {{ item.fullName }} с {{ datePickerFrom[item.id] }} {{
+                    timePickerFrom[item.id]
+                  }}
+                  по {{ datePickerTo[item.id] }}  {{ timePickerTo[item.id] }}</span>
+              </v-card-text>
+              <v-card-text v-else>
+                <span style="font-size: 11px; color: red">Укажите все параметры для доступа
+                </span>
+              </v-card-text>
+          <v-btn text color="green" @click="save(item.id)" :disabled="timePickerFrom[item.id] ==null || datePickerFrom[item.id] == null || timePickerTo[item.id] ==null || datePickerTo[item.id] == null">
+            Сохранить
+          </v-btn>
+          </v-card-actions>
           </v-card>
         </v-dialog>
       </template>
@@ -94,9 +108,9 @@
       <v-row>
         <v-spacer></v-spacer>
         <v-text-field v-model="user"
-                      label="Введите логин пользователя из AD"
+                      label="Поиск пользователя AD по логину"
         ></v-text-field>
-        <v-btn text color="accent4" @click="addUser()">
+        <v-btn text color="accent4" @click="addUser()" :disabled="user.length ==0">
           Добавить
         </v-btn>
       </v-row>
@@ -131,6 +145,7 @@
 <script>
 import {mapGetters} from "vuex";
 import axios from "axios";
+import * as vm from "vm";
 
 export default {
   name: "Admin",
@@ -141,6 +156,7 @@ export default {
       {text: 'id', value: 'id'},
       {text: 'логин', value: 'userName'},
       {text: 'ФИО', value: 'fullName'},
+      {text: 'Группа', value: 'group'},
       {text: 'дата создания', value: 'createDate'},
       {text: 'доступ с', value: 'dateFrom'},
       {text: 'доступ по', value: 'dateTo'},
@@ -158,9 +174,9 @@ export default {
     timePickerTo: {},
     checkboxes: {},
     user: '',
-    snackbar:false,
+    snackbar: false,
     search: '',
-    snackbarText:'',
+    snackbarText: '',
   }),
 
   created() {
@@ -168,8 +184,10 @@ export default {
   },
   methods: {
     disable(id) {
+      var self=this;
       axios.post('/api/whitelist/limit-access/' + id).then(function () {
         console.log('SUCCESS!!');
+        self.$store.dispatch("fetchUsers");
       }).catch(function () {
         console.log('FAILURE!!');
       });
@@ -181,9 +199,11 @@ export default {
       formData.append('timeFrom', self.timePickerFrom[id]);
       formData.append('dateTo', self.datePickerTo[id]);
       formData.append('timeTo', self.timePickerTo[id]);
-      axios.post('/api/whitelist/grant-access/' + id, formData, {headers: {   'Content-Type': 'multipart/form-data',}}
+      axios.post('/api/whitelist/grant-access/' + id, formData, {headers: {'Content-Type': 'multipart/form-data',}}
       ).then(function () {
         console.log('SUCCESS!!');
+        self.$store.dispatch("fetchUsers");
+
       }).catch(function () {
         console.log('FAILURE!!');
       }).then(function () {
@@ -192,16 +212,16 @@ export default {
     },
     addUser() {
       var self = this;
-      axios.post('/api/whitelist/add-by-username', self.user,  {headers: {"Content-Type": "text/plain"}})
+      axios.post('/api/whitelist/add-by-username', self.user, {headers: {"Content-Type": "text/plain"}})
           .catch(function (error) {
-        self.handleEditError(error.response.data)
-      }).then(function () {
+            self.handleEditError(error.response.data)
+          }).then(function () {
         self.user = '';
       });
     },
-    handleEditError(response){
-      this.snackbar=true;
-      this.snackbarText=response;
+    handleEditError(response) {
+      this.snackbar = true;
+      this.snackbarText = response;
     }
   }
 }

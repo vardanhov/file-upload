@@ -5,6 +5,7 @@
         fluid
         style="animation: frames(5)"
     >
+      <v-row></v-row>
       <v-row>
         <v-col cols="12" sm="3"></v-col>
         <v-col cols="12" sm="6">
@@ -128,6 +129,9 @@
         </v-snackbar>
       </div>
     </template>
+    <v-card v-if="hasAccess">
+      <v-card-text>Недостаточно прав</v-card-text>
+    </v-card>
   </v-main>
 </template>
 
@@ -149,18 +153,21 @@ export default {
       contentTypes: '.py',
       fileEmpty: true,
       filesEmpty: true,
-      isHidden: true
+      isHidden: true,
+      hasAccess: false
     }
   },
   components: {},
   mounted() {
-    this.getAccessPermisson()
+   this.getAccessPermisson()
   },
 //TODO вынести в store api
   methods: {
     getAccessPermisson() {
       axios.get('/api/upload/check-access').catch(function (error) {
-        self.handleEditError(error.response.data, "black")
+        self.handleEditError(error.response.data, "black").then(function(){
+          self.hasAccess=response;
+        })
       });
     },
 
