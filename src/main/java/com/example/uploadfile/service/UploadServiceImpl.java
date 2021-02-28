@@ -16,22 +16,19 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.nio.file.attribute.FileOwnerAttributeView;
-import java.nio.file.attribute.UserPrincipal;
+import java.time.Instant;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static com.example.uploadfile.util.UserMapper.toLocalDate;
 import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 
 @Service
-
 public class UploadServiceImpl implements UploadService {
 
     @Value("${upload.path.regular}")
@@ -49,6 +46,7 @@ public class UploadServiceImpl implements UploadService {
     public UploadServiceImpl(WhiteListUserRepository whiteListUserRepository) {
         this.whiteListUserRepository = whiteListUserRepository;
     }
+
     @Override
     public List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication) {
         checkUserUploadRights(authentication);
@@ -56,8 +54,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     //TODO еще поработать с этим методом
-    @Override
-    public File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
+    private File storeFile(MultipartFile multipartFile, String path, Authentication authentication) {
        //TODO сделать проверку что кастомный путь заканчивается на слеш или нет
 //
 //
@@ -84,7 +81,7 @@ public class UploadServiceImpl implements UploadService {
 
         File file = new File(pathSaveFileTo.toString(), multipartFile.getOriginalFilename());
 
-        if (file.exists() && !isOwnerSame(authentication.getName(), pathSaveFileTo)) throw new FileNameException("Файл с таким именем уже существует, выберите другое имя");
+        if (file.exists()) throw new FileNameException("Файл с таким именем уже существует, выберите другое имя");
         else if (!file.exists() ){
             try {
                 file.getParentFile().mkdirs();
@@ -105,22 +102,6 @@ public class UploadServiceImpl implements UploadService {
 //        }
     }
 
-//Fixme
-    @Override
-    public boolean isOwnerSame(String username, Path path) {
-        boolean isOwnerSame = false;
-        FileOwnerAttributeView ownerInfo = Files.getFileAttributeView(path, FileOwnerAttributeView.class);
-        UserPrincipal fileOwner = null;
-        try {
-            fileOwner = ownerInfo.getOwner();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        String ownerName = fileOwner.getName();
-        if (ownerName.equals(username))
-            isOwnerSame = true;
-        return isOwnerSame;
-    }
 
 //Fixme
     @Override
@@ -132,18 +113,13 @@ public class UploadServiceImpl implements UploadService {
                 {
                     throw new RuntimeException("Анонимный пользователь");
                 }
-        if (!isWithinRange(whiteListUserDto.getFrom(), whiteListUserDto.getTo()))
+        if (!isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo()))
             throw new RuntimeException("Недостаточно прав для загрузки");
     }
 
     private boolean isWithinRange(LocalDateTime from, LocalDateTime to) {
-        return (from.isBefore(toLocalDate(System.currentTimeMillis()))
-                && to.isAfter(toLocalDate(System.currentTimeMillis())));
-    }
-
-    public String getAllowedContentTypes(Authentication authentication){
-        checkUserUploadRights(authentication);
-        return allowedContentTypes;
+        LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        return (from.isBefore(currentTime) && to.isAfter(currentTime));
     }
 
     private Path returnTargetPath(String path, Authentication authentication){

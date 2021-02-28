@@ -11,7 +11,5 @@ import java.util.List;
 public interface UploadService {
 
     List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication);
-    File storeFile(MultipartFile multipartFile, String path, Authentication authentication);
-    boolean isOwnerSame(String username, Path path);
     void checkUserUploadRights(Authentication authentication);
 }

@@ -32,7 +32,7 @@
             <v-file-input
                 clearable
                 v-model="files"
-                :accept=contentTypes
+                accept=".py"
                 label="Выберите файл для сохранения в папку с Dags"
                 color="grey"
                 v-if="radios=='Dag'"
@@ -65,12 +65,11 @@
             <v-file-input
                 clearable
                 v-model="files"
-                :accept=contentTypes
+                accept=".py, .jar, .zip"
                 label="Несколько файлов для сохранения в папку с scripts"
                 color="grey"
                 v-if="radios=='Script'"
                 multiple="true"
-                small-chips
                 small-chips
                 show-size
                 truncate-length="15"
@@ -155,13 +154,13 @@ export default {
   },
   components: {},
   mounted() {
-    this.getContentTypes()
+    this.getAccessPermisson()
   },
 //TODO вынести в store api
   methods: {
-    getContentTypes() {
-      axios.get('/api/upload/contentType').then(function (response) {
-        self.contentTypes = response.data.content
+    getAccessPermisson() {
+      axios.get('/api/upload/check-access').catch(function (error) {
+        self.handleEditError(error.response.data, "black")
       });
     },
 

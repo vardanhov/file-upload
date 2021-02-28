@@ -1,18 +1,15 @@
 package com.example.uploadfile.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
-import org.hibernate.annotations.*;
+import org.hibernate.annotations.DynamicInsert;
+import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
-import javax.persistence.Entity;
-import javax.persistence.Table;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Date;
 
 @Entity
 @Table(name="white_list_user")
@@ -37,13 +34,13 @@ public class WhiteListUser {
     private String group;
 
     @Column(name = "create_date")
-    private Long createDate;
+    private LocalDateTime createDate;
 
-    @Column(name = "from")
-    private Long from;
+    @Column(name = "date_from")
+    private LocalDateTime dateFrom;
 
-    @Column(name = "to")
-    private Long to;
+    @Column(name = "date_to")
+    private LocalDateTime dateTo;
 
     @Column(name = "admin", columnDefinition = "BIT", length = 1)
     @Type(type = "org.hibernate.type.NumericBooleanType")
