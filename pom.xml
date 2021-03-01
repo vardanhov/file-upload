@@ -6,7 +6,6 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>2.4.2</version>
-        <relativePath/> <!-- lookup parent from repository -->
     </parent>
     <groupId>com.example</groupId>
     <artifactId>upload-file</artifactId>
@@ -17,6 +16,11 @@
         <java.version>1.8</java.version>
         <springfox-swagger2.version>2.8.0</springfox-swagger2.version>
     </properties>
+    <packaging>pom</packaging>
+
+    <modules>
+        <module>frontend</module>
+    </modules>
 
     <dependencies>
         <dependency>
@@ -142,7 +146,6 @@
             <artifactId>commons-fileupload</artifactId>
             <version>1.4</version>
         </dependency>
-
     </dependencies>
 
     <build>
