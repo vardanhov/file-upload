@@ -9,10 +9,4 @@ import java.util.List;
 
 @Repository
 public interface GroupRepository extends LdapRepository<Group> {
-
-
-    List<Group> findGroupsByName(String uniq);
-
-
-    List<Group> findGroupsByMembersIsLike(String uid);
 }
