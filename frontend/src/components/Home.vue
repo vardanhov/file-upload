@@ -1,49 +1,73 @@
 <template>
   <v-card
       class="mx-auto"
-      max-width="344"
+      max-width="800"
       flat
   >
-    <v-card-text>
-      <p class="display-1 text--primary">
-      </p>
-      <div class="text--primary">
-       Инструкция
-      </div>
-    </v-card-text>
-    <v-card-actions>
-      <v-btn
-          text
-          color="teal accent-4"
-          @click="reveal = true"
-      >
-        Подробнее
-      </v-btn>
-    </v-card-actions>
+    <div class="pt-16"></div>
+    <div class="pt-4"></div>
 
-    <v-expand-transition>
-      <v-card
-          v-if="reveal"
-          class="transition-fast-in-fast-out v-card--reveal"
-          style="height: 100%;"
+    <v-card>
+      <v-img
+          :src="cardFirst.src"
+          class="white--text align-end"
+          gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+          height="200px"
       >
-        <v-card-text class="pb-0">
-          <p class="display-1 text--primary">
-            Инструкция
-          </p>
-          <p>Текст инструкции </p>
-        </v-card-text>
-        <v-card-actions class="pt-0">
-          <v-btn
-              text
-              color="teal accent-4"
-              @click="reveal = false"
-          >
-            Закрыть
-          </v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-expand-transition>
+        <v-card-title v-text="cardFirst.title"></v-card-title>
+      </v-img>
+
+      <v-card-actions>
+        <v-spacer></v-spacer>
+        <v-btn
+            icon
+            @click="show = !show"
+        >
+          <v-icon>{{ show ? 'mdi-chevron-up' : 'mdi-chevron-down' }}</v-icon>
+        </v-btn>
+      </v-card-actions>
+      <v-expand-transition>
+        <div v-show="show">
+          <v-divider></v-divider>
+      <v-card-text>
+        Когда-то тут будет текст инструкции
+      </v-card-text>
+        </div>
+      </v-expand-transition>
+    </v-card>
+
+    <v-container fluid>
+      <v-row dense>
+        <v-col
+            v-for="card in cards"
+            :key="card.title"
+            :cols="card.flex"
+        >
+
+          <v-card>
+            <v-img
+                :src="card.src"
+                class="white--text align-end"
+                gradient="to bottom, rgba(0,0,0,.1), rgba(0,0,0,.5)"
+                height="200px"
+                width ="800px"
+            >
+              <v-card-title v-text="card.title"></v-card-title>
+            </v-img>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn
+                  color="primary"
+                  text
+              >
+                Открыть
+              </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-container>
   </v-card>
 </template>
 
@@ -52,6 +76,12 @@
 export default {
   data: () => ({
     reveal: false,
+    show: false,
+    cardFirst: { title: 'Инструкция', src: '', flex: 11 },
+    cards: [
+      { title: 'Загрузка файлов', src: '', flex: 6 },
+      { title: 'Панель управления пользователями', src: '', flex: 6 },
+    ],
   }),
 }
 </script>

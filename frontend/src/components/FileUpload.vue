@@ -6,87 +6,82 @@
         style="animation: frames(5)"
     >
       <v-row></v-row>
-      <v-row>
+
+      <v-row dense>
         <v-col cols="12" sm="3"></v-col>
         <v-col cols="12" sm="6">
-          <v-radio-group v-model="radios">
-            <template v-slot:label>
-              <div style="font-size: 20px; color: dodgerblue">Выберите, что вы хотите загрузить</div>
-            </template>
-            <v-divider></v-divider>
-            <br/>
-            <v-radio value="Dag" @click="files={}"
 
-            >
-              <template v-slot:label>
-                <div style="font-size: 14px">Даг</div>
-              </template>
-            </v-radio>
-            <v-radio value="Script" @click="files={}">
-              <template v-slot:label>
-                <div style="font-size: 14px">
-                  Скрипты и другие файлы, <p>содержащие конфеденциальные данные</p></div>
-              </template>
-            </v-radio>
-          </v-radio-group>
-          <v-row>
-            <v-file-input
-                clearable
-                v-model="files"
-                accept=".py"
-                label="Выберите файл для сохранения в папку с Dags"
-                color="grey"
-                v-if="radios=='Dag'"
-                small-chips
-                show-size
-                truncate-length="15"
-            >
-            </v-file-input>
-            <v-col cols="12" sm="1">
-              <v-btn text class="modal-btn" color="primary" v-if="radios=='Dag'" @click="submitFile()"
-                     depressed
-                     :disabled="fileDisableBtn()"
-              >
-                <v-icon color="primary">mdi-file-upload</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
-          <br/>
-          <v-text-field
-              autofocus
-              v-model="folder"
-              label="Директория"
-              placeholder="Укажите имя директории для сохранения файлов"
-              outlined
-              v-if="radios=='Script'"
-              clearable
-              counter="100"
-          ></v-text-field>
-          <v-row>
-            <v-file-input
-                clearable
-                v-model="files"
-                accept=".py, .jar, .zip"
-                label="Несколько файлов для сохранения в папку с scripts"
-                color="grey"
-                v-if="radios=='Script'"
-                multiple="true"
-                small-chips
-                show-size
-                truncate-length="15"
-            >
-            </v-file-input>
-             <v-col cols="12" sm="1">
-                       <v-btn text class="modal-btn" color="primary" v-if="radios=='Script'" v-on:click="isHidden = !isHidden" @click="submitFiles()"
-                              depressed
-                              :disabled="filesDisableBtn()"
-                       >
 
-                <v-icon color="primary">mdi-upload-multiple</v-icon>
-              </v-btn>
-            </v-col>
-          </v-row>
+          <div style="font-size: 20px; color: dodgerblue" class="font-weight-black">Выберите, что вы хотите загрузить</div>
+          <div class="pt-3"></div>
 
+          <v-expansion-panels focusable>
+            <v-expansion-panel>
+              <v-col cols="120" sm="1000">
+                <v-expansion-panel-header style="font-size: 16px; color: #666666" class="font-weight-medium">Даг</v-expansion-panel-header>
+                <v-expansion-panel-content>
+                  <v-file-input
+                      clearable
+                      v-model="filesOne"
+                      accept=".py"
+                      label="Выберите файл для сохранения в папку с Dags"
+                      color="grey"
+                      small-chips
+                      show-size
+                      truncate-length="15"
+                  >
+                  </v-file-input>
+                  <v-col cols="12" sm="1">
+                    <v-btn text class="modal-btn" color="primary" @click="submitFile()"
+                           depressed
+                           :disabled="fileDisableBtn()"
+                    >
+                      <v-icon color="primary">mdi-file-upload</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-expansion-panel-content>
+              </v-col>
+            </v-expansion-panel>
+
+            <v-expansion-panel>
+              <v-col cols="120" sm="1000">
+                <v-expansion-panel-header style="font-size: 16px; color: #666666" class="font-weight-medium">Скрипты и другие файлы, содержащие конфеденциальные данные</v-expansion-panel-header>
+                <v-expansion-panel-content class="pt-3">
+                  <v-text-field
+                      autofocus
+                      v-model="folder"
+                      label="Директория"
+                      placeholder="Укажите имя директории для сохранения файлов"
+                      outlined
+                      clearable
+                      counter="100"
+                  ></v-text-field>
+
+                  <v-file-input
+                      clearable
+                      v-model="files"
+                      accept=".py, .jar, .zip"
+                      label="Несколько файлов для сохранения в папку с scripts"
+                      color="grey"
+                      multiple="true"
+                      small-chips
+                      show-size
+                      truncate-length="15"
+                  >
+                  </v-file-input>
+                  <v-col cols="12" sm="1">
+                    <v-btn text class="modal-btn" color="primary" v-on:click="isHidden = !isHidden" @click="submitFiles()"
+                           depressed
+                           :disabled="filesDisableBtn()"
+                    >
+
+                      <v-icon color="primary">mdi-upload-multiple</v-icon>
+                    </v-btn>
+                  </v-col>
+                </v-expansion-panel-content>
+              </v-col>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-col>
       </v-row>
 
@@ -142,6 +137,7 @@ export default {
   name: "FileUpload",
   data() {
     return {
+      filesOne: {},
       files: {},
       script: '',
       dialog: false,
@@ -159,11 +155,12 @@ export default {
   },
   components: {},
   mounted() {
-   this.getAccessPermisson()
+    this.getAccessPermisson()
   },
 //TODO вынести в store api
   methods: {
     getAccessPermisson() {
+      var self = this;
       axios.get('/api/upload/check-access').catch(function (error) {
         self.handleEditError(error.response.data, "black").then(function(){
           self.hasAccess=response;
@@ -172,8 +169,12 @@ export default {
     },
 
     fileDisableBtn(){
-      if (this.files!=null) {
-        this.fileEmpty = !(this.files.size > 0);
+      if (this.filesOne!=null) {
+        // this.fileEmpty = !(this.filesOne.size > 0);
+        if (this.filesOne.size > 0) {
+          if (this.filesOne.name.split('.').pop()!=='py'){this.fileEmpty=true;}
+          else this.fileEmpty=false;
+        }
       }
       else {this.fileEmpty=true;}
       console.log("method start");
@@ -195,12 +196,12 @@ export default {
 
       for (const i in self.files) {
         const fileSize = self.files[i].size;
-        if (fileSize > 10485760) {
-          self.handleEditError("Превышен допустимый размер файла-" + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
+        if (fileSize > 157286400) {
+          self.handleEditError("Размер файла "+ self.files[i].name + " " + (fileSize/1000000).toFixed(2) + "Мб. Максимум 150Мб", "deep-orange accent-3")
           return;
         }
+        else{formData.append('files', self.files[i]);}
 
-        formData.append('files', self.files[i]);
       }
       formData.append('path', self.folder);
       var headers = {
@@ -214,7 +215,7 @@ export default {
             }
           }
       ).then(function () {
-        self.handleEditError("загружен", "light-green accent-4")      })
+        self.handleEditError("Файлы загружены", "light-green accent-4")      })
           .catch(function (error) {
             self.handleEditError(error.response.data, "black")
           }).then(function () {
@@ -227,18 +228,18 @@ export default {
       var self = this;
       let formData = new FormData();
 
-      const fileSize = self.files.size;
+      const fileSize = self.filesOne.size;
 
-      if (self.files.name.split('.').pop()!=='py'){
+      if (self.filesOne.name.split('.').pop()!=='py'){
         self.handleEditError("Недопустимое содержимое файла. Выберите файл \"*.py\" и повторите отправку.", "deep-orange accent-3")
         return;
       }
-      if (fileSize > 10485760) {
-        self.handleEditError("Превышен допустимый размер файла - " + (fileSize/1000000).toFixed(2) + "Мб. Максимум 10Мб", "deep-orange accent-3")
+      if (fileSize > 157286400) {
+        self.handleEditError("Размер файла "+ self.filesOne.name + " " +  (fileSize/1000000).toFixed(2) + "Мб. Максимум 150Мб", "deep-orange accent-3")
         return;
       }
 
-      formData.append('files', self.files);
+      formData.append('files', self.filesOne);
       formData.append('path', '');
 
       var headers = {
@@ -258,7 +259,7 @@ export default {
             self.handleEditError(error.response.data, "black")
           }).then(function () {
         self.dialog = false;
-        self.files = {};
+        self.filesOne = {};
       });
     },
 
