@@ -8,7 +8,7 @@
         flat
         app
     >
-      <v-toolbar-title>Загрузчик дагов</v-toolbar-title>
+      <v-toolbar-title class="font-weight-black">Загрузчик дагов</v-toolbar-title>
       <v-spacer></v-spacer>
       <div class="text-center">
         <v-menu offset-y>

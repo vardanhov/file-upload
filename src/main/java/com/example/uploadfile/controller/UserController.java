@@ -21,7 +21,6 @@ public class UserController {
         this.userService = userService;
     }
 
-
     @ApiOperation(value = "найти пользователя")
     @PostMapping("/find-by-username")
     public ResponseEntity<User> findUserByUsername(@RequestBody String username, Authentication authentication) {
