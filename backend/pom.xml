@@ -19,6 +19,7 @@
     <packaging>jar</packaging>
 
     <build>
+        <finalName>Upload-file-app-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -39,7 +40,7 @@
                     <changeLogFile>db/changelog/changelog-master.xml</changeLogFile>
                 </configuration>
             </plugin>
-<!--            <plugin>
+            <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-resources-plugin</artifactId>
                 <executions>
@@ -53,14 +54,14 @@
                             <outputDirectory>target/classes/static</outputDirectory>
                             <resources>
                                 <resource>
-                                    <directory>frontend/dist</directory>
-                                    <filtering>false</filtering>
+                                    <directory>../frontend/dist</directory>
+                                    <filtering>true</filtering>
                                 </resource>
                             </resources>
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>-->
+            </plugin>
 
         </plugins>
 

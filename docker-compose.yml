@@ -1,15 +1,15 @@
-version: "3"
+version: "3.5"
 
 services:
   app:
     build:
       context: .
-    network_mode: "bridge"
     ports:
-      - '5005:5005'
+      - '8888:8888'
+    networks:
+      - default
     expose:
-      - "9094"
-      - "9095"
+      - '5432'
     env_file:
       - .env
     depends_on:
@@ -22,6 +22,12 @@ services:
       POSTGRES_USER: 'postgres'
       POSTGRES_PASSWORD: 'postgres'
     volumes:
-      - ./src/main/resources/db/changelog/init.sql:/docker-entrypoint-initdb.d/init.sql
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - "5432:5432"
+      - '5432:5432'
+    networks:
+      - default
+
+networks:
+  default:
+    name: localhost
