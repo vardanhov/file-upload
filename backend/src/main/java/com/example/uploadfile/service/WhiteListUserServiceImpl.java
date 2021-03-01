@@ -89,7 +89,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     //TODO переделать с использованием authorities
     @Override
     public void checkUserAdminRights(Authentication authentication) {
-        WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
+                WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
         if (!whiteListUserDto.getAdmin()) throw new RuntimeException("Недостаточно прав");
     }
 }

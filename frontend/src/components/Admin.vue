@@ -18,7 +18,7 @@
         sort-by="fullName"
     >
       <template v-slot:item.edit="{ item }">
-        <v-dialog v-model="dialogs[item.id]" persistent max-width="1000">
+        <v-dialog v-model="dialogs[item.id]" persistent max-width="900">
           <template v-slot:activator="{ on }">
             <v-btn text class="modal-btn" v-model="item.edit" color="primary" v-on="on">
               <v-icon color="secondary">mdi-pencil</v-icon>

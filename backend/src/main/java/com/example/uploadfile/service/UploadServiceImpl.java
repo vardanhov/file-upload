@@ -138,7 +138,7 @@ public class UploadServiceImpl implements UploadService {
     }
 
     private Path returnTargetPath(String path, Authentication authentication){
-        return (path.equals("") ? Paths.get(pathOfRegularFiles):Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ));
+        return (!path.equals("") ? Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ):Paths.get(pathOfRegularFiles));
     }
 
 

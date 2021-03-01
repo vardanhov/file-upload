@@ -16,9 +16,10 @@
           <div class="pt-3"></div>
 
           <v-expansion-panels focusable>
-            <v-expansion-panel>
+            <v-expansion-panel
+                v-on:="folderHidden" >
               <v-col cols="120" sm="1000">
-                <v-expansion-panel-header style="font-size: 16px; color: #666666" class="font-weight-medium">Даг</v-expansion-panel-header>
+                <v-expansion-panel-header style="font-size: 16px; color: #666666" class="font-weight-medium">Даг/родительский скрипт</v-expansion-panel-header>
                 <v-expansion-panel-content>
                   <v-file-input
                       clearable
@@ -43,11 +44,25 @@
               </v-col>
             </v-expansion-panel>
 
-            <v-expansion-panel>
+            <v-expansion-panel @change="folderHidden=true">
               <v-col cols="120" sm="1000">
                 <v-expansion-panel-header style="font-size: 16px; color: #666666" class="font-weight-medium">Скрипты и другие файлы, содержащие конфеденциальные данные</v-expansion-panel-header>
                 <v-expansion-panel-content class="pt-3">
-                  <v-text-field
+                  <v-card
+                      color="primary"
+                      dark
+                  >
+                    <v-card-subtitle>Вы можете указать дополнительную поддиректорию для Ваших файлов.По умолчанию файлы будут сохранены в
+                      /app/airflow/scripts/"group_name". При указании директории в /app/airflow/scripts/"group_name"/"folder_name".
+                      Для указания директории нажмите кнопку "Укзать директорию"
+                    </v-card-subtitle>
+
+                    <v-card-actions>
+                      <v-btn text v-on:click="folderHidden = !folderHidden">Указать директорию</v-btn>
+                      <v-btn text v-on:click="folderHidden = !folderHidden" v-if="!folderHidden">Скрыть директорию</v-btn>
+                    </v-card-actions>
+                  </v-card>
+                  <v-text-field class="pt-3"
                       autofocus
                       v-model="folder"
                       label="Директория"
@@ -55,13 +70,14 @@
                       outlined
                       clearable
                       counter="100"
+                      v-if="!folderHidden"
                   ></v-text-field>
 
-                  <v-file-input
+                  <v-file-input class="pt-6"
                       clearable
                       v-model="files"
                       accept=".py, .jar, .zip"
-                      label="Несколько файлов для сохранения в папку с scripts"
+                      label="Несколько файлов для сохранения в папку scripts"
                       color="grey"
                       multiple="true"
                       small-chips
@@ -150,7 +166,8 @@ export default {
       fileEmpty: true,
       filesEmpty: true,
       isHidden: true,
-      hasAccess: false
+      hasAccess: false,
+      folderHidden: true
     }
   },
   components: {},
@@ -183,16 +200,16 @@ export default {
     },
     filesDisableBtn(){
       this.filesEmpty = !(this.files.length > 0);
-      return (this.filesEmpty)||this.folder===''||this.folder==null;
+      return (this.filesEmpty);
     },
     submitFiles() {
       var self = this;
       let formData = new FormData();
 
-      if (this.folder===''||this.folder==null){
-        self.handleEditError("Имя папки не должо быть пустым", "deep-orange accent-3")
-        return;
-      }
+      // if (this.folder===''||this.folder==null){
+      //   self.handleEditError("Имя папки не должо быть пустым", "deep-orange accent-3")
+      //   return;
+      // }
 
       for (const i in self.files) {
         const fileSize = self.files[i].size;
@@ -203,7 +220,9 @@ export default {
         else{formData.append('files', self.files[i]);}
 
       }
+      if (self.folder===''||self.folder==null||self.folder==='..') {self.folder='/';}
       formData.append('path', self.folder);
+
       var headers = {
         'Content-Type': 'multipart/form-data',
       };
