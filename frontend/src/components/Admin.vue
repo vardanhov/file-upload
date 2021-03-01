@@ -18,12 +18,13 @@
         sort-by="fullName"
     >
       <template v-slot:item.edit="{ item }">
-        <v-dialog v-model="dialogs[item.id]" persistent max-width="900">
+        <v-dialog v-model="dialogs[item.id]" persistent max-width="1000">
           <template v-slot:activator="{ on }">
             <v-btn text class="modal-btn" v-model="item.edit" color="primary" v-on="on">
               <v-icon color="secondary">mdi-pencil</v-icon>
 <!--              нужно у каждого разрешенного поставить кружочек -->
 <!--                <v-icon v-model="item.dateTo" v-if="item.dateTo>Date.now()" color="green">mdi-circle-medium</v-icon>-->
+
             </v-btn>
           </template>
           <v-card>
@@ -36,11 +37,12 @@
                 <v-btn text @click.stop="$set(dialogs, item.id, false)">
                   <v-icon color="red">mdi-window-close</v-icon>
                 </v-btn>
+
               </v-row>
             </v-container>
             <v-card-text>
               <v-container>
-                <div>Предоставить доступ С:</div>
+                <div style="font-size: 16px; color: #666666" class="font-weight-medium">Предоставить доступ С:</div>
                 <br/>
                 <v-row>
                   <v-date-picker
@@ -54,13 +56,12 @@
                   ></v-time-picker>
                 </v-row>
                 <br/>
-                <div>ПО:</div>
+                <div style="font-size: 16px; color: #666666" class="font-weight-medium">ПО:</div>
                 <br/>
                 <v-row>
                   <v-date-picker
                       v-model="datePickerTo[item.id]"
                   ></v-date-picker>
-                  &nbsp;
                   &nbsp;
                   &nbsp;
                   <v-time-picker
@@ -79,10 +80,12 @@
                   }}
                   по {{ datePickerTo[item.id] }}  {{ timePickerTo[item.id] }}</span>
               </v-card-text>
+
               <v-card-text v-else>
                 <span style="font-size: 11px; color: red">Укажите все параметры для доступа
                 </span>
               </v-card-text>
+
           <v-btn text color="green" @click="save(item.id)" :disabled="timePickerFrom[item.id] ==null || datePickerFrom[item.id] == null || timePickerTo[item.id] ==null || datePickerTo[item.id] == null">
             Сохранить
           </v-btn>

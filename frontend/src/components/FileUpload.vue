@@ -15,7 +15,6 @@
           <div style="font-size: 20px; color: dodgerblue" class="font-weight-black">Выберите, что вы хотите загрузить</div>
           <div class="pt-3"></div>
 
-
           <v-expansion-panels focusable>
             <v-expansion-panel>
               <v-col cols="120" sm="1000">
