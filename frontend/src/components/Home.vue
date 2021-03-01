@@ -30,7 +30,8 @@
         <div v-show="show">
           <v-divider></v-divider>
       <v-card-text>
-        Когда-то тут будет текст инструкции
+        Данный инструмент является планировщиком для выдачи прав на загрузку дагов и скриптов. При загрузке файлов
+        owner и group равны имени и группе пользователя.
       </v-card-text>
         </div>
       </v-expand-transition>
@@ -44,7 +45,7 @@
             :cols="card.flex"
         >
 
-          <v-card>
+          <v-card >
             <v-img
                 :src="card.src"
                 class="white--text align-end"
