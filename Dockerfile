@@ -3,7 +3,7 @@ FROM java:8
 ADD . /src
 WORKDIR /src
 
-#RUN ./mvnw package -DskipTests
+RUN ./mvnw package -DskipTests
 
 EXPOSE 8888
 EXPOSE 5432
