@@ -83,6 +83,16 @@ export default {
       { title: 'Загрузка файлов', src: '', flex: 6 },
       { title: 'Панель управления пользователями', src: '', flex: 6 },
     ],
+    links: [
+      {
+        label: 'Отправить файл',
+        url: '/upload'
+      },
+      {
+        label: 'Панель управления',
+        url: '/admin'
+      }
+    ]
   }),
 }
 </script>
