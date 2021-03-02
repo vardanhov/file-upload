@@ -20,7 +20,7 @@ new Vue({
                 themes: {
                     light: {
                         primary: colors.blue,
-                        secondary: colors.blueGrey.lighten4,
+                        secondary: colors.grey.lighten4,
                         accent: colors.blue.lighten3,
                         secondaryAccent: colors.blueGrey.lighten5,
                         error: colors.red.lighten4,

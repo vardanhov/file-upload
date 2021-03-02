@@ -12,7 +12,7 @@
             <column name="user_name" type="varchar(255)"/>
             <column name="full_name" type="varchar(255)"/>
             <column name="group" type="varchar(255)"/>
-            <column name="create_date" type="Timestamp"/>
+            <column name="create_date" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
             <column name="date_from" type="Timestamp"/>
             <column name="date_to" type="Timestamp"/>
             <column name="admin" type="BIT"/>

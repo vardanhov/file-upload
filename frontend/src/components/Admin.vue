@@ -21,7 +21,7 @@
         <v-dialog v-model="dialogs[item.id]" persistent max-width="900">
           <template v-slot:activator="{ on }">
             <v-btn text class="modal-btn" v-model="item.edit" color="primary" v-on="on">
-              <v-icon color="secondary">mdi-pencil</v-icon>
+              <v-icon color="grey">mdi-pencil</v-icon>
 <!--              нужно у каждого разрешенного поставить кружочек -->
 <!--                <v-icon v-model="item.dateTo" v-if="item.dateTo>Date.now()" color="green">mdi-circle-medium</v-icon>-->
 
@@ -156,9 +156,9 @@ export default {
   computed: mapGetters(['getUsers']),
   data: () => ({
     headers: [
-      {text: 'id', value: 'id'},
-      {text: 'логин', value: 'userName'},
+      // {text: 'id', value: 'id'},
       {text: 'ФИО', value: 'fullName'},
+      {text: 'логин', value: 'userName'},
       {text: 'Группа', value: 'group'},
       {text: 'дата создания', value: 'createDate'},
       {text: 'доступ с', value: 'dateFrom'},
