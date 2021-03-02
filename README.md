@@ -11,3 +11,7 @@ To run application you should:
 2.Create database "upload_file"
 
 3.Create schema "upload"
+
+
+For local starting:
+1) docker-compose up --build

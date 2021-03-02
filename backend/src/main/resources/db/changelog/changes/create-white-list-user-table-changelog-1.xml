@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet author="user" id="1">
+        <createTable tableName="white_list_user">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_name" type="varchar(255)"/>
+            <column name="full_name" type="varchar(255)"/>
+            <column name="group" type="varchar(255)"/>
+            <column name="create_date" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="date_from" type="Timestamp"/>
+            <column name="date_to" type="Timestamp"/>
+            <column name="admin" type="BIT"/>
+        </createTable>
+    </changeSet>
+</databaseChangeLog>

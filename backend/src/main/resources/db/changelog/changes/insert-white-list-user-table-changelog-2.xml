@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="user" id="1">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="1"/>
+            <column name="user_name" value="admin"/>
+            <column name="full_name" value="Администратор"/>
+            <column name="group" value="admin"/>
+            <column name="admin" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="2">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="2"/>
+            <column name="user_name" value="vtb213684"/>
+            <column name="full_name" value="Анвар"/>
+            <column name="group" value="admin"/>
+            <column name="admin" value="1"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="3">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="3"/>
+            <column name="user_name" value="Sergey"/>
+            <column name="full_name" value="Сергей Антонович Дрожжин"/>
+            <column name="group" value="user"/>
+            <column name="admin" value="0"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="4">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="4"/>
+            <column name="user_name" value="Oleg"/>
+            <column name="full_name" value="Олег Андреевич Петров"/>
+            <column name="group" value="user"/>
+            <column name="admin" value="0"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="5">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="5"/>
+            <column name="user_name" value="Andrey"/>
+            <column name="full_name" value="Андрей Викторович Родионов"/>
+            <column name="group" value="user"/>
+            <column name="admin" value="0"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="6">
+        <insert tableName="white_list_user">
+            <column name="id" valueNumeric="6"/>
+            <column name="user_name" value="Stas"/>
+            <column name="full_name" value="Стас Валентинович Герман "/>
+            <column name="group" value="user"/>
+            <column name="admin" value="0"/>
+        </insert>
+    </changeSet>
+</databaseChangeLog>
