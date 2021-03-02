@@ -89,13 +89,13 @@ public class UploadServiceImpl implements UploadService {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
             } catch (IOException e) {
-                throw new FileStorageException(String.format("Файл не может быть сохранен. Второй раз можно не пробовать!"));
+                throw new FileStorageException(String.format("Файл не может быть сохранен!"));
             }
         }
         try {
             multipartFile.transferTo(file);
         } catch (IOException e) {
-            throw new FileStorageException(String.format("Файл не может быть сохранен. Попробуйте еще раз!"));
+            throw new FileStorageException(String.format("Файл не был сохранен. Попробуйте еще раз!"));
         }
         return file;
         //Fixme
@@ -113,26 +113,26 @@ public class UploadServiceImpl implements UploadService {
                     whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
                 } catch (Exception e)
                 {
-                    throw new RuntimeException("Анонимный пользователь");
+                    throw new RuntimeException("У Вас недостаточно прав для добавления файлов, обратитесь к администратору");
                 }
         if (!isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo()))
-            throw new RuntimeException("Недостаточно прав для загрузки");
+            throw new RuntimeException("Не установлен, либо исчерпан разрешенный диапазон времени для загрузки файлов, обратитесь к администратору");
     }
-
+//TODO refactor
     public boolean checkUserUploadRightsOnEnter(Authentication authentication) {
         WhiteListUserDto whiteListUserDto = null;
         try{
             whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
         } catch (Exception e)
         {
-            throw new RuntimeException("Анонимный пользователь");
+            throw new RuntimeException("У Вас недостаточно прав для добавления файлов, обратитесь к администратору");
         }
         return isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo());
     }
 
     //FIXme NPE
     private boolean isWithinRange(@NotNull LocalDateTime from, @NotNull LocalDateTime to) {
-        if(from ==null || to == null) throw new RuntimeException("Не установлен допустимый диапазон времени для загрузки");
+        if(from ==null || to == null) throw new RuntimeException("Не установлен, либо исчерпан допустимый диапазон времени для загрузки, обратитесь к администратору");
         LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime();
         return from.isBefore(currentTime) && to.isAfter(currentTime);
     }
@@ -140,8 +140,5 @@ public class UploadServiceImpl implements UploadService {
     private Path returnTargetPath(String path, Authentication authentication){
         return (!path.equals("") ? Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ):Paths.get(pathOfRegularFiles));
     }
-
-
-
 }
 

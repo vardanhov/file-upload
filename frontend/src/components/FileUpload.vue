@@ -10,8 +10,8 @@
         <br/>
         <div class="pt-3"></div>
         <v-row>
-          <v-col cols="12" sm="2"></v-col>
-          <v-col cols="12" sm="8">
+          <v-col cols="12" sm="3"></v-col>
+          <v-col cols="12" sm="6">
             <div style="font-size: 20px; color: dodgerblue">Выберите, что Вы хотите загрузить</div>
             <br/>
             <v-expansion-panels focusable flat>
@@ -139,6 +139,7 @@
             :color=color
             v-model="snackbar"
             @mousemove="snackbarText=false"
+            max-width="900"
         >
           {{ snackbarText }}
 
