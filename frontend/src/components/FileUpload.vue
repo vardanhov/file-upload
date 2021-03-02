@@ -6,8 +6,6 @@
         style="animation: frames(5)"
     >
       <v-row dense>
-
-        <br/>
         <div class="pt-3"></div>
         <v-row>
           <v-col cols="12" sm="3"></v-col>
