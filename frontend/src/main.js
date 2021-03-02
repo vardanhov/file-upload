@@ -4,7 +4,7 @@ import '@babel/polyfill'
 import './api/resource'
 import router from './router/router'
 import App from './components/Index.vue'
-import store from 'store/store.js'
+import store from './store/store.js'
 import {Vuelidate} from "vuelidate";
 import colors from 'vuetify/lib/util/colors'
 

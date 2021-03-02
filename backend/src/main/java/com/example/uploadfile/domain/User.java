@@ -32,7 +32,5 @@ public class User {
     @Attribute(name = "userPassword")
     private String password;
 
-    private Group group;
-
     }
 

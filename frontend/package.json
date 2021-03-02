@@ -4,9 +4,11 @@
   "main": "index.js",
   "license": "MIT",
   "scripts": {
-    "start": "webpack-dev-server --config webpack.dev.js"
+    "start": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.dev.js"
   },
   "dependencies": {
+    "@vue/cli-service": "~4.4.0",
     "@babel/polyfill": "^7.2.5",
     "@mdi/font": "^5.9.55",
     "axios": "^0.19.2",
