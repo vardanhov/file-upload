@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.ldap.LdapProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.ldap.core.LdapTemplate;
+import org.springframework.ldap.core.support.LdapContextSource;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -34,6 +35,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Value("${ldap.connection.url}")
     private String ldapConnectionUrl;
 
+    @Value("${ldap.urls}")
+    private String ldapUrls;
+
+    @Value("${ldap.base.dn}")
+    private String ldapBaseDn;
+
+    @Value("${ldap.username}")
+    private String ldapSecurityPrincipal;
+
+    @Value("${ldap.password}")
+    private String ldapPrincipalPassword;
+
+    @Value("${ldap.user.dn.pattern}")
+    private String ldapUserDnPattern;
+
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -54,22 +70,13 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .ldapAuthentication()
-                .userDnPatterns("uid={0},ou=people")
-                .groupSearchBase("ou=groups")
-                .groupSearchFilter("uniqueMember={0}")
-                .groupRoleAttribute("cn")
-                .rolePrefix("ROLE_")
                 .contextSource()
-                .url("ldap://localhost:8389/dc=springframework,dc=org")
-                .root("dc=springframework,dc=org")
-                .ldif("classpath:test-ldap.ldif")
+                .url(ldapUrls + ldapBaseDn)
+                .managerDn(ldapSecurityPrincipal)
+                .managerPassword(ldapPrincipalPassword)
                 .and()
-                .passwordCompare()
-                .passwordEncoder(new BCryptPasswordEncoder())
-                .passwordAttribute("userPassword");
-
+                .userDnPatterns(ldapUserDnPattern);
     }
-
 
     @Bean
     public LdapAuthoritiesPopulator ldapAuthoritiesPopulator() {
