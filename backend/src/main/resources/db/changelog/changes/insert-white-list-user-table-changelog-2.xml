@@ -9,7 +9,7 @@
         <insert tableName="white_list_user">
             <column name="id" valueNumeric="1"/>
             <column name="user_name" value="admin"/>
-            <column name="full_name" value="full name of admin"/>
+            <column name="full_name" value="Администратор"/>
             <column name="group" value="admin"/>
             <column name="admin" value="1"/>
         </insert>
