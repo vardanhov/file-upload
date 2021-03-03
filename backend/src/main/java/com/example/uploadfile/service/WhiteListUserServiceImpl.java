@@ -4,6 +4,7 @@ import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.excepion.UserNotFoundException;
+import com.example.uploadfile.logger.Markers;
 import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.service.iface.WhiteListUserService;
@@ -29,13 +30,11 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
 
     private final UserRepository userRepository;
     private final WhiteListUserRepository whiteListUserRepository;
-    private final Marker adminMarker;
 
     @Autowired
-    public WhiteListUserServiceImpl(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository, Marker adminMarker) {
+    public WhiteListUserServiceImpl(UserRepository userRepository, WhiteListUserRepository whiteListUserRepository) {
         this.userRepository = userRepository;
         this.whiteListUserRepository = whiteListUserRepository;
-        this.adminMarker = adminMarker;
     }
 
 
@@ -57,7 +56,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
         whiteListUser.setUserName(user.getUsername());
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserResponse);
-        log.info(adminMarker,"Added user:" + whiteListUserDto);
+        log.info(Markers.ADMIN.getMarker(),"Added user:" + whiteListUserDto);
         return whiteListUserDto;
     }
 
