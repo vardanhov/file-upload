@@ -13,9 +13,8 @@ import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
-    //TODO Give normal name
-    final static private Integer MAGIC_CONSTANT = 3;
-    private GroupRepository groupRepository;
+    final static private Integer NAME_POSITION = 3;
+    private final GroupRepository groupRepository;
 
     @Autowired
     public GroupServiceImpl(GroupRepository groupRepository) {
@@ -26,14 +25,14 @@ public class GroupServiceImpl implements GroupService {
         Iterable<Group> groups = groupRepository.findAll();
         List<Group> list = new ArrayList<>();
         groups.forEach(list::add);
-        Group targetGroup = findGroupFromGroupList(list, username);
-        return targetGroup;
+
+        return findGroupFromGroupList(list, username);
     }
 
     public   Group findGroupFromGroupList(List<Group> list, String username) {
         for (Group group:list) {
             for (Name name:group.getMembers()) {
-                if (name.get(MAGIC_CONSTANT).endsWith(username)) {
+                if (name.get(NAME_POSITION).endsWith(username)) {
                     return group;
                 }
             }
