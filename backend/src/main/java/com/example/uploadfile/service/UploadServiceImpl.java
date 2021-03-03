@@ -42,7 +42,7 @@ public class UploadServiceImpl implements UploadService {
     @Value("${allowed.file.content.types}")
     private String allowedContentTypes;
 
-    private WhiteListUserRepository whiteListUserRepository;
+    private final WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
     public UploadServiceImpl(WhiteListUserRepository whiteListUserRepository) {
