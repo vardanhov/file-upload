@@ -34,7 +34,7 @@ public class UploadController {
 
     @ApiOperation(value = "загрузка файлов")
     @PostMapping(value = "/api/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public void uploadFile(@RequestParam(value = "files", required = true) @NotNull @NotEmpty MultipartFile files[],
+    public void uploadFile(@RequestParam(value = "files", required = true) @NotNull @NotEmpty MultipartFile[] files,
                            String path, Authentication authentication) {
         uploadService.storeFiles(files, path, authentication);
     }
