@@ -4,10 +4,13 @@ import com.example.uploadfile.domain.User;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 import com.example.uploadfile.excepion.UserNotFoundException;
+import com.example.uploadfile.logger.Markers;
 import com.example.uploadfile.repo.UserRepository;
 import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.service.iface.WhiteListUserService;
 import com.example.uploadfile.util.UserMapper;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -19,10 +22,10 @@ import java.time.LocalTime;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static com.example.uploadfile.util.UserMapper.toWhiteListUser;
 import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 @Service
+@Slf4j
 public class WhiteListUserServiceImpl implements WhiteListUserService {
 
     private final UserRepository userRepository;
@@ -53,6 +56,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
         whiteListUser.setUserName(user.getUsername());
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserResponse);
+        log.info(Markers.ADMIN.getMarker(),"Added user:" + whiteListUserDto);
         return whiteListUserDto;
     }
 
