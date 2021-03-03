@@ -13,7 +13,8 @@ import java.util.List;
 
 @Service
 public class GroupServiceImpl implements GroupService {
-
+    //TODO Give normal name
+    final static private Integer MAGIC_CONSTANT = 3;
     private GroupRepository groupRepository;
 
     @Autowired
@@ -21,21 +22,21 @@ public class GroupServiceImpl implements GroupService {
         this.groupRepository = groupRepository;
     }
 
-
-    public Group findGroupByUserName(String username){
+    public Group findGroupByUserName(String username) {
         Iterable<Group> groups = groupRepository.findAll();
         List<Group> list = new ArrayList<>();
         groups.forEach(list::add);
-        Group targetGroup =findGroupFromGroupList(list,username);
+        Group targetGroup = findGroupFromGroupList(list, username);
         return targetGroup;
     }
 
-    public   Group findGroupFromGroupList(List<Group> list, String username){
-        for (Group group:list){
-            for (Name name:group.getMembers())
-                if(name.get(3).endsWith(username)){
+    public   Group findGroupFromGroupList(List<Group> list, String username) {
+        for (Group group:list) {
+            for (Name name:group.getMembers()) {
+                if (name.get(MAGIC_CONSTANT).endsWith(username)) {
                     return group;
                 }
+            }
         }
         return null;
     }

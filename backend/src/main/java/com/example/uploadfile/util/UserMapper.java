@@ -3,7 +3,8 @@ package com.example.uploadfile.util;
 import com.example.uploadfile.domain.WhiteListUser;
 import com.example.uploadfile.dto.WhiteListUserDto;
 
-public class UserMapper {
+
+final public class UserMapper {
 
     public static WhiteListUserDto toWhiteListUserDto(WhiteListUser whiteListUser) {
         WhiteListUserDto whiteListUserDto = new WhiteListUserDto();

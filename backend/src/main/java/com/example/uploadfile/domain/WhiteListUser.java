@@ -8,11 +8,17 @@ import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 
-import javax.persistence.*;
+import javax.persistence.Entity;
+import javax.persistence.Table;
+import javax.persistence.Id;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Column;
 import java.time.LocalDateTime;
 
+
 @Entity
-@Table(name="white_list_user")
+@Table(name = "white_list_user")
 @Data
 @NoArgsConstructor
 @ToString
@@ -27,7 +33,7 @@ public class WhiteListUser {
     @Column(name = "user_name")
     private String userName;
 
-    @Column(name="full_name")
+    @Column(name = "full_name")
     private String fullName;
 
     @Column(name = "group")

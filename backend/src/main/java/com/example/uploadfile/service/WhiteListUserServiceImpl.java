@@ -10,7 +10,6 @@ import com.example.uploadfile.repo.WhiteListUserRepository;
 import com.example.uploadfile.service.iface.WhiteListUserService;
 import com.example.uploadfile.util.UserMapper;
 import lombok.extern.slf4j.Slf4j;
-import org.slf4j.Marker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
@@ -23,6 +22,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
+
 
 @Service
 @Slf4j
@@ -56,7 +56,7 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
         whiteListUser.setUserName(user.getUsername());
         WhiteListUser whiteListUserResponse = whiteListUserRepository.saveAndFlush(whiteListUser);
         WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserResponse);
-        log.info(Markers.ADMIN.getMarker(),"Added user:" + whiteListUserDto);
+        log.info(Markers.ADMIN.getMarker(), "Added user:" + whiteListUserDto);
         return whiteListUserDto;
     }
 
@@ -67,10 +67,14 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
                 .stream().map(UserMapper::toWhiteListUserDto).collect(Collectors.toList());
     }
 
-    //Fixme не работает с дто
+    //TODO Fixme не работает с дто
     @Override
-    public void grantAccessById(String dateFrom, String timeFrom, String dateTo, String timeTo, Integer guid, Authentication authentication) {
-
+    public void grantAccessById(String dateFrom,
+                                String timeFrom,
+                                String dateTo,
+                                String timeTo,
+                                Integer guid,
+                                Authentication authentication) {
         checkUserAdminRights(authentication);
         WhiteListUser whiteListUser = whiteListUserRepository.getOne(guid);
         whiteListUser.setDateFrom(LocalDateTime.of(LocalDate.parse(dateFrom), LocalTime.parse(timeFrom)));
@@ -93,7 +97,11 @@ public class WhiteListUserServiceImpl implements WhiteListUserService {
     //TODO переделать с использованием authorities
     @Override
     public void checkUserAdminRights(Authentication authentication) {
-                WhiteListUserDto whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
-        if (!whiteListUserDto.getAdmin()) throw new RuntimeException("Недостаточно прав");
+                WhiteListUserDto whiteListUserDto = toWhiteListUserDto(
+                        whiteListUserRepository.getWhiteListUserByUserName(authentication.getName())
+                );
+        if (!whiteListUserDto.getAdmin()) {
+            throw new RuntimeException("Недостаточно прав");
+        }
     }
 }

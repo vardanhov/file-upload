@@ -31,6 +31,7 @@ import static com.example.uploadfile.util.UserMapper.toWhiteListUserDto;
 
 @Service
 public class UploadServiceImpl implements UploadService {
+    final static private Integer MIN_FILENAME_LENGTH = 4;
 
     @Value("${upload.path.regular}")
     private String pathOfRegularFiles;
@@ -39,9 +40,9 @@ public class UploadServiceImpl implements UploadService {
     private String pathOfConfidentialFiles;
 
     @Value("${allowed.file.content.types}")
-    String allowedContentTypes;
+    private String allowedContentTypes;
 
-    WhiteListUserRepository whiteListUserRepository;
+    private WhiteListUserRepository whiteListUserRepository;
 
     @Autowired
     public UploadServiceImpl(WhiteListUserRepository whiteListUserRepository) {
@@ -52,7 +53,10 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public List<File> storeFiles(MultipartFile[] multipartFileList, String path, Authentication authentication) {
         checkUserUploadRights(authentication);
-        return Stream.of(multipartFileList).map(multipartFile -> storeFile(multipartFile, path, authentication)).collect(Collectors.toList());
+
+        return Stream.of(multipartFileList)
+                .map(multipartFile -> storeFile(multipartFile, path, authentication))
+                .collect(Collectors.toList());
     }
 
     //TODO еще поработать с этим методом
@@ -73,18 +77,25 @@ public class UploadServiceImpl implements UploadService {
 //            e.printStackTrace();
 //        }
 
-        if (multipartFile == null) { throw new FileNotFoundException("Файл отсутствует"); }
-        Path pathSaveFileTo = returnTargetPath(path,authentication);
+        if (multipartFile == null) {
+            throw new FileNotFoundException("Файл отсутствует");
+        }
+
+        Path pathSaveFileTo = returnTargetPath(path, authentication);
         String fileName = StringUtils.cleanPath(multipartFile.getOriginalFilename());
 
-        if (fileName.length() < 4) { throw new FileNameException("Некорректное имя файла"); }
+        if (fileName.length() < MIN_FILENAME_LENGTH) {
+            throw new FileNameException("Некорректное имя файла");
+        }
+
         //TODO из настроек массив допустимых типов файлов
 //        if (!fileName.endsWith(".py")) { throw new FileNameException("Неверный формат файла"); }
 
         File file = new File(pathSaveFileTo.toString(), multipartFile.getOriginalFilename());
 
-        if (file.exists()) throw new FileNameException("Файл с таким именем уже существует, выберите другое имя");
-        else if (!file.exists() ){
+        if (file.exists()) {
+            throw new FileNameException("Файл с таким именем уже существует, выберите другое имя");
+        } else if (!file.exists()) {
             try {
                 file.getParentFile().mkdirs();
                 file.createNewFile();
@@ -109,36 +120,48 @@ public class UploadServiceImpl implements UploadService {
     @Override
     public void checkUserUploadRights(Authentication authentication) {
         WhiteListUserDto whiteListUserDto = null;
-                try{
-                    whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
-                } catch (Exception e)
-                {
-                    throw new RuntimeException("У Вас недостаточно прав для добавления файлов, обратитесь к администратору");
+                try {
+                    whiteListUserDto = toWhiteListUserDto(
+                            whiteListUserRepository.getWhiteListUserByUserName(authentication.getName())
+                    );
+                } catch (Exception e) {
+                    throw new RuntimeException(
+                            "У Вас недостаточно прав для добавления файлов, обратитесь к администратору"
+                    );
                 }
-        if (!isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo()))
-            throw new RuntimeException("Не установлен, либо исчерпан разрешенный диапазон времени для загрузки файлов, обратитесь к администратору");
+        if (!isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo())) {
+            throw new RuntimeException("Не установлен, либо исчерпан разрешенный диапазон времени для загрузки файлов,"
+                    + " обратитесь к администратору");
+        }
     }
 //TODO refactor
     public boolean checkUserUploadRightsOnEnter(Authentication authentication) {
         WhiteListUserDto whiteListUserDto = null;
-        try{
-            whiteListUserDto = toWhiteListUserDto(whiteListUserRepository.getWhiteListUserByUserName(authentication.getName()));
-        } catch (Exception e)
-        {
+        try {
+            whiteListUserDto = toWhiteListUserDto(
+                    whiteListUserRepository.getWhiteListUserByUserName(authentication.getName())
+            );
+        } catch (Exception e) {
             throw new RuntimeException("У Вас недостаточно прав для добавления файлов, обратитесь к администратору");
         }
         return isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo());
     }
 
-    //FIXme NPE
+    //TODO FIXme NPE
     private boolean isWithinRange(@NotNull LocalDateTime from, @NotNull LocalDateTime to) {
-        if(from ==null || to == null) throw new RuntimeException("Не установлен, либо исчерпан допустимый диапазон времени для загрузки, обратитесь к администратору");
-        LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis()).atZone(ZoneId.systemDefault()).toLocalDateTime();
+        if (from == null || to == null) {
+            throw new RuntimeException("Не установлен, либо исчерпан допустимый диапазон"
+                    + " времени для загрузки, обратитесь к администратору");
+        }
+        LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis())
+                .atZone(ZoneId.systemDefault())
+                .toLocalDateTime();
         return from.isBefore(currentTime) && to.isAfter(currentTime);
     }
 
-    private Path returnTargetPath(String path, Authentication authentication){
-        return (!path.equals("") ? Paths.get(pathOfConfidentialFiles + authentication.getName() +"\\" + path ):Paths.get(pathOfRegularFiles));
+    private Path returnTargetPath(String path, Authentication authentication) {
+        return (!path.equals("") ? Paths.get(pathOfConfidentialFiles + authentication.getName() + "\\" + path)
+                : Paths.get(pathOfRegularFiles));
     }
 }
 

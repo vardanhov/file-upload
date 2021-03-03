@@ -3,6 +3,7 @@ package com.example.uploadfile.logger;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+
 public enum Markers {
     ADMIN("admin"),
     USER("user");
@@ -19,8 +20,6 @@ public enum Markers {
 
     @Override
     public String toString() {
-        return "Markers{" +
-                "marker=" + marker +
-                '}';
+        return "Markers{" + "marker=" + marker + '}';
     }
 }
