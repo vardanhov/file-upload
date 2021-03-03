@@ -147,15 +147,16 @@ public class UploadServiceImpl implements UploadService {
         return isWithinRange(whiteListUserDto.getDateFrom(), whiteListUserDto.getDateTo());
     }
 
-    //TODO FIXme NPE
     private boolean isWithinRange(@NotNull LocalDateTime from, @NotNull LocalDateTime to) {
         if (from == null || to == null) {
             throw new RuntimeException("Не установлен, либо исчерпан допустимый диапазон"
                     + " времени для загрузки, обратитесь к администратору");
         }
+
         LocalDateTime currentTime = Instant.ofEpochMilli(System.currentTimeMillis())
                 .atZone(ZoneId.systemDefault())
                 .toLocalDateTime();
+
         return from.isBefore(currentTime) && to.isAfter(currentTime);
     }
 
