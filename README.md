@@ -18,12 +18,7 @@ For local starting:
 
 Change file owner doesn't work in windows os
 
-#Run on server
-1. cd <project-folder>
-2. Change "application.host" parameter (https://localhost -> https://stage1.streaming.tscloud) in backend/src/main/resources/application.properties
-3. Stop the docker container if it is already running [use: sudo docker ps]
-4. sudo docker build -t vtb/file-upload:0.0.1 . [optional: change version]
-5. sudo docker run -d -it --network=host --mount type=bind,source=/app/airflow,target=/app/airflow vtb/file-upload:0.0.1 [optional: change version]
+
 
 #Run on local with ldif
 In application.properties add property spring.profiles.active=dev
