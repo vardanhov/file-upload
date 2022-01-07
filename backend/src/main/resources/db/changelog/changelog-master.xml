@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <include file="/db/changelog/changes/1-create-tables-for-user-bind.xml"/>
+    <include file="/db/changelog/changes/2-new-create-tables-user-group.xml"/>
+    <include file="/db/changelog/changes/3-new-insert-test-group.xml"/>
+    <include file="/db/changelog/changes/4-create-users-table-changelog.xml"/>
+    <include file="/db/changelog/changes/5-insert-users-table-changelog.xml"/>
+    <include file="/db/changelog/changes/6-new-create-access-user-list-table-changelog.xml"/>
+    <include file="/db/changelog/changes/7-insert-white-access-user-list-changelog.xml"/>
+    <include file="/db/changelog/changes/8-create-tables-for-logging-event.xml"/>
+</databaseChangeLog>

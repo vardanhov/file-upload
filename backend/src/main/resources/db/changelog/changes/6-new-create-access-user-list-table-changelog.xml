@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet author="user" id="1">
+        <createTable tableName="access_user_list">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="user_id" type="bigint">
+                <constraints nullable="false" unique="true" uniqueConstraintName="UNIQUE_USER_ID"/>
+            </column>
+
+            <column name="create_date" type="Timestamp" defaultValueComputed="CURRENT_TIMESTAMP"/>
+            <column name="date_from" type="Timestamp"/>
+            <column name="date_to" type="Timestamp"/>
+            <column name="is_native" type="boolean"  defaultValueBoolean="false"/>
+            <column name="role" type="varchar(100)"/>
+            <column name="added_by" type="varchar(255)"/>
+        </createTable>
+
+        <addForeignKeyConstraint baseTableName="access_user_list"
+                                 baseColumnNames="user_id" constraintName="FK_AL_user_id_participant"
+                                 referencedTableName="participant"
+                                 referencedColumnNames="id"/>
+    </changeSet>
+</databaseChangeLog>

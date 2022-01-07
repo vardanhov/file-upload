@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd">
+
+    <changeSet author="user" id="1">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="1"/>
+            <column name="added_by" value="lad"/>
+            <column name="role" value="ROLE_ADMIN"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="2">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="4"/>
+            <column name="role" value="ROLE_ADMIN"/>
+            <column name="added_by" value="lad"/>
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="3">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="5"/>
+            <column name="role" value="ROLE_VIEWER"/>
+            <column name="added_by" value="lad"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="4">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="6"/>
+            <column name="role" value="ROLE_VIEWER"/>
+            <column name="added_by" value="lad"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="5">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="7"/>
+            <column name="role" value="ROLE_VIEWER"/>
+            <column name="added_by" value="lad"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="6">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="8"/>
+            <column name="role" value="ROLE_VIEWER"/>
+            <column name="added_by" value="lad"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="7">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="2"/>
+            <column name="role" value="ROLE_ADMIN"/>
+            <column name="is_native" value="true" />
+            <column name="added_by" value="lad"/>
+
+        </insert>
+    </changeSet>
+    <changeSet author="user" id="8">
+        <insert tableName="access_user_list">
+            <column name="user_id" value="3"/>
+            <column name="role" value="ROLE_VIEWER"/>
+            <column name="added_by" value="lad"/>
+            <column name="is_native" value="true" />
+        </insert>
+    </changeSet>
+</databaseChangeLog>

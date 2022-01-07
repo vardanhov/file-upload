@@ -1,0 +1,39 @@
+image: timbru31/java-node:8-jdk-fermium
+
+stages:
+  - build
+  - test
+  - deploy
+  - autotests
+
+build:
+  stage: build
+  only:
+    - branches
+  script:
+    - ./mvnw compile
+
+test:
+  stage: test
+  only:
+    - branches
+  script:
+    - ./mvnw test
+
+deploy_to_stage1:
+  stage: deploy
+  only:
+   - merge_requests
+   - web
+  script:
+    ******************
+
+autotests:
+  stage: autotests
+  only:
+   - merge_requests
+   - web
+  trigger:
+    project: file-loader/upload-file-testing
+    branch: master
+    strategy: depend

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.3.xsd">
+    <changeSet author="user" id="1">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <tableExists tableName="file_owner"/>
+            </not>
+        </preConditions>
+        <createTable tableName="file_owner">
+            <column autoIncrement="true" name="id" type="INT">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="username" type="varchar(255)"/>
+            <column name="path" type="varchar(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="user">
+        <preConditions onFail="MARK_RAN">
+            <not>
+                <sequenceExists sequenceName="hibernate_sequence"/>
+            </not>
+        </preConditions>
+        <createSequence
+                minValue="1"
+                sequenceName="hibernate_sequence"
+                startValue="1"/>
+    </changeSet>
+</databaseChangeLog>

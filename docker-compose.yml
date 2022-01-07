@@ -1,0 +1,21 @@
+version: "3.5"
+
+services:
+  app:
+    build:
+      context: .
+    network_mode: "host"
+    env_file:
+      - .env
+    depends_on:
+      - 'postgres'
+    
+  postgres:
+    container_name: postgres_container
+    image: postgres
+    environment:
+      POSTGRES_USER: 'postgres'
+      POSTGRES_PASSWORD: 'postgres'
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    network_mode: "host"

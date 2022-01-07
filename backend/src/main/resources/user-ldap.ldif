@@ -1,0 +1,105 @@
+dn: dc=springframework,dc=org
+objectclass: top
+objectclass: domain
+objectclass: extensibleObject
+dc: springframework
+
+dn: ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: people
+
+dn: uid=admin,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Admin Lastname
+sn: Lastname
+uid: admin
+userPassword: $2y$10$ixVRbQbTeHBEJ6oIT5jX/e2vocP3ELG6cqEOfrCfXQSbdtB/WR9aG
+
+dn: uid=anton,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Anton Antonov
+sn: Antonov
+uid: anton
+userPassword: $2y$10$Kyg08YKZAjUJlFAEk7Mny.sfMJOLnR6Ahbf7nIZxL9KwBFyz7MkO2
+
+dn: uid=sergey,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Sergey Sergeev
+sn: Sergeev
+uid: sergey
+userPassword: $2y$10$Yv3cUOhu1X46aWJr/d1TcuxAkg/cFcEGviVCjRi6dKqE8BQj.BOw6
+
+dn: uid=oleg,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Oleg Andreev
+sn: Andreev
+uid: oleg
+userPassword: $2y$10$xbFsDj5pvgQTIsSuz7r2bOiFQO0vbken5wW4XxxpcqkkQL4zuaKwC
+
+dn: uid=andrey,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Andrey Tixonov
+sn: Tixonov
+uid: andrey
+userPassword: $2y$10$DC4TSm8uOIsHGWbBSEzSL.afq7lbh1LrwTbuWZ2TfRy90jFg8GOSu
+
+dn: uid=stas,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Stas Antonov
+sn: Antonov
+uid: stas
+userPassword: $2y$10$jXbqSTgGp1KinRqsMaDzbuqKoW5FLPoKp6DTj82xxzHf1PSDR6OiK
+
+dn: uid=autotestadmin,ou=people,dc=springframework,dc=org
+objectclass: top
+objectclass: person
+objectclass: organizationalPerson
+objectclass: inetOrgPerson
+cn: Admin Adminovich
+sn: Adminov
+uid: autotestadmin
+userPassword: $2y$10$7W5hdum2qZcmH.0OOLjXiehkjik0B59mRStq7CMhekKIsUKbVECe.
+
+dn: ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: organizationalUnit
+ou: groups
+
+
+dn: cn=admin,ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: admin
+description: Super Users
+uniqueMember: uid=admin,ou=people,dc=springframework,dc=org
+
+
+dn: cn=user,ou=groups,dc=springframework,dc=org
+objectclass: top
+objectclass: groupOfUniqueNames
+cn: user
+description: Ordinary users
+uniqueMember: uid=anton,ou=people,dc=springframework,dc=org
+uniqueMember: uid=sergey,ou=people,dc=springframework,dc=org
+uniqueMember: uid=oleg,ou=people,dc=springframework,dc=org
+uniqueMember: uid=andrey,ou=people,dc=springframework,dc=org
+uniqueMember: uid=stas,ou=people,dc=springframework,dc=org
